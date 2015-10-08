@@ -1,0 +1,145 @@
+\documentclass{ufpatcc}
+
+\include{include}
+\include{packages}
+
+\ufpaTitulo{Estudo e Implementação de Técnicas para Sincronismo em Sistemas de
+Telecomunicações}
+
+\ufpaAutor{Gabriel Peixoto de Carvalho}
+\ufpaSegundoAutor{}
+\ufpaOrientador{Prof. Aldebaro Barreto da Rocha Klautau Junior}
+\ufpaCoordenadorCurso{Prof. Jos\'{e} Augusto de Lima Barreiros}
+
+\ufpaCoOrientador{Prof. Wilson Pacheco Ferreira}
+\ufpaMembroBancaA{Prof. Francisco Carlos Bentes Frey Muller}
+\ufpaMembroBancaB{Eng. Igor Mesquita de Almeida}
+
+
+\begin{document}
+
+\ufpaPaginaDeRosto
+
+\ufpaPagRostodo
+
+\ufpaPaginaDeAprovacao
+
+%%%%%%%%%%%%%%%%%%%%
+%   Oferecimento   %
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{ufpaOferecimento}
+\index{Oferecimento@Oferecimento}%
+\addcontentsline{toc}{chapter}{Dedicatória}
+   Dedico este trabalho aos meus pais e ao meu irmão, os quais desempenharam um
+   papel inigualável em minha educação.
+\end{ufpaOferecimento}
+
+%%%%%%%%%%%%%%%%%%%%
+%  Agradecimento   %
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{ufpaAgradecimentos}
+\index{Agradecimentos@Agradecimentos}
+\addcontentsline{toc}{chapter}{Agradecimentos}
+
+\begin{flushright}
+Igor Antonio Auad Freire
+\end{flushright}
+
+\end{ufpaAgradecimentos}
+
+%%%%%%%%%%%%%%%%%%%%
+%      Epígrafe     %
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{ufpaEpigrafe}
+Viva como se você fosse morrer amanhã. Aprenda como se você fosse viver para sempre.\\
+\begin{flushright}Mahatma Gandhi\end{flushright}
+\end{ufpaEpigrafe}
+
+%%%%%%%%%%%%%%%%%%%%%
+%  Lista de Siglas  %
+%%%%%%%%%%%%%%%%%%%%%
+
+\chapter*{Lista de Siglas} \label{sec:siglas}
+\input{siglas}
+
+\chapter*{Lista de Símbolos} \label{sec:simbolos}
+\input{simbolos}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  Insere a lista de Figuras e de Tabelas  %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\listoffigures \clearpage \listoftables \clearpage
+
+%%%%%%%%%%%%%%%%%%%%
+%      Sumário     %
+%%%%%%%%%%%%%%%%%%%%
+
+\tableofcontents    \clearpage
+
+%%%%%%%%%%%%%%%%%%%%
+%      Resumo      %
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{ufpaResumo}
+
+
+\end{ufpaResumo}
+
+\begin{abstract}
+
+
+
+\end{abstract}
+
+%%%%%%%%%%%%%%%%%%%%%
+%   Corpo do TCC    %
+%%%%%%%%%%%%%%%%%%%%%
+
+\pagenumbering{arabic}
+
+%\input{cap_introducao}
+%\input{cap_isi_ici}
+%\input{cap_interferencePrec}
+%\input{cap_power}
+%\input{cap_conclusoes}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%`
+%   Referencias bibliograficas   %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\renewcommand\bibname{Referências Bibliográficas}
+%\bibliographystyle{../../../public/ABNT-20020112}
+%\bibliographystyle{../public/IEEEtran}
+%\bibliographystyle{../../../Public/IEEEtran_pt}
+\bibliographystyle{abnt}
+\bibliography{references}
+
+%temorary tag just while there is no \citation
+%eliminates no \citation error
+\nocite{*}
+
+\clearpage
+
+%%%%%%%%%%%%%%%%%%%%%
+%   ApÃªndices    %
+%%%%%%%%%%%%%%%%%%%%%
+
+\appendix
+%\input{apend_ortogonalidade}
+%\input{apend_isi_ici_gaussiana}
+%\input{append_cond_matriz_prec}
+
+%%%%%%%%%%%%%%%%%%%%%
+%   PÃ¡gina em branco    %
+%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+\thispagestyle{empty}
+\mbox{}
+
+%% -- Termino do TCC
+\end{document}

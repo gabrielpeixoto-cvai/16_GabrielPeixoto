@@ -1,0 +1,477 @@
+\chapter{Altenativas para Controle de Potência e Redução de Complexidade}
+\label{sec:power_control}
+
+Os algoritmos de mitigação de distorção por prefixo cíclico insuficiente desenvolvidos no Capítulo \ref{sec:mitigacao_pci} encontram duas grandes restrições para suas aplicabilidades: a alteração da densidade espectral de potência dos símbolos transmitidos e a alta complexidade de processamento. Diante disto, torna-se indispensável analisar criteriosamente técnicas que assegurem a PSD do símbolo pré-codificado no nível desejado e que promovam a redução da complexidade do algoritmo.
+
+A pré-codificação desenvolvida no capítulo anterior tem um bom desempenho quando a inversão do canal não resulta em aumentos significativos de potência. No entanto, para algumas realizações de canais, o aumento de potência resultante da inversão é, de fato, elevado. Neste caso, o fator de normalização (dado pela Equação~\ref{eq:fator_normalizacao}), o qual é utilizado para controlar PSD do símbolo pré-codificado, passa a ser elevado (maior que a unidade), o que implica em uma perda de taxa de bits significativa \cite{malkin2009}, como será visto na Seção \ref{sec:perda_taxa}. Por isso, técnicas que permitam ajustar a matriz de pré-codificação e resultar em um fator de normalização aproximadamente unitário são interessantes para a validez da utilização do algoritmo.
+
+Além da garantia da PSD do símbolo pré-codificado dentro dos limites padronizados, a complexidade do algoritmo precisa ser observada. Sabe-se que o equalizador em frequência (FEQ) de um sistema DMT apresenta somente uma derivação por subcanal, o que implica em $N$ operações de multiplicação escalar complexa por símbolo DMT recebido para efetuar a equalização. Esta complexidade é reduzidíssima quando comparada a complexidade introduzida pelos algoritmos de pré-codificação e equalização, as quais foram resumidas na Tabela \ref{tb:complexidade_dp}. Portanto, é necessário observar cautelosamente a validez de trocar a complexidade reduzida do FEQ pela complexidade elevada do esquema de mitigação de distorção PCI, o qual, além do FEQ, utiliza pré-codificação e equalização de ISI.
+
+Esta seção apresenta técnicas que procuram tornar o fator de normalização global ($\beta$) muito próximo da unidade, a fim de que não haja perdas significativas de taxa de bits. Além disso, apresenta técnicas que promovem a redução do custo computacional da pré-codificação de símbolos.  Inicialmente, apresenta-se na Seção \ref{sec:perda_taxa} uma análise da perda de taxa de bits devido ao fator de normalização. Na sequência, apresenta-se nas Seções \ref{sec:desligamento_subcanais} e \ref{sec:normalizacao_per_tone}, duas técnicas para promover  a redução do fator de normalização: o desligamento de subcanais e a normalização por coluna. Finalmente, apresenta-se nas Seções \ref{sec:hermitian_precoder} e \ref{sec:prec_time_domain} duas estratégias de redução do esforço computacional: a pré-codificação somente dos subsímbolos correspondentes às frequências positivas e a pré-codificação no domínio do tempo.
+
+\section{Perda de Taxa de Bits devido à Normalização}
+\label{sec:perda_taxa}
+
+Em um sistema DMT ordinário, no qual não se utiliza a pré-codificação de símbolos, quando o prefixo cíclico é insuficiente (quando há distorção PCI), a razão entre a potência do sinal escalada pelo ganho do canal no $k$-ésimo tom ($\left| H_k \right|$) e a potência do ruído somada a potência da interferência (ISI e ICI) neste tom do símbolo recebido\footnote{A esta razão denomina-se razão sinal ruído mais interferência (SINR).} é dada por:
+\begin{align}
+\text{SNR}_k = \frac{ \left|H_k \right|^2 s_k }{ \sigma_k^2 + s_\text{ISI}^k + s_\text{ICI}^k }
+\label{eq:sinr_rx_symbol}
+\end{align}
+onde  $s_k$, $s_\text{ISI}^k$, $s_\text{ICI}^k$ e $\sigma_k^2$, são as densidades espectrais de potência do símbolo transmitido, da ISI, da ICI, e do ruído Gaussiano branco, respectivamente, assumindo ISI e ICI como independentes do AWGN.
+
+Enquanto isso, ao utilizar a matriz de pré-codificação normalizada ($\mathbf{W}'$) definida pela Equação~\ref{eq:matriz_precoder_beta} (repetida abaixo por conveniência), assumindo a eliminação perfeita de ISI, tem-se o símbolo recebido como dado pela Equação~\ref{eq:rx_symbol_beta}.
+\begin{align}
+\mathbf{W}' =  \frac{1}{\beta}\mathbf{A}^{-1}\mathbf{\Lambda}
+\tag{\ref{eq:matriz_precoder_beta}}
+\end{align}
+\begin{align}
+\mathbf{Y}^{(i)} =\frac{1}{\beta}\mathbf{\Lambda} X^{(i)}
+\label{eq:rx_symbol_beta}
+\end{align}
+
+Neste caso, a SNR do símbolo recebido é dada por:
+\begin{align}
+\text{SNR}_k= \frac{\left|H_k \right|^2 \cdot s_k}{ \beta^2 \sigma_k^2 }
+\label{eq:snr_rx_symbol}
+\end{align}
+
+Nota-se que, ao utilizar a pré-codificação, a SNR do símbolo recebido é alterada por um fator $1/\beta^2$. Em decibéis, a SNR do símbolo recebido no $k$-ésimo tom é dada por:
+\begin{align}
+\text{SNR}_k &= 10\log \left( \frac{\left|H_k \right|^2 \cdot s_k}{ \beta^2 \cdot \sigma_k^2 } \right) \nonumber\\
+&= 10\log \left( \frac{\left|H_k \right|^2 \cdot s_k}{ \sigma_k^2 } \right) - 10 \log \left( \beta^2\right)
+\end{align}
+
+Portanto, nota-se que o fator de normalização $\beta$ introduz uma diferença de $ - 20\log(\beta)$ dB na SNR de todos os tons, a qual implica em uma perda de SNR se $\beta$ for maior que a unidade ($\beta > 1$). Esta alteração na SNR modifica a taxa de bits alcançável para o sistema, conforme a definição da Equação~\ref{eq:chan_capacity_gap}.  Assumindo um \textsl{gap} de SNR para a capacidade $\Gamma$, o limite superior da taxa de bits passa a ser dado por:
+\begin{align}
+\bar{b} = \sum \limits_{k=0}^{N-1} \log \left[1 + \frac{ \left|H_k \right|^2 \cdot s_k }{\beta^2  \Gamma  \sigma_k^2 } \right] \Delta f
+\end{align}
+onde $\Delta f$ é o espaçamento tonal.
+
+Logo, conclui-se que, quando o fator de normalização ($\beta$) é maior que a unidade, a taxa de bits alcançável para o sistema é reduzida. Portanto, existe uma relação de compromisso entre as SNRs da Equação~\ref{eq:sinr_rx_symbol} e da Equação~\ref{eq:snr_rx_symbol}. Para alguns canais, a mitigação da distorção PCI respeitando a máscara de PSD resulta em um fator de normalização muito maior que 1, o que torna a SNR da Equação~\ref{eq:snr_rx_symbol} (sistema com pré-codificação) menor que a SNR original da Equação~\ref{eq:sinr_rx_symbol} (sistema com distorção PCI).
+
+Ainda assim, deve-se observar que uma SNR mais baixa com a pré-codificação não necessariamente implica em um desempenho pior para o sistema, em comparação ao sistema DMT sem pré-codificação. Isto se deve ao fato de que o sistema sem pré-codificação necessita enviar $\nu$  amostras a mais por símbolo para transmistir a mesma informação, já que envia o prefixo cíclico.
+
+\section{Desligamento de Subcanais}
+\label{sec:desligamento_subcanais}
+
+O fator de normalização da matriz de pré-codificação é definido como a máxima norma Euclidiana dentre as normas das linhas da matriz de pré-codificação não normalizada, conforme a Equação~\ref{eq:fator_normalizacao}. Cada uma destas normas tem uma correspondência com a potência necessária para eliminar a distorção PCI no tom de indíce correspondente. Isto foi evidenciado na Equação~\ref{eq:psd_bound} (repetida abaixo), a qual determina o limite superior da PSD no $k$-ésimo tom do símbolo pré-codificado (sem utilização do fator de normalização). 
+\begin{align}
+\tilde{s}_k  &\leq s_k \| \mathbf{w}_k \|^2 
+\tag{\ref{eq:psd_bound}}
+\end{align}
+
+Nota-se, na Equação~\ref{eq:psd_bound}, que a norma Euclidiana da $k$-ésima linha da matriz de pré-codificação ($\| \mathbf{w}_k \|^2$) precisaria ser menor que 1 para que não houvesse aumentos de potência com a pré-codificação. Na realidade, tipicamente esta condição é satisfeita para a maioria dos subcanais, isto é, a maior parte das linhas da matriz de pré-codificação apresenta comumente norma menor que 1. As poucas linhas que apresentam norma significativamente maior que a unidade passam a definir o fator de normalização, penalizando as demais linhas (demais subcanais) com um fator de normalização elevado e uma significativa perda de taxa de bits.
+
+Portanto, pode-se concluir que há ocasiões em que é mais válido não transmitir em determinado subcanal do que utilizá-lo e arcar com o fator de normalização correspondente. Por este motivo, apresenta-se um algoritmo que observa o fator de normalização devido a cada uma das linhas da matriz original e calcula a perda de SNR ($-20 \log \left( \beta \right)$) que cada uma destas   induziria se fosse o pior caso, isto é, se fosse a linha com maior norma Euclidiana e determinasse o fator de normalização global. Os tons cujos indices correspondem às linhas nas quais a perda de SNR é maior que $3$~dB são desligados.
+
+O desligamento de um tom significa que passa a ser indiferente o subsímbolo recebido naquele tom. Diante disto, recapitulando que o símbolo recebido ao utilizar a pré-codificação é dado como na Equação~\ref{eq:rx_simbolo_precoder_hinv}, conclui-se que também é indiferente o ganho do canal na linha correspondente ao tom na matriz $\mathbf{\Lambda}$. Portanto, pode-se arbitrariamente substituir por zero os ganhos do subcanais a serem desligados. Assim, como  $\mathbf{\Lambda}$ é uma matriz diagonal, as colunas da matriz de pré-codificação com índices correspondentes aos subcanais desligados passam a ser nulas.
+\begin{align}
+\mathbf{Y} = \mathbf{A \tilde{X}} = \frac{1}{\beta}\mathbf{A A^{-1} \Lambda} \mathbf{X}
+\label{eq:rx_simbolo_precoder_hinv}
+\end{align}
+
+Esta técnica promove a redução da norma Euclidiana das linhas da matriz de pré-codificação, já que a norma de uma linha é o somátorio do quadrado dos valores absolutos de seus elementos e alguns deles são substituídos por zero. Ainda assim, é importante notar que as colunas são anuladas, e não as linhas da matriz. Portanto, não é garantido que o desligamento de todos subcanais cujo fator de normalização implica em uma redução de SNR maior que $3$~dB irá, de fato, resultar em um fator global que não provoque esta redução. 
+
+É importante observar o equívoco em considerar que, devido a indiferença do subsímbolo recebido no tom desligado, a linha correspondente a este tom pode ser inteiramente anulada, a fim de eliminar o fator de normalização correspondente a esta linha. Deve-se recapitular que o produto da matriz do canal real ($\mathbf{A}$) com a matriz de pré-codificação normalizada ($\mathbf{W}$) é dado por:
+\begin{align}
+\mathbf{AW} = \mathbf{A A^{-1}\Lambda} = \mathbf{\Lambda}
+\end{align}
+
+Logo, se uma linha inteira de $\mathbf{W}$ for multiplicada por zero, o produto $\mathbf{AW}$ não seria igual a $\mathbf{\Lambda}$, como desejado.
+
+Ainda assim, é possível ter resultados satisfatórios com a anulação das colunas da matriz de pré-codificação. Isto se deve principlamente à simetria existente na matriz, na qual as normas das linhas são aproximadamente equivalentes às normas das colunas.
+
+\subsection{Aplicação de Condições Iniciais}
+\label{subsec:cond_iniciais}
+
+Similarmente ao desligamento de tons, também é favorável à redução do fator de normalização aplicar condições iniciais nas matrizes de ICI e ISI ($\mathbf{T}_\text{ICI}$ e $\mathbf{T}_\text{ISI}$). Ao saber antecipadamente que um determinado subcanal estará desligado, como é o caso dos subcanais nas frequências DC e Nyquist, pode-se arbitrariamente anular as linhas correspondentes aos indices dos subcanais desligados. Isto se deve à interpretação de que não haverá ISI e ICI nos subcanais desligados, já que estes não serão utilizados para carregar informação.
+
+Este procedimento tipicamente resulta na diminuição do fator de normalização. Por isso, este procedimento é adotado nas simulações apresentadas ao longo do trabalho (ver Seção \ref{sec:ici_isi_pre_sim}).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Normalização por coluna}
+\label{sec:normalizacao_per_tone}
+
+Sabe-se, da seção anterior, que a escolha do fator de normalização global da Equação~\ref{eq:fator_normalizacao} leva em consideração o pior caso, isto é, a máxima norma Euclidiana dentre as normas das linhas da matriz de pré-codificação, a qual corresponde ao subcanal cuja potência demandada para mitigar a distorção PCI é máxima. Assim, tal escolha para o fator de normalização escala a potência de todas os subcanais para satisfazer o limite de potência no pior subcanal, o que é indesejável. Por isso, na seção anterior sugeriu-se o desligamento dos subcanais que penalizam significativamente os demais subcanais, ao invés de utilizá-los e arcar com a perda de SNR devido a seus elevados fatores de normalização.
+
+Nesta seção, propõe-se um procedimento diferente para reduzir a penalização devido aos piores subcanais. Este consiste em normalizar a matriz de pré-codificação com fatores de normalização individuais (distintos) para cada coluna da matriz. Desta maneira, procura-se fazer com que todas as normas das linhas da matriz de pré-codificação se tornem unitárias, diferentemente da proposta da utilização do fator de normalização global (escalar), a qual torna unitária unicamente a norma da linha correspondente ao pior caso.
+
+Para tanto, idealmente escalaria-se cada uma das linhas da matriz por fatores individuais. Neste caso, a matriz de pré-codificação normalizada tornaria-se:
+\begin{align}
+\mathbf{W}' = \mathbf{\Upsilon} \mathbf{A^{-1} \Lambda} \nonumber
+\end{align}
+onde $\mathbf{\Upsilon} $ é uma matriz diagonal cujos elementos são os ganhos de escalamento de cada linha da matriz original.
+
+No entanto, esta operação não é permitida, já que o produto da matriz do canal real com a matriz de pré-codificação em questão resultaria em:
+\begin{align}
+\mathbf{AW'} = \mathbf{A} \mathbf{\Upsilon} \mathbf{A^{-1} \Lambda}\nonumber
+\end{align}
+onde a matriz $ \mathbf{\Upsilon}$ fica entre a matriz do canal real ($\mathbf{A}$) e a matriz do seu inverso ($\mathbf{A^{-1}}$), o que impede a multiplicação de $\mathbf{A}$ por $\mathbf{A^{-1}}$, isto é, impede que ocorra a equalização do tipo forçamento a zero \cite{proakis_dcomm}.
+
+Contudo, nota-se que é possível escalar as colunas da matriz de pré-codificação sem impedir que ocorra o forçamento a zero da matriz do canal real (similarmente à concepção utilizada em \cite{itutq4046}). Neste caso, a matriz de pré-codificação normalizada passa a ser:
+\begin{align}
+\mathbf{W'} = \mathbf{A^{-1} \Lambda} \mathbf{\Upsilon} 
+\end{align}
+onde $\mathbf{\Upsilon} $ é uma matriz diagonal cujos elementos são os os ganhos de escalamento de cada coluna da matriz de pré-codificação original, isto é:
+\begin{align}
+\mathbf{\Upsilon} = \left[\begin{array}{cccc}
+\alpha_0 & 0 & \cdots & 0\\
+0 & \alpha_1 & \cdots & 0\\
+\vdots & \cdots & \ddots & \vdots\\
+0 & \cdots & 0 & \alpha_{N-1}
+\end{array}\right]
+\end{align}
+onde $\alpha_k$ é o ganho de escalamento (inverso do fator de normalização) da $k$-ésima coluna.
+
+Para a escolha dos ganhos $\alpha_k$, observa-se, inicialmente, a norma Euclidiana das linhas da matriz de pré-codificação normalizada ($\mathbf{W'} = \mathbf{W \Upsilon}$), isto é, as linhas resultantes da multiplicação entre a matriz de pré-codificação não normalizada ($\mathbf{W}$) e a matriz de normalização por coluna $\mathbf{\Upsilon}$:
+\begin{align}
+\left\| \mathbf{w'_k}\right\| = \sum \limits_{m=0}^{N-1} \left| w_{k,m} \right|^2 \left| \alpha_m \right|^2
+\end{align}
+onde $\left\| \mathbf{w'_k}\right\|$ é a norma Euclidiana da $k$-ésima linha da matriz normalizada e $w_{k,m}$ é o elemento na $k$-ésima linha e $m$-ésima coluna da matriz de pré-codificação original.
+
+Assim, tendo em vista obter normas unitárias em todas as linhas da matriz normalizada, pode-se montar o seguinte sistema de equações:
+\begin{align}
+\begin{cases}
+\sum \limits_{m=0}^{N-1} \left| w_{0,m} \right|^2 \left| \alpha_m \right|^2 = 1\\
+\sum \limits_{m=0}^{N-1} \left| w_{1,m} \right|^2 \left| \alpha_m \right|^2 = 1\\
+\vdots\\
+\sum \limits_{m=0}^{N-1} \left| w_{N-1,m} \right|^2 \left| \alpha_m \right|^2 = 1
+\end{cases}
+\label{eq:sistemas_eqs_alphas}
+\end{align}
+
+Em notação matricial, pode-se escrever:
+\begin{align}
+\left[ 
+\begin{array}{cccc}
+\left| w_{0,0} \right|^2 & \left| w_{0,1} \right|^2 & \cdots & \left| w_{0,N-1} \right|^2\\
+\left| w_{1,0} \right|^2 & \left| w_{1,1} \right|^2 & \cdots & \left| w_{1,N-1} \right|^2\\
+\vdots & \vdots & \cdots & \vdots\\
+\left| w_{0,0} \right|^2 & \left| w_{0,1} \right|^2 & \cdots & \left| w_{0,N-1} \right|^2
+\end{array}
+\right]
+\left[ 
+\begin{array}{c}
+\left| \alpha_0 \right|^2\\
+\left| \alpha_1 \right|^2\\
+\vdots \\
+\left| \alpha_{N-1} \right|^2\\
+\end{array}
+\right]
+&=
+\left[ 
+\begin{array}{c}
+1\\
+1\\
+\vdots \\
+1
+\end{array}
+\right]\\
+\left| \mathbf{W} \right|^2
+\left[ 
+\begin{array}{c}
+\left| \alpha_0 \right|^2\\
+\left| \alpha_1 \right|^2\\
+\vdots \\
+\left| \alpha_{N-1} \right|^2\\
+\end{array}
+\right]
+&=
+\left[ 
+\begin{array}{c}
+1\\
+1\\
+\vdots \\
+1
+\end{array}
+\right]
+\end{align}
+onde o operador $\left| \cdot \right|^2$ denota o valor absoluto ao quadrado elemento a elemento.
+
+Assim, assumindo que a matriz $\left| \mathbf{W} \right|^2$ seja invertível, pode-se encontrar o vetor com o quadrado dos valores absolutos dos ganhos de escalamento desejados:
+\begin{align}
+\left[ 
+\begin{array}{c}
+\left| \alpha_0 \right|^2\\
+\left| \alpha_1 \right|^2\\
+\vdots \\
+\left| \alpha_{N-1} \right|^2\\
+\end{array}
+\right]
+ = \left( \left| \mathbf{W} \right|^2 \right)^{-1}
+\left[ 
+\begin{array}{c}
+1\\
+1\\
+\vdots \\
+1
+\end{array}
+\right]
+\label{eq:solucao_alpha_quadrado}
+\end{align}
+
+Portando, o valor absoluto do $k$-ésimo ganho de escalamento é dado por:
+\begin{align}
+\left| \alpha_k \right| = \sqrt{ \sum \limits_{m=0}^{N-1} t_{k,m}}
+\label{eq:abs_alpha_k_geral}
+\end{align}
+onde $t_{k,m}$ é o elemento na $k$-ésima linha e $m$-ésima coluna da matriz $\left( \left| \mathbf{W} \right|^2 \right)^{-1}$.
+
+Nota-se, na Equação~\ref{eq:abs_alpha_k_geral}, que a informação obtida a respeito do ganhos de escalamento se trata somente de seus valores absolutos, isto é, as fases dos ganhos $\alpha_k$ permanecem desconhecidas. Contudo, assumindo que os valores dos ganhos que satisfazem o objetivo de obter normas unitárias nas linhas da matriz de pré-codificação sejam números reais, pode-se afirmar que $\alpha_k$ é dado por:
+\begin{align}
+\alpha_k = \sqrt{ \sum \limits_{m=0}^{N-1} t_{k,m}}
+\label{eq:abs_alpha_k_real}
+\end{align}
+
+Deve-se notar que, caso algum dos valores de $\left| \alpha_k \right|$ dados pela Equação \ref{eq:abs_alpha_k_geral} for negativo, a solução passa a ser contraditória, já que o valor absoluto de um número real ou complexo deve ser positivo. Neste caso, conclui-se que o sistema linear não apresenta solução.
+
+No entanto, devido às características da matriz de pré-codificação, as soluções para os fatores de normalização são tipicamente existentes. Para compreender esta afirmativa, deve-se considerar a estrutura da matriz de pré-codificação, a qual é determinada pelas características do canal. Pode-se observar que, para os canais considerados neste trabalho (pares trançados utilizados em redes DSL), a matriz de pré-codificação $\mathbf{W}$ apresenta dominância diagonal, a qual torna-se ainda mais significativa após a operação $\left| \cdot \right|^2$ elemento a elemento. Logo, a magnitude dos valores na diagonal principal da matriz $\left| \mathbf{W} \right|^2$ é muito maior que a soma das magnitudes dos valores não-diagonais. Nestas codições, espera-se que a inversão da matriz $\left| \mathbf{W} \right|^2$ resulte em uma matriz também diagonal dominante, com elementos positivos na diagonal principal com magnitudes significativamente maiores que a soma das magnitudes dos valores não-diagonais.
+
+Portanto, pode-se concluir que no somatório da Equação~\ref{eq:abs_alpha_k_geral} os elementos diagonais irão sobressair e assegurar que o resultado ($\left| \alpha_k \right|$) seja positivo. Neste caso, a solução para o sistema da Equação~\ref{eq:sistemas_eqs_alphas} é existente e a normalização por coluna é eficaz. 
+
+É importante ressaltar que, ao utilizar a normalização por coluna, o símbolo recebido passa a ser dado por $\mathbf{\Lambda \Upsilon X}$, ao invés de $\mathbf{\Lambda X}$, como demonstrado abaixo:
+\begin{align}
+\mathbf{Y} = \mathbf{H\tilde{X}} = \mathbf{HW\Upsilon X} = \mathbf{H H^{-1} \Lambda \Upsilon  X} = \mathbf{\Lambda \Upsilon X}\nonumber
+\end{align}
+
+Assim, pode-se concluir que a normalização por coluna escala os ganhos dos subcanais, alterando suas razões sinal-ruído. Logo, considerando o ganho alterado do $k$-ésimo subcanal como $\alpha_k H_k$, a SNR deste subcanal passa a ser dada pela Equação~\ref{eq:snr_rx_symbol_pertone}. Esta deve ser levada em consideração nos algoritmos de carregamento de bits para que o sistema atinja a taxa de erro de bit (BER) desejada.
+\begin{align}
+\text{SNR}_k= \frac{\left| \alpha_k H_k \right|^2 \cdot s_k}{ \cdot \sigma_k^2 }
+\label{eq:snr_rx_symbol_pertone}
+\end{align}
+
+
+\subsection{Simulação}
+
+Nesta seção, considera-se as mesmas condições da simulação apresentada na Seção \ref{sec:ici_isi_pre_sim}. Isto é, considera-se o canal como um cabo par-trançado de alta qualidade (CAT5), com comprimento de $100$m~, cuja resposta em frequência é conhecida através de medição. Além disso, considera-se o ruído de fundo com densidade espectral de potência de $-135$~dBm/Hz e utiliza-se uma largura de banda de aproximadamente $106$~MHz (frequência de amostragem de aproximadamente $212$~MHz), espaçamento tonal ($\Delta f$) de $51.75$~kHz, $2048$ dimensões complexas ($\bar{N}=2048$ ou $N=4096$) e máxima potência de transmissão de saída de $4$~dBm. O algortimo de carregamento de bits é o algoritmo de Levin-Campello para maximização de taxa de bits, o qual adota um \textsl{gap} de SNR à capacidade de  $\Gamma = 10.75$ (inclui margem ao ruído de $6$~dB).
+
+Novamente, o desempenho do sistema com pré-codificação será comparado a um sistema DMT sem pré-codificação, com prefixos cíclicos de 20, 40, 80, 160 e 320 amostras, os quais correspondem a $0.48\%$, $0.98\%$, $1.95\%$, $3.91\%$ e $7.81\%$ de $N$, respectivamente.
+
+Inicialmente, apresenta-se na Figura \ref{fig:simulacao_ch11_data_rate_135dbm_noise_noNormalization} o desempenho do sistema ao utilizar somente o fator de normalização escalar da Equação \ref{eq:matriz_precoder_beta}, o qual é escolhido como a máxima norma Euclidiana dentre as normas das linhas da matriz de pré-codificação (Equação \ref{eq:fator_normalizacao}). Para este canal, em particular, o fator de normalização resultante é significativamente maior que a unidade (aproximadamente 1.6), o que implica em uma perda considerável de SNR nos subcanais e, consequentemente, grade degradação de desempenho. Nota-se, na Figura \ref{fig:simulacao_ch11_data_rate_135dbm_noise_noNormalization}, que o desempenho do sistema DMT com pré-codificação é o pior dentre os sistemas simulados.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=1\textwidth]{Figs/simulacao_ch11_data_rate_135dbm_noise_noNormalization}
+\caption{ Taxa de bits resultante de um sistema com fator de normalização escalar elevado ($\beta \approx 1.6$). \label{fig:simulacao_ch11_data_rate_135dbm_noise_noNormalization}}
+\end{figure}
+
+No entanto, ao utilizar a normalização por coluna, o desempenho do sistema com pré-codificação volta a ser superior. A Figura \ref{fig:normas_ericsson9_100m_100Mhz} apresenta as normas Euclidianas das linhas da matriz de pré-codificação original (Figura \ref{fig:norma_subcanal_ericsson9_100m_100Mhz}) e normalizada por coluna (Figura \ref{fig:norma_normalizada_subcanal_ericsson9_100m_100Mhz}). Nota-se que a normalização por coluna efetivamente torna a norma de cada linha unitária, isto é, mantém a potência de transmissão original (sem pré-codificação) em todos os subcanais.
+
+\begin{figure}[htbp]
+\centering
+	\begin{subfigure}[b]{0.49\textwidth}
+		\includegraphics[width=1\textwidth]{Figs/norma_subcanal_ericsson9_100m_100Mhz}
+		\caption{Original (não normalizada).}
+		\label{fig:norma_subcanal_ericsson9_100m_100Mhz}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.49\textwidth}
+		\centering
+		\includegraphics[width=1\textwidth]{Figs/norma_normalizada_subcanal_ericsson9_100m_100Mhz}
+		\caption{Normalizada por coluna.}
+		\label{fig:norma_normalizada_subcanal_ericsson9_100m_100Mhz}
+	\end{subfigure}
+\caption{ Norma Euclidiana das linhas da matriz de pré-codificação.}
+\label{fig:normas_ericsson9_100m_100Mhz}
+\end{figure}
+
+A Figura~\ref{fig:simulacao_ch11_data_rate_135dbm_noise} apresenta o desempenho do sistema com utilização da técnica de normalização por coluna. Nota-se que o desempenho do sistema com pré-codificação volta a ser significativamente superior ao desempenho obtido com sistemas DMT regulares e prefixos cíclicos.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=1\textwidth]{Figs/simulacao_ch11_data_rate_135dbm_noise}
+\caption{ Taxa de bits resultante de um sistema com utilização da normalização por coluna. \label{fig:simulacao_ch11_data_rate_135dbm_noise}}
+\end{figure}
+
+Similarmente ao caso da Seção~\ref{sec:ici_isi_pre_sim}, o desempenho apresentado na Figura~\ref{fig:simulacao_ch11_data_rate_135dbm_noise} também coincide para ambos os esquemas de pré-codificação, isto é, para o sistema que utiliza pré-codificação de ICI e ISI no transmissor (com matriz de pré-codificação de ICI normalizada por coluna) e para o sistema que utiliza pré-codificação de ICI no transmissor em conjunto com equalização de ISI no receptor.
+
+
+\section{Pré-codificação de Subsímbolos em Tons de Frequência Positiva} 
+\label{sec:hermitian_precoder}
+
+Até o momento, a implementação da matriz de pré-codificação dá origem a uma matriz complexa ($\mathbf{W}$) de dimensões $N \times N$, sendo $N$ o tamanho da FFT. No entanto, sabe-se que o símbolo DMT a ser precodificado ($\mathbf{X}$) apresenta simetria Hermitiana em torno dos subsímbolos correspondentes ao subcanal DC e subcanal da frequência de Nyquist ($X_0$ e $X_{N/2}$), isto é, $X_k = X_{(N-k)}^{*}$. Assim, pode-se afirmar que as informações carregadas pelos $N/2 -1$ subsímbolos dos tons correspondentes às frequências positivas da FFT e os $N/2 -1$ subsímbolos dos tons correspondentes às frequências negativas da FFT são reduntantes.
+
+Diante disto, é intuitivo esperar que se esteja desperdiçando esforço computacional ao calcular todos os $N-2$ subsímbolos\footnote{Ressalta-se novamente que, tipicamente, em sistemas DMT os subcanais DC e Nyquist não são utilizados.} do símbolo pré-codificado, já que apenas metade destes carregam informações ``novas'' (os demais são redundantes). Esta expectativa é ainda reforçada ao observar que o símbolo DMT pré-codificado ($\tilde{\mathbf{X}}$) também apresenta simetria Hermitiana, devido a simetria existente na matriz de pré-codificação (vide Apêndice \ref{app:cond_prec_matrix}). Neste sentido, espera-se poder pré-codificar somente as frequências positivas do símbolo DMT para reduzir a complexidade do algoritmo, como será provado na sequência.
+
+Sabe-se que o $k$-ésimo subsímbolo do vetor pré-codificado é dado pelo produto entre a $k$-ésima linha da matriz de pré-codificação e o vetor (símbolo) DMT original:
+\begin{align}
+\tilde{X}_k &= \sum \limits_{n=0}^{N - 1} w_{k,n}X_n \nonumber
+\end{align}
+
+No entanto, observa-se na matriz de pré-codificação que os últimos $N/2 -1$ elementos da $k$-ésima linha (da esquerda para a direita) equivalem ao conjugado dos $N/2 -1$ elementos entre as colunas de índice correspondente aos índices DC e Nyquist (elementos da coluna $1$ a $N/2 -1$) da linha $N-k$ (da direita para a esquerda). Esta simetria está ilustrada na Figura \ref{fig:simetria_matriz_prec} para $N=8$, na qual a parte real dos elementos da matriz está apresentada com cores diferentes (escala irrelevante). Nota-se, nesta figura, a equivalência entre as partes reais dos pares 1,2 e 3, destacados.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.7\textwidth]{Figs/simetria_matriz_prec}
+\caption{ Parte real dos elementos de uma matriz de pré-codificação $8 \times 8$, com destaque para a simetria existente na matriz.  \label{fig:simetria_matriz_prec}}
+\end{figure}
+
+Assim, assumindo que os subcanais DC e Nyquist não sejam usados para transmissão, pode-se expressar o $k$-ésimo subsímbolo pré-codificado como:
+\begin{align}
+\tilde{X}_k &=\sum \limits_{n=1}^{ \frac{N}{2} - 1} w_{k,n}X_n +\sum \limits_{n=\frac{N}{2} + 1 }^{N - 1} w_{k,n}X_n  \nonumber\\
+&= \sum \limits_{n=1}^{\frac{N}{2} - 1} w_{k,n}X_n + \left(\sum \limits_{n=1}^{\frac{N}{2} - 1} w_{N-k,n}X_n \right)^* \nonumber\\
+&= \sum \limits_{n=1}^{\frac{N}{2} - 1} w_{k,n}X_n + \sum \limits_{n=1}^{\frac{N}{2} - 1} w_{N-k,n}^* X_n^*
+\label{eq:two_summations_precoded_sub}
+\end{align}
+na qual nota-se que somente os subsímbolos nos tons de frequências positivas do símbolo DMT ($X_1$ a $X_{\frac{N}{2} -1}$) são utilizados, \textsl{i.e}, somente os subsímbolos do vetor $\mathbf{X_+}$, definido como:
+\begin{align}
+\mathbf{X_+} = \left[ \begin{array}{c}
+X_1\\X_2\\ \vdots \\ X_{\bar{N} -1}
+\end{array} \right]
+\end{align}
+onde $\bar{N}$ é o número de dimensões complexas ($\bar{N} = \frac{N}{2}$).
+
+Agrupando os dois somatórios da Equação~\ref{eq:two_summations_precoded_sub}, tem-se:
+\begin{align}
+\tilde{X}_k = \sum \limits_{n=1}^{\bar{N} - 1} \left(w_{k,n}X_n + w_{N-k,n}^* X_n^* \right)
+\end{align}
+
+Em seguida, expressando os subsímbolos através de suas partes reais e imaginárias ( \textsl{i.e.} expressando $X_k = p_k + jq_k$), tem-se:
+\begin{align}
+\tilde{X}_k &= \sum \limits_{n=1}^{\bar{N} - 1} \left[ w_{k,n} ( p_n + jq_n) + w_{N-k,n}^* ( p_n - jq_n) \right] \nonumber\\
+\tilde{X}_k &= \sum \limits_{n=1}^{\bar{N} - 1} \left[  \left( w_{k,n} + w_{N-k,n}^*\right)p_n   + j\left( w_{k,n} - w_{N-k,n}^*\right)q_n \right]
+\end{align}
+
+%%%% DC e Nyquist %%%%
+\begin{comment}
+Meanwhile, since the DC and Nyquist lines are hermitian symmetric line vectors, the DC and Nyquist subsymbols are given by:
+\begin{align}
+\tilde{X}_0 &= 2 \Re\left\{ \sum \limits_{n=1}^{\bar{N} - 1} W_{0,n}X_0 \right\}\\
+\tilde{X}_{\frac{N}{2}} &= 2 \Re\left\{ \sum \limits_{n=1}^{\bar{N} - 1} W_{\frac{N}{2},n}X_{\frac{N}{2}} \right\}
+\end{align}
+
+
+Substituting the fact that the real part of the product between complex numbers is the product of the real parts minus the product of the imaginary parts,  while the real part of a sum is the sum of the real parts, yields:
+\begin{align}
+\tilde{X}_0 &= 2\sum \limits_{n=1}^{N/2 - 1}  \Re\left\{ W_{0,n}X_0 \right\} \nonumber\\
+\tilde{X}_0 &= 2\sum \limits_{n=1}^{N/2 - 1}  \left( \Re\{ W_{0,n} \} \Re\{X_0\} - \Im\{W_{0,n} \}\Im\{X_0\} \right)\nonumber\\
+\tilde{X}_0 &= 2\sum \limits_{n=1}^{N/2 - 1}  \left( \Re\{ W_{0,n} \} p_0 - \Im\{W_{0,n} \} q_0 \right)
+\end{align}
+
+Similarly, the Nyquist subsymbol is given by:
+\begin{align}
+\tilde{X}_{\frac{N}{2}} &= 2\sum \limits_{n=1}^{N/2 - 1}  \left( \Re\{ W_{{\frac{N}{2}},n} \} p_{\frac{N}{2}} - \Im\{W_{{\frac{N}{2}},n} \} q_{\frac{N}{2}} \right)
+\end{align}
+\end{comment}
+
+%%%%%%%%%%%%%
+%%%%%%%%%%%%%
+
+Portanto, pode-se construir duas matrizes de pré-codificação ($\mathbf{W_{+_1}}$ e $\mathbf{W_{+_2}}$) com dimensões $(\bar{N} + 1) \times (\bar{N} -1)$, tal que o vetor com os subsímbolos dos tons positivos do símbolo pré-codificado ($\mathbf{\tilde{X}}_+$) seja dado por:
+\begin{align}
+\mathbf{\tilde{X}}_+ = \mathbf{W_{+_1}} \Re\left\{\mathbf{X_+}\right\} + \mathbf{W_{+_2}} \Im\left\{ \mathbf{X_+} \right\}
+\label{eq:precodificacao_positiva}
+\end{align}
+onde, $\mathbf{W_{+_1}}$ e  $\mathbf{W_{+_2}}$ são matrizes definidas como:
+\begin{align}
+\mathbf{W_{+1}} = \left[ 
+\begin{array}{ccc}
+\left( W_{1,1} + W_{N-1,1}^*\right) & \cdots & \left( W_{1,\bar{N} -1} + W_{N-1,N/2-1}^*\right)\\
+\left( W_{2,1} + W_{N-2,1}^*\right) & \cdots & \left( W_{2,\bar{N}-1} + W_{N-2,\bar{N} -1}^*\right)\\
+\vdots & \cdots & \vdots\\
+\left( W_{\bar{N} -1,1} + W_{N-\left(\bar{N} -1\right),1}^*\right) & \cdots & \left( W_{\bar{N} -1,\bar{N} -1} + W_{N-\left(\bar{N} -1\right),\bar{N}-1}^*\right)\\
+\end{array}	
+\right]
+\end{align}
+
+\begin{align}
+\mathbf{W_{+2}} = j\left[ 
+\begin{array}{ccccc}
+\left( W_{1,1} - W_{N-1,1}^*\right) & \cdots & \left( W_{1,\bar{N} -1} - W_{N-1,\bar{N} -1}^*\right)\\
+\left( W_{2,1} - W_{N-2,1}^*\right) & \cdots & \left( W_{2,\bar{N} -1} - W_{N-2,\bar{N}-1}^*\right)\\
+\vdots & \cdots & \vdots\\
+\left( W_{\bar{N} -1,1} - W_{N-\left(\bar{N} -1\right),1}^*\right) & \cdots & \left( W_{\bar{N} -1,\bar{N} -1} - W_{N-\left(\bar{N} -1\right),\bar{N} -1}^*\right)\\
+\end{array}	
+\right]
+\end{align}
+
+Como a matriz de ISI no domínio da frequêcia ($\mathbf{ T_\text{ISI}}$), a qual é utilizada na equalização de ISI no receptor (ver Seção~\ref{sec:isi_equalization}), apresenta a mesma simetria da matriz de pré-codificação, assim como a matriz de pré-codificação de ISI ($\mathbf{W}_2$), utilizada na Equação~\ref{eq:precoder_ici_isi}, estas também podem ser divididas em duas matrizes de dimensões $(\bar{N} + 1) \times (\bar{N} -1)$. Portanto, através desta método, o esforço computacional é reduzido para todas as operações envolvidas no esquema de mitigação, a saber, a pré-codificação de ICI e equalização de ISI ou a pré-codificação conjunta de ICI e ISI.
+
+\subsection{Análise da complexidade}
+
+Na Seção \ref{sec:complexidade_precodificacao}, demonstrou-se que a pré-codificação a partir da matriz completa $\mathbf{W}$ requer um total de $4N^2$ multiplicações escalares reais e  $4N^2 - 2N$ adições escalares reais. 
+
+Por outro lado, sabendo que a multiplicação de um escalar real por um escalar complexo requer 2 multiplicações escalares reais, cada uma das parcelas da pré-codificação da Equação~\ref{eq:precodificacao_positiva} requer $2(\frac{N}{2} -1)^2$ multiplicações escalares reais e $(\frac{N}{2} -1)(\frac{N}{2} -2)$ adições escalares complexas, correspondentes a $2(\frac{N}{2} -1)(\frac{N}{2} -2)$ adições escalares reais. Além destas, o algoritmo requer $(\frac{N}{2} -1)$ adições escalares complexas para somar as parcelas da Equação~\ref{eq:precodificacao_positiva}, o que corresponde a $2(\frac{N}{2} -1)$  adições escalares reais.
+
+Portanto, conclui-se que a Equação~\ref{eq:precodificacao_positiva} requer um total de $N^2 - 4N + 4$ multiplicações escalares reais e $N^2 - 5N + 6$ adições escalares reais. A Figura \ref{fig:comp_operacoes_esc_reais} apresenta a porcentagem de multipicações e adições escalares reais requeridas para o cálculo do símbolo pré-codificado da Equação~\ref{eq:precodificacao_positiva} em comparação à pré-codificação original ($\tilde{\mathbf{X}} = \mathbf{WX}$). Nota-se, nesta figura, que ao pré-codificar somente os subsímbolos dos tons positivos, para valores de $N$ acima de 256\footnote{A tecnologia G.fast utiliza $N=4096$ e $N=8192$.} tem-se um esforço computacional equivalente a aproximadamente $25 \% $ do esforço computacional original.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.7\textwidth]{Figs/comp_operacoes_esc_reais}
+\caption{ Percentual de operações de adição e multiplicação escalar real necessárias para a pré-codificação de tons positivos em relação à pré-codificação original.  \label{fig:comp_operacoes_esc_reais}}
+\end{figure}
+
+\section{Pré-codificação no Domínio do Tempo}
+\label{sec:prec_time_domain}
+
+Uma método alternativo para providenciar a redução da complexidade de processamento, demandada pela operação de pré-codificação, é escolher a matriz de pré-codificação como:
+\begin{align}
+\mathbf{W} &= \mathbf{Q^H A^{-1} \Lambda Q}
+\label{eq:matrix_prec_time_domain}
+\end{align}
+ 
+Neste caso, a entrada do pré-codificador passa a ser o símbolo DMT no domínio do tempo (a IFFT do símbolo DMT), enquanto a saída passa a ser diretamente o símbolo no domínio do tempo a ser transmitido. Isto se deve ao fato de que a matriz mais a direita da Equação~\ref{eq:matrix_prec_time_domain} ($\mathbf{Q}$) transforma o símbolo de entrada em sua transformada discreta de Fourier, as matrizes intermediárias ($A^{-1} \Lambda$) pré-codificam o símbolo transformado (segundo a definição da Equação~\ref{eq:prec_no_norm}) e a matriz mais a esquerda ($Q^H$) transforma o símbolo pré-codificado novamente para o domínio do tempo. 
+
+A Figura \ref{fig:cadeia_dmt_prec_tempo} apresenta a cadeia DMT correspondente à esta concepção de pré-codificação no domínio do tempo. Nota-se a inversão da ordem entre a IFFT e o pré-codificador (em comparação a cadeia DMT da Figura \ref{fig:cadeia_dmt_prec}) e a eliminação dos blocos para adição e remoção do prefixo cíclico, a qual é válida ao supor que este não seja utilizado.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.8\textwidth]{./figs/cadeia_dmt_precoder_tempo}
+\caption{Cadeia DMT com a inclusção do pré-codificador no domínio do tempo.
+\label{fig:cadeia_dmt_prec_tempo}}
+\end{figure}
+
+A vantagem oferecida por esse esquema de pré-codificação parte da observação da matriz $\mathbf{W}$ da Equação~\ref{eq:matrix_prec_time_domain}. Esta consiste em uma matriz identidade, com exceção de $L - n_0$ colunas, número que corresponde ao número de amostras afetadas por distorção PCI no domínio do tempo\footnote{Vale relembrar que, diferentemente do domínio do tempo, no domínio da frequência todos os subcanais são afetados pela distorção PCI.}. Além disso, as $L - n_0$ colunas nas quais há elementos não nulos fora da diagonal principal são colunas reais. Portanto, é possível reduzir a complexidade não somente pelo fato de a matriz de pré-codificação ser esparsa, mas também pelo fato de ser uma matriz real.
+
+Assim, ao invés de multiplicar os símbolos DMT no domínio do tempo por $\mathbf{W}$, pode-se obter o símbolo pré-codificado no domínio do tempo ($\mathbf{\tilde{x}}$) através da seguinte expressão:
+
+\begin{align}
+\mathbf{\tilde{x}} = \mathbf{x'} + \tilde{\mathbf{W}} \left[ \begin{array}{c}
+x_{N - (L - n_0)}\\
+\vdots\\
+x_{N-1}
+\end{array} \right]
+\label{eq:precoded_sym_time_domain}
+\end{align}
+onde $\mathbf{x}'$ é o símbolo DMT no domínio do tempo com as últimas $L-n_0$ amostras anuladas (iguladas a zero) e $\tilde{\mathbf{W}}$ é a matriz real de dimensões $\left( L - n_0 \right) \times \left( L - n_0 \right)$ com as colunas não nulas da matriz pré-codificadora da Equação~\ref{eq:matrix_prec_time_domain}.
+
+\subsection{Análise da complexidade}
+
+O símbolo pré-codificado no domínio do tempo da Equação~\ref{eq:precoded_sym_time_domain} requer a multiplicação de uma matriz real $\left( L - n_0 \right) \times \left( L - n_0 \right)$ por um vetor coluna de $\left( L - n_0 \right)$ amostras, a qual demanda  $\left( L - n_0 \right)^2$ multiplicações escalares reais e  $\left( L - n_0 \right)\left( L - n_0 -1\right)$ adições escalares reais. Além disso, necessita-se de $N$ adições escalares reais adicionais para somar as parcelas da equação, já que estas consistem em vetores coluna reais de $N$ amostras.
+
+No total, para realizar a pré-codificação no domínio do tempo da Equação~\ref{eq:precoded_sym_time_domain}, são necessárias as quantidades de operações de adição e multiplicação escalar real sumarizadas na Tabela~\ref{tab:time_domain_precoder_complexity}.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{ p{5cm} | p{5 cm} }
+\hline
+\hline
+Multiplicações escalares reais & $\left(L -n_0\right)^2$\\
+\hline
+Adições escalares reais & $L^2 - \left(2n_0 +1\right)L -n_0^2 -n_0 + N$\\
+\hline
+\end{tabular}
+\caption{Número de adições e multiplicações escalares reais necessárias à pré-codificação no domínio do tempo. \label{tab:time_domain_precoder_complexity}}
+\end{table}
+
+Nota-se, na Tabela~\ref{tab:time_domain_precoder_complexity}, que a quantidade de operações necessárias à pré-codificação no domínio do tempo é fortemente determinada pelo comprimento da resposta impulsiva do canal, ao invés de $N$. Ainda que estes estejam relacionados, o valor de $L$ pode ser deliberadamente reduzido ao considerar a resposta impulsiva do canal somente até enquanto suas amostras estiverem com amplitude acima de um limiar. Neste caso, pode-se fazer $L$ significativamente menor que $N$ e reduzir o número de operações da pré-codificação.
+
+A Figura~\ref{fig:comp_operacoes_esc_reais_timedomain} ilustra o percentual de operações de multiplicação e adição escalar complexa necessárias à pré-codificação no domínio do tempo, em relação quantidade de operações necessárias à pré-codificação original ($\tilde{\mathbf{X}} = \mathbf{WX}$). Nesta figura, assume-se que $L$ seja equivalente a $60\%$ de $N$ e $n_0$ equivalha a $0.6\%$ de $N$. Para efeito de comparação, apresenta-se na Figura~ \ref{fig:comp_operacoes_esc_reais_td_worst} o mesmo percentual, mas assumindo o pior caso para o número de operações da pré-codificação no domínio do tempo, a saber, $L=N-1$ e $n_0 =0$. Neste caso, nota-se que o percentual aproxima-se de $25\%$, similarmente à pré-codificação de tons positivos.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{Figs/comp_operacoes_esc_reais_timedomain}
+\caption{ Percentual de operações de adição e multiplicação escalar real necessárias para a pré-codificação no domínio do tempo em relação à pré-codificação original.  \label{fig:comp_operacoes_esc_reais_timedomain}}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{Figs/comp_operacoes_esc_reais_td_worst}
+\caption{ Percentual de operações de adição e multiplicação escalar real necessárias para o pior caso da pré-codificação no domínio do tempo em relação à pré-codificação original.  \label{fig:comp_operacoes_esc_reais_td_worst}}
+\end{figure}
+
+
+
+
+

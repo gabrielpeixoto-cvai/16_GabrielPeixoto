@@ -1,0 +1,66 @@
+\chapter{Condições para a matriz de pré-codificação}
+\label{app:cond_prec_matrix}
+
+A fim de evitar que a IDFT do símbolo pré-codificado resulte em números complexos, a simetria complexa conjugada (simetria Hermitiana) do símbolo transmitido no domínio da frequência deve ser mantida na operação de pré-codificação (Equação \ref{eq:app_precodificacao}). Portanto, é importante observar as condições suficientes para que a matriz de pré-codificação ($\mathbf{W}$) resulte em símbolos pré-codificados ($\mathbf{\tilde{X}}$) com simetria Hermitiana.
+\begin{align}
+\mathbf{\tilde{X}} = \mathbf{W}\mathbf{X}
+\label{eq:app_precodificacao}
+\end{align}
+
+Primeiramente, as linhas e colunas correspondentes aos índices do subcanal DC ($k=0$) e subcanal da frequência de Nyquist ($k=N/2$) podem ser não-nulas, na condição de que sejam vetores (linha ou coluna) com simetria Hermitiana, seus primeiros elementos e seus elementos no índice $N/2$ sejam números reais, assim como deve ser para assegurar que um vetor DFT resulte em um vetor IDFT real. A mesma condição vale para a diagonal principal da matriz.
+
+Além disso, deve existir uma correspondência específica entre a submatriz de dimensões $(N/2 -1)\times(N/2-1)$ superior esquerda e a submatriz $(N/2 -1)\times(N/2-1)$ inferior direita, bem como entre a submatriz $(N/2 -1)\times(N/2-1)$ superior direita e a submatriz $(N/2 -1)\times(N/2-1)$ inferior esquerda. As submatrizes correspondentes devem ser equivalentes quando uma delas for espelhada verticalmente, horizontalmente e conjugada. 
+
+Estas condições podem ser observadas na Figura \ref{fig:simetria_matriz_prec_apend}, a qual apresenta em escala colorida a parte real de uma matriz de pré-codificação de dimensões $8 \times 8$. Nota-se, nesta matriz, que as linhas 1 e 5, as colunas 1 e 5 e a diagonal principal apresentam simetria Hermitiana. Além disso a submatriz $3 \times 3$, localizada da coluna 2 à 4 e da linha 2 à 4, equivale\footnote{É importante notar que, como somente a parte real está apresentada no gráfico de cores, as submatrizes são equivalentes. Na realidade, o espelhamento vertical e horizontal de uma das submatrizes resulta em um par de submatrizes complexas conjugadas (elemento a elemento).} ao espelhamento vertical e horizontal da submatriz $3 \times 3$, existente da coluna 6 à coluna 8 e da linha 6 à linha 8\footnote{É válido notar que a figura apresenta a numeração das linhas e colunas com início em 1, diferentemente das formulações apresentadas na sequência.}. O mesmo vale para as submatrizes $3 \times 3$ superior direita e inferior esquerda.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.8\textwidth]{Figs/simetria_matriz_prec_apend}
+\caption{ Parte real dos elementos de uma matriz de pré-codificação $8 \times 8$ em escala colorida.  \label{fig:simetria_matriz_prec_apend}}
+\end{figure}
+
+Assim, considerando o elemento da $k$-ésima linha e $m$-ésima coluna da matriz de pré-codificação como $w_{k,n}$, é possível afirmar que:
+\begin{align}
+w_{k,m} = w^*_{N-k, N-m} \quad \quad \forall \quad k,m  \neq 0 \quad \text{e} \quad k,m  \neq \frac{N}{2}
+\end{align}
+
+Todas estas condições são satisfeitas quando as matrizes DFT e IDFT ($\mathbf{Q}$ e $\mathbf{Q^H}$, respectivamente) multiplicam uma matriz real qualquer ($\mathbf{J}$) pela esquerda e pela direita, respectivamente, isto é, quando a matriz pré-codificadora é da forma:
+\begin{align}
+\mathbf{W} &= \mathbf{\left(Q J Q^{\text{H}}\right)}
+\label{eq:cond_matriz_prec}
+\end{align}
+
+Este, efetivamente, é o caso para a matriz pré-codificadora definida na Equação \ref{eq:prec_no_norm}, repetida abaixo:
+\begin{align}
+\mathbf{W} =  \mathbf{A}^{-1}\mathbf{\Lambda}
+\tag{\ref{eq:prec_no_norm}}
+\end{align}
+
+Substituindo $\mathbf{A} = \left( \mathbf{\Lambda} + \mathbf{ T_\text{ICI}} \right)$ e as definições de $\mathbf{\Lambda}$ e $\mathbf{T_\text{ICI}}$ das Equações \ref{eq:lambda_definition} e \ref{eq:tici_definition}, respectivamente, obtém-se:
+\begin{align}
+\mathbf{W} &=  \mathbf{ \left( Q\tilde{\mathbf{H}}Q^H\mathbf{\Theta}_{n_0} + Q \mathbf{ H_\text{ICI}} Q^\text{H} \mathbf{\Theta_{n_0}} \right)}^{-1}\mathbf{\Lambda} \nonumber\\
+&= \mathbf{ \left[ Q \left( \mathbf{ \tilde{\mathbf{H}} + H_\text{ICI}} \right)Q^\text{H} \mathbf{\Theta_{n_0}} \right]}^{-1}\mathbf{\Lambda} \nonumber\\
+&= \mathbf{\Theta_{n_0}}^{-1} \left(\mathbf{Q^H}\right)^{-1} \left( \tilde{\mathbf{H}} + \mathbf{ H_\text{ICI}} \right)^{-1} \mathbf{Q}^{-1} \mathbf{\Lambda} \nonumber
+\end{align}
+Como $\mathbf{Q^{H}} = \mathbf{Q}^{-1}$. A equação torna-se:
+\begin{align}
+\mathbf{W} &= \mathbf{\Theta_{n_0}}^{-1} \left(\mathbf{Q^{-1}}\right)^{\text{H}} \left( \mathbf{ H_\text{ICI}} + \tilde{\mathbf{H}} \right)^{-1} \mathbf{Q}^{-1} \mathbf{\Lambda} \nonumber\\
+&= \mathbf{\Theta_{n_0}}^{-1} \mathbf{Q} \left( \mathbf{ H_\text{ICI}} + \tilde{\mathbf{H}} \right)^{-1} \mathbf{Q}^{\text{H}} \mathbf{\Lambda} \nonumber
+\end{align}
+
+Finalmente, como a matriz $\left( \mathbf{ H_\text{ICI}} + \tilde{\mathbf{H}} \right)$ é real e invertível, o produto $\mathbf{Q} \left( \mathbf{ H_\text{ICI}} + \tilde{\mathbf{H}} \right)^{-1} \mathbf{Q}^{\text{H}}$ corresponde exatamente à estrutura descrita na Equação \ref{eq:cond_matriz_prec}. Além disso, como as matrizes $\mathbf{\Theta_{n_0}}$ e $\mathbf{\Lambda}$ são matrizes diagonais com simetria hermitiana em seus elementos da diagonal, estas não alteram a simetria existente no produto $\mathbf{Q} \left( \mathbf{ H_\text{ICI}} + \tilde{\mathbf{H}} \right)^{-1} \mathbf{Q}^{\text{H}}$, o que leva a conclusão de que a matriz pré-codificadora adotada satisfaz as condições para manutenção da simetria Hermitiana.
+
+
+É válido notar ainda que a inversa da matriz de pré-codificação ($\mathbf{W}^{-1}$) também apresenta as condições suficientes para manter a simetria Hermitiana. Isto se deve ao fato de que:
+\begin{align}
+\mathbf{W}^{-1} &= \mathbf{\left(Q J Q^{H}\right)}^{-1}\\
+ &= \mathbf{\left(Q^{H}\right)}^{-1} \mathbf{J}^{-1} \mathbf{Q}^{-1} 
+\end{align}
+
+Novamente, como $\mathbf{Q^{H}} = \mathbf{Q}^{-1}$, a equação torna-se:
+\begin{align}
+\mathbf{W}^{-1} &= \left(\mathbf{Q}^{-1}\right)^{-1} \mathbf{J}^{-1} \mathbf{Q^{H}}\\
+&= \mathbf{Q} \mathbf{J}^{-1} \mathbf{Q^{H}}
+\end{align}
+
+Finalmente, como a matriz $\mathbf{J}^{-1}$ é real e invertível, $\mathbf{W}^{-1}$ também apresenta as condições suficientes para manter a simetria Hermitiana ao transformar linearmente um vetor com esta simetria.

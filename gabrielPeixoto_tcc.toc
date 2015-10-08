@@ -1,0 +1,9 @@
+\select@language {brazil}
+\contentsline {chapter}{Dedicat\'oria}{iv}{figure.caption.2}
+\contentsline {chapter}{Agradecimentos}{v}{chapter*.3}
+\contentsline {chapter}{Lista de Figuras}{ix}{chapter*.6}
+\contentsline {chapter}{Lista de Tabelas}{x}{chapter*.7}
+\contentsline {chapter}{Sum\'ario}{xi}{chapter*.8}
+\contentsline {chapter}{Resumo}{xii}{chapter*.9}
+\contentsline {chapter}{Abstract}{xiii}{chapter*.10}
+\contentsline {chapter}{Refer\^encias Bibliogr\'aficas}{1}{chapter*.11}

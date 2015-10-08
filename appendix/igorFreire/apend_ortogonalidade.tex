@@ -1,0 +1,67 @@
+\chapter{Nota sobre DFT e Quebra de Ortogonalidade}
+\label{app:ortogonalidade}
+
+A transformada discreta de Fourier (DFT) de um número finito de amostras descreve o espectro de frequências correspondente ao sinal periódico cujo periódo corresponde a estas amostras (extensão periódica). Este espectro é obtido corretamente quando o sinal amostrado for de banda limitada e as amostras forem adquiridas a uma taxa superior à taxa de amostragem de Nyquist (o dobro da frequência mais elevada contida no sinal amostrado), por um período correspondente a um número inteiro de períodos do sinal, de modo a evitar o fenômeno conhecido como vazamento (\emph{leakage}) \cite{dspambardar}. 
+
+Analogamente, os sinais transformados pela transformada discreta de Fourier inversa (IDFT) são implicitamente periódicos. Assim, a IDFT de $N$ pontos resulta em um sinal de $N$ amostras correspondente a um período da extensão periódica do sinal cujo espectro é representado pela DFT. Esta sequência resultante da IDFT pode ser interpretada como o somatório de subportadoras (conforme visto na Seção \ref{sec:ortogonalidade_devido_idft}), cada uma em um subcanal do espectro (de largura de banda $\Delta f = f_s/N$), como pode ser visto em sua definição:
+\begin{align}
+x[n] = \sum \limits_{k=0}^{N-1} X_k \phi_k[n]
+\end{align}
+onde $\phi_k[n]$ é a sequência correspondente a subportadora do $k$-ésimo subcanal, dada por:
+\begin{align}
+\phi_k[n] = \frac{1}{\sqrt{N}}e^{j2\pi n k/N};
+\end{align}
+
+Nota-se que estas subportadoras apresentam frequências dadas por:
+\begin{align}
+f_k&=k\frac{f_s}{N} \quad 0 \leq k \leq N - 1 
+\label{eq:ortho_freq}
+\end{align}
+onde $f_s$ é a frequência de amostragem.
+
+Portanto, estas subportadoras apresentam frequências múltiplas de uma frequência fundamental ($f_s/N$), o que implica que são sequências ortogonais. Além disso, devido ao fato de possuirem frequências multiplas inteiras de uma frequência fundamental, pode-se afirmar que todas as senóides geradas pela operação de IFFT (resultantes da soma de pares de subportadoras) contêm um número inteiro de períodos em um quadro de $N$ amostras, conforme o esperado devido à periodicidade implícita.
+
+Ao enviar uma sequência resultante de uma operação de IDFT por um canal de transmissão de um sistema multiportadora, com resposta impulsiva $h[n]$, a sequência recebida pode ser expressa como o somatório da convolução independente de cada subportadora (escalada pelo ganho da DFT no subcanal) com a resposta impulsiva do canal, isto é:
+\begin{align}
+y[n] = \sum \limits_{k=0}^{N-1} (X_k \phi_k[n]) * h[n]
+\label{eq:conv_subportadoras_rx_sequence}
+\end{align}
+onde o operador $*$ denota convolução linear.
+
+Ao ser recebida, a sequência $y[n]$ é detectada a partir de um instante definido pela sincronização (ver Seção \ref{subsec:sincronizacao}), o qual marca o início de um quadro de $N + \nu$ amostras a ser ``recortado'' pelo receptor. Este quadro consiste no símbolo recebido devido à transmissão da sequência resultante da IDFT, com o adicional de $\nu$ amostras utilizadas para garantir que a sequência recebida equivalha à uma convolução circular (conforme Seção \ref{sec:prefixo_ciclico_teorico}). Na sequência, estas $\nu$ amostras do quadro são eliminadas, resultando em um quadro de $N$ amostras que idealmente deve conter a convolução circular da IDFT com a resposta impulsiva do canal (RIC).
+
+No entanto, sabe-se que quando o prefixo cíclico anexado ao símbolo transmitido for insuficiente, as primeiras $L - \nu - n_0$ amostras do quadro de $N$ amostras detectado pelo receptor serão afetadas por distorção PCI, conforme explicado na Seção \ref{sec:calculo_distorcao}. Portanto, pode-se dizer que as primeiras $L - \nu - n_0$ amostras do quadro de $N$ amostras recebidas no receptor falham na equivalência com o resultado de uma convolução periódica, enquanto as amostras restantes do quadro não.
+
+Esta interpretação é fundamental para o entendimento do fenômeno de quebra de ortogonalidade entre os subcanais de um sistema DMT com prefixo cíclico insuficiente. Para estes sistemas, como o quadro de $N$ amostras da sequência recebida falha em equivaler ao resultado de uma convolução circular nas suas primeiras $L - \nu - n_0$ amostras, e devido a sequência recebida poder ser interpretada como o somatório das sequências resultantes da convolução independente de cada subportadora com o canal, pode-se também afirmar que cada uma das convoluções do somatório da Equação \ref{eq:conv_subportadoras_rx_sequence} apresenta distorção PCI nas suas primeiras $L - \nu - n_0$ amostras, isto é, falha em equivaler ao resultado de uma convolução circular.
+
+Assim, como cada uma das sequências de cada subcanal é distorcida nas primeiras $L - \nu - n_0$, todas estas apresentam o fenômeno de vazamento. A distorção nestas amostras altera o período do sinal, o que implica que suas extensões periódicas passam a representar sinais diferentes, não mais senóides. Logo, cada uma destas sequências (convoluções independentes da Equação \ref{eq:conv_subportadoras_rx_sequence}) deixa de apresentar espectro impulsivo (espectro de senóide) e passa a apresentar espectro com vazamento para outras frequências (\emph{crosstalk}). 
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.76\textwidth]{Figs/apend_espectro_original}
+\caption{ Vetor DFT aleatório (subsímbolos nas frequências DC e Nyquist nulos).  \label{fig:apend_espectro_original}}
+\end{figure}
+
+Para ilustrar esse conceito, apresenta-se na Figura \ref{fig:apend_espectro_original} o resultado da DFT de um símbolo aleatório recebido (quadro de amostras recortado no receptor), a qual equivale à DFT da convolução periódica, isto é, equivale ao produto elemento a elemento da DFT do símbolo transmitido (cujo $k$-ésimo elemento é $X_k$) e da DFT do canal (cujo $k$-ésimo elemento é $H_k$). Na sequência, apresenta-se na Figura \ref{fig:apend_espectro_k3_naoDistorcido} o resultado da DFT do sinal carregado pela subportadora no subcanal $3$ ($k =3$), para o caso em que o prefixo cíclico é suficiente. Nota-se, nesta figura, que a DFT apresenta apenas um impulso, localizado exatamente no subcanal $k=3$ e cuja magnitude equivale à magnitude ideal ($H_k \cdot X_k$) resultante de uma convolução periódica (equivalhe ao valor em $k$=3 na Figura \ref{fig:apend_espectro_original}). Em contraste, apresenta-se na Figura \ref{fig:apend_espectro_k3_distorcido} o resultado da DFT do sinal carregado pela subportadora no subcanal $3$, para o caso em que o prefixo cíclico é insuficiente. Nota-se, neste caso, que o espectro resultante do sinal carregado pela subportadora em $k=3$ vaza para outras subportadoras, isto é, ocorre $\emph{crosstalk}$.
+
+\begin{figure}[htbp]
+\centering
+	\begin{subfigure}[b]{0.75\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{Figs/apend_espectro_k3_no_ICPdistortion}
+		\caption{ DFT da subportadora no subcanal $k=3$  										\label{fig:apend_espectro_k3_naoDistorcido}}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.75\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{Figs/apend_espectro_k3_distorcido}
+		\caption{ DFT da subportadora no subcanal $k=3$ com vazamento  										\label{fig:apend_espectro_k3_distorcido}}
+	\end{subfigure}
+\end{figure}
+
+
+
+Finalmente, como as sequências resultantes das convoluções independentes da Equação \ref{eq:conv_subportadoras_rx_sequence} (sequências devido a cada uma das subportadoras do sistema) deixam de possuir frequências multiplas de uma frequência fundamental (deixam de ter frequências dadas pela Equação \ref{eq:ortho_freq}), estas deixam de ser ortogonais entre si.
+
+
+
+

@@ -1,0 +1,58 @@
+%% Packages used for the TCC
+
+%\usepackage{booktabs}
+
+%%%% Definitions and New commnads %%%%
+
+\newcommand{\sen}{\operatorname{sen}}
+\newcommand{\mbeq}{\overset{!}{=}}
+
+\renewcommand\Re{\operatorname{Re}}
+\renewcommand\Im{\operatorname{Im}}
+
+%%%% New control sequences %%%%
+
+\newcommand{\redeq}[1] {\textcolor{red}{#1}}
+\newcommand{\blueeq}[1] {\textcolor{blue}{#1}}
+\newcommand{\att}[1] {\textcolor{red}{#1}}
+% Used Packages:
+\usepackage{tikz}
+\usepackage{float}
+\usepackage{steinmetz}
+\usetikzlibrary{arrows,shapes,shapes.multipart}
+\usepackage[brazil]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[latin1]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{enumitem} % To adjust lists
+\usepackage{verbatim} % Multi-line comments
+\usepackage{mathabx} % Package that contains the circular convolution symbol
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{units}
+
+%\usepackage[backend=bibtex8]{biblatex}
+
+\ifpdf
+
+\ifdefined\hyperref
+\else
+\usepackage[pdftex,colorlinks]{hyperref}
+\fi
+
+\hypersetup{%
+pdftitle={Some title},
+pdfauthor={Your name - LaPS - UFPA},
+pdfkeywords={DSP,Signal},
+pdfstartview={FitH}, %% <--
+urlcolor=black,
+%linkcolor=blue,
+linkcolor=black,
+%citecolor=red,
+citecolor=black,
+}
+
+% Ensiar o Latex a separar silabas
+\hyphenation{DMT En-ge-nhei-ro}

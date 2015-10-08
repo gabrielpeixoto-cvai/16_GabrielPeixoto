@@ -1,0 +1,379 @@
+\chapter{Mitigação de Distorção PCI}
+\label{sec:mitigacao_pci}
+
+\section{Introdução}
+
+Na seção anterior, apresentou-se o fato de que, devido a um prefixo cíclico insuficiente, surge distorção na saída do canal na forma de interferência inter-simbólica e inter-portadora, as quais foram denominadas como distorção por prefixo cíclico insuficiente (distorção PCI). Esta distorção pode impactar severamente no desempenho de um sistema DMT, motivo pelo qual técnicas que promovam a sua mitigação são extensamente abordadas na literatura.
+
+A grande relação envolvida na mitigação de distorção PCI em sistemas DMT é o compromisso entre o comprimento do prefixo cíclico e a perda que este provoca na taxa de informação. Sabe-se que, para evitar a ocorrência de distorção PCI, o prefixo cíclico deve ser suficiente para cobrir a dispersão causada pelo canal. Por outro lado, sabe-se que o prefixo cíclico diminui a taxa de transmissão de símbolos DMT, já que os símbolos deixam de ter $N$ amostras para ter $\nu + N$ amostras quando o prefixo é adicionado. Assim, ao aumentar o prefixo cíclico, reduz-se a distorção PCI com a desvantagem da diminuição da taxa de transmissão de símbolos. Analogamente, ao diminuir o prefixo cíclico, aumenta-se a taxa de transmissão de símbolos com a desvantagem do aumento da distorção PCI.
+
+Tipicamente, as respostas impulsivas dos canais utilizados em sistemas DMT apresentam grande número de amostras não nulas, devido às elevadas frequências de amostragem. Diante disto, não é prático utilizar valores de prefixo cíclico suficientes para cobrir a dispersão do canal, já que estes reduziriam a taxa de transmissão de símbolos a valores muito baixos. Assim, comumente os sistemas DMT operam com prefixos cíclicos insuficientes, os quais são projetados para cobrir a parte mais significativa da energia proveniente das interferências inter-portadoras e inter-simbólica. Ainda assim, verifica-se que a distorção PCI remanescente degrada significativamente o desempenho do sistema.
+
+A degradação do desempenho e a possibilidade de aumento de taxa de informação com a mitigação de distorção PCI é a motivação para seu estudo. Diversas métodos são conhecidos para este propósito, destacando-se a equalização no domínio do tempo (TEQs) ou encurtamento de canal \cite{chanshort2001,channelshort2003}, equalizadores no domínio da frequência no receptor \cite{Trautmann2002, Park04} e a pré-codificação de símbolos \cite{Malkin08,Cheong98}. Além destas, técnicas como algoritmos iterativos de estimação e mitigação de interferência \cite{stuber1998}, algoritmos de mitigação a partir da exploração de subcanais não utilizados \cite{huang2009}, algoritmos de reserva de subcanais \cite{malkin2007}, dentre outros. Estes métodos, sejam eles baseados em processamento no receptor, no transmissor ou em ambos, introduzem complexidade no sistema, a qual deve ser mantida em um nível aceitável para não contrariar uma das grandes vantagens oferecida por sistemas multiportadora, a baixa complexidade.
+
+Neste trabalho, adota-se a tecnologia de acesso denominada por ``acesso rápido aos terminais do assinante'' (G.fast) \cite{maes2012} como o cenário de interesse para a aplicação das técnicas de mitigação de distorção PCI desenvolvidas. Esta consiste em uma versão de redes DSL em processo de padronização pelo Setor de Normatização das Telecomunicações (ITU-T), a qual busca satisfazer as demandas de altas taxas de bit (até $1$~Gb/s) características dos serviços da quarta geração de banda larga (4GBB) \cite{tno_gfast} utilizando ainda as instalações de cobre (telefônicas) existentes nos domicílios. Para tanto, esta tecnologia adota a solução denominada fibra até a residência (FTTH), na qual procura-se levar a fibra ótica às proximidades das residências, reduzindo o comprimento dos enlaces de cobre (par-trançado) que levam a transmissão do ponto mais próximo onde há fibra até o interior das instalações do usuário.
+
+Nesta tecnologia, a mitigação de distorção PCI apresenta potencial para aumento do desempenho geral das linhas de assinantes contidas em um conjunto de linhas (\textsl{binder}). Nestes sistemas, o operador pode ajustar o comprimento do prefixo cíclico para lidar com a distorção do canal. No entanto, se o \textsl{binder} apresentar linhas com comprimentos diferentes, a linha que possuir maior resposta impulsiva irá impor um prefixo cíclico relativamente grande e, consequentemente, diminuir a taxa de símbolos de todas as linhas, já que, devido a duplexação por divisão de tempo sincronizada (S-TDD), todas devem utilizar o mesmo prefixo cíclico. Neste caso, técnicas que puderem adotar um prefixo cíclico reduzido com custo computacional razoável podem ser factíveis.
+
+Neste trabalho, tem-se como objetivo analisar técnicas de mitigação de distorção PCI em sistemas DMT através da pré-codificação de símbolos no transmissor e equalização no receptor. Estas são extensivamente abordadas para redes sem-fio com sistemas OFDM em \cite{malkin2009}, no qual utiliza-se otimização convexa para pré-codificar os símbolos visando obter a máxima taxa de bits e satisfazer as máximas alocações de potência para cada subcanal. Em conjunto com a pré-codificação, em \cite{malkin2009} é desenvolvido um algoritmo que toma vantagem da alta correlação que existe entre as interferências inter-portadoras e inter-simbólicas no domínio da frequência causadas por tons consecutivos, o que proporciona a diminuição do número de operações necessárias para a pré-codificação. Adicionalmente,  utiliza-se cancelamento de interferência sucessiva (SIC) no receptor para atuar em conjunto com a pré-codificação na mitigação de ICI, o que proporciona ainda menor complexidade.
+
+Em contraste à abordagem de \cite{malkin2009}, a qual é baseada em otimização, neste trabalho serão analisadas técnicas de pré-codificação a partir de soluções fechadas, as quais não necessitam de longas fases de treinamento dedicadas à solução do problema de otimização\footnote{O problema de otimização referido consiste em calcular a matriz de pré-codificação ótima para a maximização da taxa de bits, tendo como restrição os limites de potência.}. Nesta capítulo, serão apresentadas as estruturas fundamentais de pré-codificação de ICI no transmissor (Seção \ref{sec:prec_ICI}), equalização de ISI no receptor (Seção \ref{sec:isi_equalization}) e pré-codificação conjunta de ICI e ISI no transmissor (Seção \ref{sec:precodificacao_isi_ici}). Sequencialmente, apresenta-se na Seção \ref{sec:complexidade_precodificacao} uma análise da complexidade dos algoritmos desenvolvidos. Finalmente, simula-se o desempenho de sistemas com a utilização da pré-codificação e equalização na Seção \ref{sec:ici_isi_pre_sim}. 
+
+É importante observar que, no desenvolvimento apresentado, a complexidade dos algoritmos  será relativamente alta e a alteração de potência no símbolo introduzida pelo processo de pré-codificação será solucionada de maneira pouco elaborada, já que as alternativas para redução de complexidade e controle de potência serão apresentadas em detalhes no Capítulo \ref{sec:power_control}. 
+
+\section{Pré-codificação de Símbolos para Mitigar ICI}
+\label{sec:prec_ICI}
+
+Inicialmente, será considerada a técnica de pré-codificação de símbolos para mitigação de interferência inter-portadora (ICI) no símbolo recebido. Esta técnica consiste em introduzir pré-distorção no símbolo a ser transmitido, de maneira que, quando efetivamente transmitido, esta seja eliminada pela distorção natural do canal, restando ao receptor o símbolo desejado sem interferência inter-portadora.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=1\textwidth]{./figs/cadeia_dmt_precoder}
+\caption{Cadeia DMT com a inclusção do pré-codificador.
+\label{fig:cadeia_dmt_prec}}
+\end{figure}
+
+Par tanto, introduz-se um bloco pré-codificador de símbolos na cadeia DMT original (Figura \ref{fig:cadeia_ofdm}), o qual tem como finalidade transformar o símbolo DMT original, obtido a partir do mapeador QAM, em um símbolo pré-codificado. Neste caso, devido ao fato de que o pré-codificador tem como entrada o símbolo DMT no domínio da frequência, diz-se que o pré-codificador atua no domínio da frequência. A cadeia DMT resultante está apresentada na Figura \ref{fig:cadeia_dmt_prec}, na qual destaca-se o pré-codificador entre o mapeador de constelações e o operador IFFT. 
+
+O pré-codificador consiste em uma matriz $\mathbf{W}$, a qual multiplica o símbolo DMT (vetor $\mathbf{X}$), resultando no símbolo pré-codificado $\tilde{\mathbf{X}}$. Assim, visando a chegada do símbolo original ($\mathbf{X}$) no receptor, transmite-se o símbolo pré-codificado $\tilde{\mathbf{X}}$, como será visto no desenvolvimento que segue. Os vetores de entrada e saída do bloco pré-codificador estão destacados no esquema da Figura \ref{fig:pre_codificador}. 
+
+\begin{figure}[htbp]
+\centering
+\tikzstyle{box} = [rectangle, draw, text width=5em, text centered, minimum height=5em]
+\tikzstyle{boxs} = [rectangle, draw, text width=5em, text centered, minimum height=5em, color=red]
+\tikzstyle{line} = [draw, -latex']
+\begin{tikzpicture}[node distance = 2cm, auto]
+\node [] (DMTs) [] {\text{\parbox{3 cm}{\centering Símbolo DMT Transmitido}}};
+\node [box] (Prec) [right of=DMTs,xshift = 8em] {Pré-codificador};
+\node [] (IFFT) [right of=Prec, xshift=8em] {\text{\parbox{3 cm}{\centering Símbolo pré-codificado}}};
+\path [line] (DMTs) -- node[] {$\mathbf{X}$}  (Prec);
+\path [line] (Prec) -- node[] {$\tilde{\mathbf{X}} = \mathbf{WX}$} (IFFT);
+\end{tikzpicture}
+\caption{Esquema de pré-codificação.
+\label{fig:pre_codificador}}
+\end{figure}
+
+É importante destacar que a matriz de pré-codificação $\mathbf{W}$ é função do canal, isto é, necessita da resposta impulsiva do canal e do conhecimento do atraso ($n_0$) para ser construída. Isto é esperado, já que o pré-codificador precisa conhecer a distorção introduzida pelo canal para poder promover a sua mitigação. Assim, é necessário que o transmissor tenha a informação do canal para realizar a pré-codificação, o que torna necessário a estimação de canal.
+
+Por ora, assume-se que o transmissor detém perfeito conhecimento do canal. Na prática, este conhecimento perfeito não é facilmente garantido \cite{malkin2009}. No entanto, em sistemas de comunicação no qual o canal não apresenta variações rápidas, como é o caso de sistemas de comunicação cabeados, é possível obter a estimativa do canal com maior confiabilidade. 
+
+\subsection{Modelamento do Símbolo Recebido no Domínio da Frequência}
+
+Para iniciar o desenvolvimento do pré-codificador, tem-se como objetivo conhecer a transformada discreta de Fourier do conteúdo de ISI e ICI no domínio do tempo introduzido pelo símbolo transmitido. Em outras palavras, deseja-se expressar a DFT da ISI ($\mathbf{Y}_\text{ISI}$) e a DFT da ICI ($\mathbf{Y}_\text{ICI}$) conforme as expressões abaixo:
+\begin{align}
+\mathbf{Y}_\text{ISI}^{(i)} &=\mathbf{ T_\text{ISI}}\mathbf{X^{(i-1)}} \label{eq:ISI_Tisi}\\
+\mathbf{Y}_\text{ICI}^{(i)} &=\mathbf{ T_\text{ICI}\mathbf{X^{(i)}}} \label{eq:ISI_Tici}
+\end{align}
+onde $\mathbf{ T_\text{ISI}}$ e $\mathbf{ T_\text{ICI}}$ são as matrizes que transformam linearmente os símbolos no domínio da frequência $\mathbf{X}$ em suas ISIs e ICIs no domínio da frequência. 
+
+Para expressar dessa maneira, utiliza-se as representações matriciais da ISI e ICI no domínio do tempo, apresentadas nas Equações \ref{eq:ISI_matrix_rep} e \ref{eq:ICI_matrix_rep_vec}, as quais são repetidas abaixo por conveniência:
+\begin{align}
+\mathbf{y}_\text{ISI}^{(i)} &= \mathbf{ H_\text{ISI}} \mathbf{x}^{(i-1)}[((n + n_0))_N] \nonumber\\
+\mathbf{y}_\text{ICI}^{(i)} &= \mathbf{ H_\text{ICI}} \mathbf{x}^{(i)}[((n + n_0))_N] \nonumber
+\end{align}
+onde $((n + n_0))_N$ denota o deslocamento circular de $n_0$ amostras dentre as $N$ amostras do símbolo.
+
+Em seguida, calcula-se as DFTs destes vetores de ISI e ICI segundo a definição da Equação \ref{eq:m_dft}:
+\begin{align}
+\mathbf{Y}_\text{ISI}^{(i)} &= \mathbf{Q} \mathbf{ H_\text{ISI}} \mathbf{x}^{(i-1)}[((n + n_0))_N]
+\label{eq:partial_ISI_DFT}\\
+\mathbf{Y}_\text{ICI}^{(i)} &= \mathbf{Q} \mathbf{ H_\text{ICI}} \mathbf{x}^{(i)}[((n + n_0))_N] 
+\label{eq:partial_ICI_DFT}
+\end{align}
+
+Adicionalmente, observa-se que os símbolos no domínio do tempo com deslocamento circular podem ser expressos como a IDFT de suas representações no domínio da frequência, isto é, a IDFT de suas DFTs. Para tanto, considera-se a propriedade do deslocamento circular no domínio do tempo correspondente a multiplicação dos subsímbolos componentes do vetor DFT por exponenciais complexas, conforme abaixo \cite{dspambardar}:
+
+$$ \mathbf{x}[((n + n_0))_N] \leftrightarrow X_ke^{j2\pi k n_0/N} $$
+onde $\leftrightarrow$ denota a correspondência entre o domínio do tempo (lado esquerdo) e o domínio da frequência (lado direito).
+
+
+Portanto, utilizando a definição de IDFT da Equação \ref{eq:m_idft}, expressa-se o vetor $ \mathbf{x}[((n + n_0))_N]$ como:
+\begin{align}
+\mathbf{x}^{(i)}[((n + n_0))_N] &=  \mathbf{Q}^\text{H} \mathbf{\Theta_{n_0} \mathbf{X^{(i)}}}  
+\label{eq:x_circ_shift_time}
+\end{align}
+onde $\mathbf{\Theta}_{n_0}$ é uma matriz diagonal, função do atraso $n_0$, cujos elementos correspondem ao deslocamento de fase em cada subcanal, originados pelo deslocamento circular do símbolo no domínio do tempo. Os elementos na diagonal principal em cada linha $k$ da matriz são as exponenciais complexas $e^{j2\pi k n_0/N}$, isto é, $\mathbf{\Theta}(n_0)$ é dada por:
+\begin{align}
+\mathbf{\Theta(n_0)} = \left[ \begin{array}{ccccc}
+1 & 0 & 0 & \cdots & 0\\
+0 & e^{-j\frac{2\pi n_0}{N}} & 0 & \cdots & 0\\
+\vdots & \vdots & \ddots & \vdots & \vdots\\
+0 & 0 & 0 & e^{-j\frac{2\pi n_0}{N}(N-2)} & 0\\
+0 & 0 & 0 & \cdots & e^{-j\frac{2\pi n_0}{N}(N-1)}\\
+\end{array} \right]
+\end{align}
+
+Assim, substituindo a Equação \ref{eq:x_circ_shift_time} nas Equações \ref{eq:partial_ISI_DFT} e \ref{eq:partial_ICI_DFT}, resulta em:
+\begin{align}
+\mathbf{Y_\text{ISI}^{(i)}} &=  \mathbf{Q} \mathbf{ H_\text{ISI}} \mathbf{Q}^\text{H} \mathbf{\Theta}_{n_0} \mathbf{X}^{(i-1)}
+\label{eq:partial_ISI_DFT2}\\
+\mathbf{Y_\text{ICI}^{(i)}} &=  \mathbf{Q} \mathbf{ H_\text{ISI}} \mathbf{Q}^\text{H} \mathbf{\Theta_{n_0} \mathbf{X^{(i)}}}
+\label{eq:partial_ICI_DFT2}
+\end{align}
+
+Portanto, conclui-se que as matrizes $\mathbf{ T_\text{ISI}}$ e $\mathbf{ T_\text{ICI}}$ das Equações \ref{eq:ISI_Tisi} e \ref{eq:ISI_Tici} são dadas, respectivamente, por:
+\begin{align}
+\mathbf{ T_\text{ISI}} &= \mathbf{Q} \mathbf{ H_\text{ISI}} \mathbf{Q}^\text{H} \mathbf{\Theta_{n_0}}\\
+\mathbf{ T_\text{ICI}} &= \mathbf{Q} \mathbf{ H_\text{ICI}} \mathbf{Q}^\text{H} \mathbf{\Theta_{n_0}}
+\label{eq:tici_definition}
+\end{align}
+
+Na sequência, similarmente à Equação \ref{eq:yideal_yisi_ici}, divide-se o símbolo recebido no domínio da frequência em três parcelas: a parte ideal, a qual seria recebida se não houvesse distorção PCI; a parte correspondente à ISI e a parte correspondente à ICI.
+\begin{align}
+\mathbf{Y}^{(i)}= \mathbf{Y}_\text{Ideal}^{(i)} + \mathbf{Y}_\text{ISI}^{(i)} + \mathbf{Y}_\text{ICI}^{(i)}
+\label{eq:rx_symbol_freq_domain}
+\end{align}
+
+Substituindo as Equações \ref{eq:ISI_Tisi} e  \ref{eq:ISI_Tici} na equação acima, resulta na seguinte representação para o $i$-ésimo símbolo recebido no domínio da frequência:
+\begin{align}
+\mathbf{Y}^{(i)} &=  \mathbf{Y}_\text{Ideal}^{(i)} + \mathbf{ T_\text{ISI}} \mathbf{X^{(i-1)}} + \mathbf{ T_\text{ICI} \mathbf{X^{(i)}}}\nonumber
+\end{align}
+onde a parcela $\mathbf{Y}_\text{Ideal}^{(i)}$ é obtida a partir da DFT da Equação \ref{eq:y_ideal}, conforme abaixo:
+\begin{align}
+\mathbf{Y}_\text{Ideal}^{(i)} = \mathbf{Q} \mathbf{y}_\text{Ideal}^{(i)}  = \mathbf{Q} \mathbf{ \tilde{H} } \mathbf{x}^{(i)}[((n + n_0))_N] = \mathbf{Q} \mathbf{ \tilde{H} } \mathbf{Q}^\text{H} \mathbf{\Theta_{n_0} \mathbf{X^{(i)}}}
+\label{eq:y_ideal_freq_domain}  
+\end{align}
+Pode-se demonstrar que os vetores base da matriz DFT diagonalizam a matriz circulante \cite{malkin2009}, já que os autovetores da matriz circulante correspondem aos vetores linearmente independentes que formam as bases da matriz DFT. Portanto, a decomposição em autovalores da matriz circulante $\tilde{\mathbf{H}}$ resulta em:
+\begin{align}
+\tilde{\mathbf{H}} =  \mathbf{Q}^H \tilde{\mathbf{\Lambda}} \mathbf{Q}
+\label{eq:hcirc_diag}
+\end{align}
+onde $\tilde{\mathbf{\Lambda}}$ é uma matriz diagonal cujos elementos da diagonal principal correspondem à DFT da resposta impulsiva do canal e são os autovalores de $\tilde{\mathbf{H}}$ \cite{gray2006}.
+
+Isolando a matriz de ganhos do canal $\tilde{\mathbf{\Lambda}}$ na Equação \ref{eq:hcirc_diag} e considerando que $\mathbf{Q}$ é uma matriz unitária ($\mathbf{Q}\mathbf{Q}^H=1$), obtém-se:
+\begin{align}
+\tilde{\mathbf{\Lambda}} = \mathbf{Q}\tilde{\mathbf{H}}Q^H 
+\label{eq:h_gain_diag}
+\end{align}
+
+Substituindo a Equação \ref{eq:h_gain_diag} na Equação \ref{eq:y_ideal_freq_domain}, resulta em:
+\begin{align}
+\mathbf{Y}_\text{Ideal}^{(i)} = \tilde{\mathbf{\Lambda}} \mathbf{\Theta_{n_0} \mathbf{X^{(i)}}}
+\end{align}
+
+Pode-se, no entanto, agrupar o produto $\tilde{\mathbf{\Lambda}}\mathbf{\Theta}_{n_0}$ em somente uma matriz, a qual será denominada $\mathbf{\Lambda}$:
+\begin{align}
+\mathbf{\Lambda}  = \tilde{\mathbf{\Lambda}}\mathbf{\Theta}_{n_0} = \mathbf{Q}\tilde{\mathbf{H}}\mathbf{Q}^H\mathbf{\Theta}_{n_0}
+\label{eq:lambda_definition}
+\end{align}
+
+Neste caso, o vetor $\mathbf{Y}_\text{Ideal}^{(i)}$ pode ser expresso como:
+\begin{align}
+\mathbf{Y}_\text{Ideal}^{(i)} = \mathbf{\Lambda \mathbf{X^{(i)}}}
+\end{align}
+
+Finalmente, substituindo a expressão acima na Equação \ref{eq:rx_symbol_freq_domain}, obtém-se a expressão que modela o símbolo recebido no domínio da frequência em função dos símbolos presente e precedente:
+\begin{align}
+\mathbf{Y}^{(i)} &=\left(\mathbf{\Lambda} + \mathbf{ T_\text{ICI}}\right) \mathbf{X^{(i)}} + \mathbf{ T_\text{ISI}} \mathbf{X^{(i-1)}}\nonumber\\
+\mathbf{Y}^{(i)} &= \mathbf{A} \mathbf{X^{(i)}} + \mathbf{ T_\text{ISI}} \mathbf{X^{(i-1)}}
+\label{eq:model_y_rx_freq_domain}
+\end{align}
+onde $\mathbf{A}=\left(\mathbf{\Lambda} + \mathbf{ T_\text{ICI}}\right)$, isto é, $\mathbf{A}$ é a matriz com os ganhos dos subcanais diretos e os ganhos de \textsl{crosstalk} entre os subcanais (devido à ICI).
+
+No entanto, ao considerar o pré-codificador para mitigar somente a ICI, assume-se que a ISI seja completamente eliminada no receptor, como em  \cite{Malkin08,Park04}. Por isso, pode-se modelar o símbolo recebido como:
+\begin{align}
+\mathbf{Y}^{(i)} &= \mathbf{A} \mathbf{X^{(i)}}
+\label{eq:model_y_rx_freq_domain_ici}
+\end{align}
+
+\subsection{Pré-codificação de ICI}
+
+A partir da expressão do símbolo recebido afetado por distorção PCI no domínio da frequência, apresentada na Equação \ref{eq:model_y_rx_freq_domain_ici}, é direto demonstrar que é possível escolher o símbolo a ser transmitido $\tilde{X}$ de maneira que o símbolo recebido seja o símbolo ideal, isto é:
+\begin{align}
+\mathbf{Y}^{(i)} &= \mathbf{Y}_\text{Ideal}^{(i)} = \mathbf{\Lambda} \mathbf{X^{(i)}} \nonumber
+\end{align}
+
+Para tanto, é necessário que o símbolo pré-codificado seja dado por:
+\begin{align}
+\mathbf{\tilde{X}}^{(i)} = \mathbf{A}^{-1}\mathbf{\Lambda} \mathbf{X^{(i)}}
+\label{eq:precoder_ici_isi}
+\end{align}
+na qual assume-se que a matriz $\mathbf{A}$ seja invertível.
+
+Neste caso, como o símbolo pré-codificado é o produto entre a matriz pré-codificadora ($\mathbf{W}$) e o símbolo original ($\mathbf{X}$), conclui-se que a matriz pré-codificadora é dada por:
+\begin{align}
+\mathbf{W} =  \mathbf{A}^{-1}\mathbf{\Lambda}
+\label{eq:prec_no_norm}
+\end{align}
+
+\subsection{Considerações sobre Potência}
+
+Essencialmente, este pré-codificador força o canal real a não apresentar \textsl{crosstalk} entre os subcanais, ao providenciar a diagonalização da matriz do canal real ($\mathbf{A}$). Este pré-codificador é similar a estrutura de diagonalização do canal apresentada para eliminação de \textsl{crosstalk} entre as linhas de transmissão em \cite{Cendrillon07}, na qual, ao invés de eliminar o \textsl{crosstalk} entre os subcanais (ICI), elimina-se o \textsl{crosstalk} entre os usuários cujos canais estão em um mesmo \textsl{binder}. 
+
+Contudo, a eliminação de \textsl{crosstalk} entre os subcanais pode demandar aumentos de potência de transmissão, como um preço a ser pago para forçar a diagonalização do canal. A operação de pré-codificação altera a distribuição de potência do símbolo transmitido, podendo esta ultrapassar os limites de potência estabelecidos para cada subcanal (máscara de potência). Para visualizar este efeito, observa-se que o $k$-ésimo subsímbolo do símbolo DMT pré-codificado é dado por:
+\begin{align}
+\tilde{X}_k &= \mathbf{w}_k \mathbf{X}\nonumber\\
+&= \sum \limits_{m=0}^{N-1} w_{k,m} X_m
+\label{eq:xtilde_innerp}
+\end{align}
+onde o $\mathbf{w}_k $ é o vetor-linha com os elementos da $k$-ésima linha de $\mathbf{W}$ e $w_{k,m}$ é o elemento na $k$-ésima linha e $m$-ésima coluna de $\mathbf{W}$, isto é, $\mathbf{w}_k  = \left[ w_{k,0}, w_{k,1}, \cdots, w_{k,N-1} \right]$.
+
+Sequencialmente, nota-se que a densidade espectral de potência média ($\tilde{s}_k$) no $k$-ésimo subcanal pré-codificado é dada por\footnote{A densidade espectral de potência apresentada corresponde à definição de DFT adotada na Equação \ref{eq:q_matrix}.}:
+\begin{align}
+\tilde{s}_k \stackrel{\Delta}{=} \frac{E \{ \left| \tilde{X}_k \right|^2 \}}{N}
+\label{eq:psd_definition}
+\end{align}
+onde o operador $E\{ \cdot \}$ denota o valor esperado.
+
+Substituindo $\tilde{X}_k$ da Equação \ref{eq:xtilde_innerp}, obtém-se:
+\begin{align}
+\tilde{s}_k &=  \frac{E \left\{ \left| \sum \limits_{m=0}^{N-1} w_{k,m} X_m \right|^2 \right\} }{N}
+\end{align}
+
+Contudo, devido ao valor absoluto de um somatório ser menor ou igual o somatório dos valores absolutos (propriedade da desigualdade triangular), a PSD no subcanal $k$ torna-se:
+\begin{align}
+\tilde{s}_k &\leq  \frac{E \left\{  \sum \limits_{m=0}^{N-1} \left|w_{k,m} X_m \right|^2 \right\} }{N} \nonumber\\
+&\leq  \frac{E \left\{  \sum \limits_{m=0}^{N-1} \left|w_{k,m} \right|^2 \left|X_m \right|^2 \right\} }{N} \nonumber
+\end{align}
+
+Adicionalmente, dado que a matriz de pré-codificação $\mathbf{W}$ não é aleatória, o valor esperado aplica-se somente ao termo $X_m$. Neste caso, a expressão torna-se:
+\begin{align}
+\tilde{s}_k  &\leq  \frac{\sum \limits_{m=0}^{N-1} \left|w_{k,m} \right|^2 E \left\{  \left|X_m \right|^2 \right\} }{N} \nonumber
+\end{align}
+
+Substituindo a definição de PSD da Equação \ref{eq:psd_definition} no termo $\frac{E \left\{  \left|X_m \right|^2 \right\} }{N}$, tem-se:
+\begin{align}
+\tilde{s}_k  &\leq  \sum \limits_{m=0}^{N-1} \left|w_{k,m} \right|^2 s_m \nonumber
+\end{align}
+
+Finalmente, considera-se que a PSD é distribuída igualmente entre os subcanais, o que implica que o termo correspondente a PSD do subsímbolo original no $m$-ésimo subcanal $s_m$ é constante ($s_m = s$). Assim, a expressão torna-se:
+\begin{align}
+\tilde{s}_k  &\leq  s_k \sum \limits_{m=0}^{N-1} \left|w_{k,m} \right|^2  \nonumber\\
+&\leq  s_k \| \mathbf{w}_k \|^2 
+\label{eq:psd_bound}
+\end{align}
+
+Portanto, vê-se que a PSD no subcanal $k$ devido à transmissão de símbolos pré-codificados é menor ou igual a PSD original (correspondente à transmissão de símbolos não pré-codificados) multiplicada pela norma Euclidiana da $k$-ésima linha da matriz de pré-codificação ($\| \mathbf{w}_k \|$). Portanto, se $\| \mathbf{w}_k \|$ for maior que 1, a PSD dos símbolos pré-codificados pode ultrapassar a PSD original, isto é, $\tilde{s}_k$ pode ser maior que $s_k$. 
+
+Neste caso, a matriz de pré-codificação é normalizada, visando garantir que a PSD do símbolo pré-codificado seja sempre menor que a PSD do símbolo original. Para tanto, introduz-se um escalar $\beta$ na matriz de pré-codificação da Equação \ref{eq:prec_no_norm}, resultado na matriz de pré-codificação normalizada ($\mathbf{W}'$):
+\begin{align}
+\mathbf{W}' =  \frac{1}{\beta}\mathbf{A}^{-1}\mathbf{\Lambda}
+\label{eq:matriz_precoder_beta}
+\end{align}
+
+Neste caso, a PSD do $k$-ésimo símbolo pré-codificado passa a ser dada por: 
+\begin{align}
+\tilde{s}_k &\leq \frac{ \| \mathbf{w}_k \|^2 }{\beta^2}  s_k
+\label{eq:psd_bound_norm}
+\end{align}
+
+Portanto, para garantir que todos os subsímbolos apresentem PSD abaixo da PSD original, $\beta$ é escolhido como a máxima norma Euclidiana dentre as normas das linhas da matriz $\mathbf{W}$:
+\begin{align}
+\beta = \max \left\{ \| \mathbf{w}_k \| \right\}
+\label{eq:fator_normalizacao}
+\end{align}
+
+\section{Equalização de ISI no Receptor}
+\label{sec:isi_equalization}
+
+A interferência inter-simbólica (pós-cursora) que afeta o símbolo recebido é, por definição, função somente do canal e do símbolo anterior. Assim, considerando que o receptor conheça o canal e a maneira como este transforma o símbolo anterior em ISI no símbolo atual, é possível que este estime a ISI que afeta o símbolo recebido. Isto é possível devido ao fato de que, no momento do processamento do símbolo atual, o símbolo anterior já é conhecido pelo receptor, pois este foi detectado anteriormente.
+
+Considerando novamente o símbolo $\mathbf{Y}^{(i)}$ recebido como
+\begin{align}
+\mathbf{Y}^{(i)} &= \mathbf{A} \mathbf{X^{(i)}} + \mathbf{ T_\text{ISI}} \mathbf{X^{(i-1)}} \nonumber
+\end{align}
+e assumindo que o receptor conheça $\mathbf{X^{(i-1)}}$, conclui-se que é possível mitigar a ISI a partir da eliminação da parcela correspondente a esta, isto é, a eliminação (subtração) de $\mathbf{ T_\text{ISI}} \mathbf{X^{(i-1)}}$.
+
+No entanto, esta implementação pode falhar na perfeita mitigação de ISI, já que o símbolo anterior utilizado para remoção é, na realidade, o símbolo detectado, o qual pode apresentar erros de detecção. Consequentemente, a equalização de ISI está sujeita à propagação de erro, já que o erro na detecção do símbolo implica no erro na remoção de ISI, que por sua vez afeta a probabilidade de erro na detecção do símbolo, e assim por diante. 
+
+Ainda assim, considerando que os sistemas de comunicação são projetados para baixa probabilidade erro, espera-se que o efeito da propagação de erro seja insignificante para o desempenho do sistema. Este será analisado nas simulações apresentadas na Seção \ref{sec:ici_isi_pre_sim}.
+
+\section{Pré-codificação de Símbolos para Mitigação de ICI e ISI}
+\label{sec:precodificacao_isi_ici}
+
+A mitigação conjunta de ICI e ISI a partir de pré-codificação de símbolos no transmissor também é possível. Assim, como alternativa à utilização do esquema de pré-codificação de ICI no transmissor e equalização de ISI no receptor, pode-se concentrar no transmissor a complexidade introduzida no sistema.
+
+A formulação da matriz de pré-codificação de ICI e ISI tem um desenvolvimento análogo ao utilizado para a matriz pré-codificadora de ICI. Inicialmente, substitui-se a expressão para o $i$-ésimo símbolo recebido no domínio da frequência ($\mathbf{Y}^{(i)}$), dada pela Equação \ref{eq:model_y_rx_freq_domain}, na condição de que o símbolo real recebido seja o símbolo ideal ($\mathbf{Y}^{(i)} =\mathbf{\Lambda} \mathbf{X^{(i)}}$). A substituição resulta em: 
+\begin{align}
+\mathbf{A} \mathbf{\tilde{X}}^{(i)} + \mathbf{ T_\text{ISI}} \mathbf{\tilde{X}}^{(i-1)} = \mathbf{\Lambda} \mathbf{X^{(i)}}\nonumber
+\end{align}
+na qual é importante observar que o símbolo DMT precedente em questão é o símbolo pré-codificado, já que este é o símbolo efetivamente transmitido.
+
+Isolando o símbolo DMT pré-codificado de referência ($\mathbf{\tilde{X}}^{(i)}$) na equação, obtém-se:
+\begin{align}
+\mathbf{\tilde{X}}^{(i)} = \mathbf{A}^{-1} \left( \mathbf{\Lambda} \mathbf{X^{(i)}} - \mathbf{ T_\text{ISI}} \mathbf{\tilde{X}}^{(i-1)} \right)
+\label{eq:precoder_ici_isi}
+\end{align}
+na qual assume-se que a matriz $\mathbf{A}$ seja invertível.
+
+Neste caso, utilizando a definição da matriz pré-codificadora de ICI ($\mathbf{W}$) em
+\ref{eq:prec_no_norm}, pode-se expressar o símbolo pré-codificado a partir de duas matrizes pré-codificadoras:
+\begin{align}
+\mathbf{\tilde{X}}^{(i)} = \mathbf{W} \mathbf{X^{(i)}} - \mathbf{W}_2 \mathbf{\tilde{X}}^{(i-1)} 
+\end{align}
+onde $\mathbf{W}_2 = \mathbf{A}^{-1}\mathbf{ T_\text{ISI}}$.
+
+Finalmente, pode-se ainda incluir o fator de normalização na matriz pré-codificadora de ICI, visando satisfazer os limites de potência sob o ponto de vista da parcela $\mathbf{W} \mathbf{X^{(i)}}$. Neste caso, utiliza-se a definição da matriz pré-codificadora normalizada ($\mathbf{W}'$) da Equação~\ref{eq:matriz_precoder_beta}, resultando no seguinte símbolo pré-codificado:
+\begin{align}
+\mathbf{\tilde{X}}^{(i)} = \mathbf{W}' \mathbf{X^{(i)}} - \mathbf{W}_2 \mathbf{\tilde{X}}^{(i-1)} 
+\label{eq:precoder_ici_isi}
+\end{align}
+
+\section{Complexidade dos Algoritmos de pré-codificação}
+\label{sec:complexidade_precodificacao}
+
+Até o momento, apresentou-se a pré-codificação cuja complexidade será denominada complexidade completa, na qual a matriz pré-codificadora $\mathbf{W}$ (ou $\mathbf{W}'$)  consiste em uma matriz complexa de dimensões $N \times N$. Para esta matriz, a pré-codificação dos símbolos demanda $N^2$ multiplicações escalares complexas e $N(N-1)$ adições escalares complexas, similarmente ao cálculo direto da DFT e IDFT, como apresentado na Seção \ref{sec:complexidade_dft}.
+
+Dado que uma multiplicação escalar complexa requer 4 multiplicações escalares reais e 2 adições escalares reais, enquanto uma adição escalar complexa requer 2 adições escalares reais, o algoritmo requer um total de $4N^2$ multiplicações escalares reais e  $4N^2 - 2N$ adições escalares reais. Este número de operações torna-se bastante elevado à medida que $N$ torna-se considerável. 
+
+Similarmente, o algoritmo de equalização de ISI no receptor requer a multiplicação de uma matriz complexa $N \times N$ ($\mathbf{T}_\text{ISI}$) por um vetor-coluna complexo de $N$ elementos, além de $N$ adições escalares complexas para subtrair o resultado da multiplicação ($\mathbf{T}_\text{ISI} \mathbf{\tilde{X}}^{i-1}$) do símbolo recebido. Portanto, a equalização demanda $4N^2$ multiplicações escalares reais e $4N^2$ adições escalares reais.  
+
+Enquanto isso, a pré-codificação conjunta de ICI e ISI da Equação \ref{eq:precoder_ici_isi} requer 2 multiplicações de matrizes complexas de dimensões $N \times N$ ($\mathbf{W}$ e $\mathbf{W}_2$) por vetores-coluna complexos de N elementos, além de $N$ adições escalares complexas para somar as parcelas. Portanto, o algoritmo necessita realizar $8N^2$ multiplicações escalares reais e $8N^2 - 2N$ adições escalares reais no transmissor.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{ p{5cm} | p{2.5 cm} | p{2.5cm} | p{2.5cm} | p{2.5cm} |}
+ & \multicolumn{2}{|c|}{Transmissor} & \multicolumn{2}{|c|}{Receptor}\\
+\hline
+Algoritmo & Multiplicações escalares reais & Adições escalares reais & Multiplicações escalares reais & Adições escalares reais\\
+\hline
+Pré-codificação de ICI + Equalização de ISI & $4N^2$ & $4N^2 - 2N$ & $4N^2$ & $4N^2$\\
+\hline
+Pré-codificação de ICI e ISI & $8N^2$ & $8N^2 - 2N$ & - & - \\
+\hline
+\end{tabular}
+\caption{Complexidade dos algoritmos de pré-codificação. \label{tb:complexidade_dp}}
+\end{table}
+
+A complexidade introduzida no transmissor e no receptor pelos algoritmos apresentados está resumida na Tabela \ref{tb:complexidade_dp}. Vê-se que a escolha entre os dois esquemas de mitigação baseia-se na necessidade de distribuir o aumento da complexidade entre transmissor e receptor, ou não. Na seção \ref{sec:power_control}, serão apresentadas alternativas para redução da complexidade destes algoritmos.
+
+\section{Simulações}
+\label{sec:ici_isi_pre_sim}
+
+Apresenta-se a simulação dos métodos de mitigação de distorção PCI desenvolvidos nas seções anteriores. Para a simulação, considera-se como canal um cabo par-trançado de alta qualidade (CAT5), típico de instalações DSL, com comprimento de $100$m~, cuja resposta em frequência (apresentada na Figura \ref{fig:ch6_canal_freqresponse}) é conhecida através de medição. Além disto, utiliza-se parâmetros característicos da tecnologia G.fast, destacando-se a largura de banda de aproximadamente $106$~MHz, espaçamento tonal ($\Delta f$) de $51.75$~kHz, $2048$ dimensões complexas ($\bar{N}=2048$ ou $N=4096$), máxima potência de transmissão de $4$~dBm e ruído de fundo com densidade espectral de potência de $-135$~dBm/Hz. 
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\textwidth]{./figs/simulacao_ch6_canal_freqresponse}
+\caption{Espectro de magnitude do canal simulado.
+\label{fig:ch6_canal_freqresponse}}
+\end{figure}
+
+O algoritmo de carregamento de bits utilizado adota um \textsl{gap} de SNR à capacidade de  $\Gamma = 10.75$, valor típico de instalações DSL atuais \cite{maes2012}, o qual inclui uma margem de ruído de $6$~dB para uma taxa de erro de bits (BER) alvo de $10^{-7}$. Este algoritmo consiste no algoritmo de Levin-Campello para maximização de taxa de bits \cite{campello1999}, o qual implementa a otimização de carregamento discreto de bits (diferentemente das soluções de enchimento com água, as quais resultam em carregamentos reais). Este algortimo baseia-se na análise da energia incremental que cada bit adicional demanda para ser transportado em cada subcanal \cite{ee379c}. Com esta informação, o algoritmo coloca iterativamente cada bit adicional no subcanal que requer menor energia incremental, até que o limite de energia total do símbolo seja satisfeito (ver problema de maximização de taxa de bits na Seção \ref{subsec:bit_loading}). Mais especificamente, o algoritmo implementa os processos de eficientização (\emph{efficientizing}) e estreitamento de energia (\emph{E-tightening}) descritos em \cite{ee379c,campelloisit1998}.
+
+Inicialmente, considera-se a pré-codificação de ICI no transmissor e equalização de ISI no receptor. Para avaliar o desempenho do sistema, compara-se a taxa de bits de informação recebidos sem erro obtida no sistema com o esquema de mitigação e sem, isto é, para um sistema DMT que utiliza os prefixos-cíclicos regularmente. Os prefixos cíclicos utilizados na simulação são de 20, 40, 80, 160 e 320 amostras, os quais correspondem a $0.48\%$, $0.98\%$, $1.95\%$, $3.91\%$ e $7.81\%$ de $N$, respectivamente. Estes obedecem à relação entre taxa de bits e comprimento do prefixo cíclico introduzida na Figura \ref{fig:tradeoff_cp_bitrate}, o que implica na expectativa de maior taxa de bits para o prefixo cíclico de $0.48\%$. 
+
+Para os prefixos cíclicos simulados, a PSD da distorção (soma de ISI e ICI) no símbolo recebido se mantém, na grande maioria dos subcanais, abaixo da PSD ruído de fundo (AWGN). Este comportamento está ilustrado na Figura \ref{fig:ch6_isi_ici_psd}, a qual apresenta a PSD da distorção PCI para cada um dos prefixos cíclicos\footnote{Devido ao elevado número de curvas, opta-se por não identifica-las, o que é irrelevante para o propósito de comparação com a PSD do ruído de fundo.} nos dois casos extremos de potência total de transmissão simulados ($0.2$~dBm e $4$~dBm), além da PSD do AWGN da simulação (em $-135$~dBm/Hz). Estas densidades espectrais de potência da distorção PCI são calculadas de acordo com a demonstração em \cite{perodling2002}. 
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.95\textwidth]{./figs/simulacao_ch6_isi_ici_psd}
+\caption{PSD da distorção PCI em comparação à PSD do AWGN.
+\label{fig:ch6_isi_ici_psd}}
+\end{figure}
+
+Em relação à pré-codificação, é importante destacar que as linhas dos índices correspondentes aos subcanais das frequências DC e Nyquist ($k=0$ e $k=N/2$) nas matrizes de ISI e ICI no domínio da frequência ($\mathbf{T}_\text{ICI}$ e $\mathbf{T}_\text{ISI}$) são anuladas. Isto se deve ao fato de que estes subcanais não são utilizados para a transmissão, o que implica que suas distorções PCI são irrelevantes. Estas condições são aplicadas visando impedir o crescimento do fator de normalização ($\beta$) da matriz de pré-codificação normalizada (Equação \ref{eq:matriz_precoder_beta}), conforme será visto na Seção \ref{subsec:cond_iniciais}.
+
+A Figura \ref{fig:simulacao_ch6_data_rate_135dbm_noise} apresenta o resultado da taxa de bits corretos recebidos para o sistema com pré-codificação e os sistemas com prefixos cíclicos (sem pré-codificação), além de um limite superior dado pela Equação \ref{eq:chan_capacity_gap} (na qual $\Gamma=10.75$). Nota-se que, como esperado, o desempenho obtido com a utilização de pré-codificação é significativamente superior.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=1\textwidth]{./figs/simulacao_ch6_data_rate_135dbm_noise}
+\caption{Taxa de bits alcançada com a pré-codificação.
+\label{fig:simulacao_ch6_data_rate_135dbm_noise}}
+\end{figure}
+
+É importante destacar que a simulação cujo resultado está apresentado na Figura \ref{fig:simulacao_ch6_data_rate_135dbm_noise} implementa a equalização de ISI real, a qual, como mencionado na Seção~\ref{sec:isi_equalization}, sujeita-se à propagação de erros. Contudo, observa-se a partir do desempenho apresentado que a propagação de erro é, efetivamente, insignificante para o desempenho do sistema. Este argumento é ainda reforçado ao observar o resultado da simulação que força a remoção perfeita de ISI (sem erros), o qual é exatamente equivalente ao resultado da Figura \ref{fig:simulacao_ch6_data_rate_135dbm_noise}.
+
+Finalmemente, ressalta-se que a pré-codificação de ICI e ISI no transmissor para o mesmo cenário de simulação também resulta exatamente no mesmo desempenho da Figura~\ref{fig:simulacao_ch6_data_rate_135dbm_noise}. É importante reforçar que, neste procedimento, as linhas da matriz $\mathbf{T}_\text{ISI}$ correspondentes aos indices das frequências DC e Nyquist ($k=0$ e $k=N/2$) são anuladas. Isto tipicamente garante que os símbolos pré-codificados (segundo a definição da Equação~\ref{eq:precoder_ici_isi}) respeitem os limites de potência, dado que a matriz mais influente na alteração de potência ($\mathbf{W'}$) já é normalizada.
+
