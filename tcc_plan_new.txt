@@ -1,0 +1,9 @@
+An FPGA-Based Radio Frontend for LTE transmission on Cloud RAN
+
+Chap 1. Introduction
+Chap 2. Description of FMCCOM
+Chap 3. Synchronization
+Chap 4. Results
+    - Validation: Sinusoid transmission
+    - Evaluate sync errors....
+Chap 5. Conclusions
