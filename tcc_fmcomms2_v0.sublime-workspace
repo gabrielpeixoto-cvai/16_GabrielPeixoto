@@ -1,0 +1,282 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+		]
+	},
+	"buffers":
+	[
+		{
+			"contents": "\\chapter{Radio Frontend Setup Description}\nThe focus of this work will be the radio frontend interface, and using the \nfmcomms2 \n\n\\section{FmcommS2}\n\n\n",
+			"file": "chapters/cap_fmcomms2.tex",
+			"file_size": 145,
+			"file_write_time": 1450050734000000,
+			"settings":
+			{
+				"buffer_size": 151,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/home/gaburiero/git/16_GabrielPeixoto/abnt.bst",
+		"/home/gaburiero/Reports/computabilidade_report/chapters/cap_conclusao.tex",
+		"/home/gaburiero/Reports/computabilidade_report/chapters/cap_computabilidade.tex",
+		"/home/gaburiero/Reports/computabilidade_report/chapters/bac_cap_computabilidade.tex",
+		"/home/gaburiero/Reports/computabilidade_report/chapters/cap_turing_machine.tex",
+		"/home/gaburiero/Reports/computabilidade_report/chapters/cap_automato.tex",
+		"/home/gaburiero/Reports/computabilidade_report/chapters/cap_intro.tex",
+		"/home/gaburiero/Reports/computabilidade_report/tech_report.tex",
+		"/home/gaburiero/Reports/computabilidade_report/capa.tex",
+		"/home/gaburiero/computabilidade_report/tech_report.tex",
+		"/home/gaburiero/computabilidade_report/tech_report.bib",
+		"/home/gaburiero/computabilidade_report/chapters/cap_conclusao.tex",
+		"/home/gaburiero/computabilidade_report/chapters/cap_intro.tex",
+		"/home/gaburiero/computabilidade_report/chapters/cap_turing_machine.tex",
+		"/home/gaburiero/computabilidade_report/chapters/cap_automato.tex",
+		"/home/gaburiero/computabilidade_report/chapters/cap_computabilidade.tex",
+		"/home/gaburiero/git/Beagle-Beagle/tech_report/chapters/cap_metodologia.tex",
+		"/home/gaburiero/computabilidade_report/capa.tex",
+		"/home/gaburiero/.config/sublime-text-2/Packages/User/Default (Linux).sublime-keymap",
+		"/home/gaburiero/computabilidade_report/chapters/cap_dificuldades.tex",
+		"/home/gaburiero/.config/conky/conky_grey.lua",
+		"/home/gaburiero/.config/conky/conkyrc_grey",
+		"/home/gaburiero/.config/openbox/autostart",
+		"/home/gaburiero/.config/openbox/rc.xml",
+		"/home/gaburiero/.config/conky/conky.conf",
+		"/home/gaburiero/git/16_GabrielPeixoto/references.bib",
+		"/home/gaburiero/git/16_GabrielPeixoto/tcc_plan_new.txt",
+		"/home/gaburiero/git/16_GabrielPeixoto/chapters/cap_fmcomms2.tex",
+		"/home/gaburiero/git/16_GabrielPeixoto/gabrielPeixoto_tcc.tex",
+		"/home/gaburiero/Historico_ingles_ufpa_2015/Makefile",
+		"/home/gaburiero/Historico_ingles_ufpa_2015/academic_history.tex",
+		"/home/gaburiero/git/jornada_parallel/03aula_ocl/04_taskpar/taskParallel.cl",
+		"/home/gaburiero/git/jornada_parallel/03aula_ocl/04_taskpar/04_taskParallel.c",
+		"/home/gaburiero/git/jornada_parallel/03aula_ocl/03_dataPar/dataParallel.cl",
+		"/home/gaburiero/git/jornada_parallel/03aula_ocl/03_dataPar/03_dataParallel.c",
+		"/home/gaburiero/git/jornada_parallel/03aula_ocl/02_vect/vectadd.cl",
+		"/home/gaburiero/git/jornada_parallel/03aula_ocl/02_vect/02_ocl_vect.c",
+		"/home/gaburiero/git/jornada_parallel/03aula_ocl/01_hello/hello.cl",
+		"/home/gaburiero/git/jornada_parallel/03aula_ocl/01_hello/01_hello.c",
+		"/home/gaburiero/git/jornada_parallel/03aula_ocl/07_FFTapp/07_fftImg.c",
+		"/home/gaburiero/git/jornada_parallel/03aula_ocl/07_FFTapp/fftImg.cl",
+		"/home/gaburiero/git/jornada_parallel/03aula_ocl/07_FFTapp/Makefile",
+		"/home/gaburiero/git/jornada_parallel/03aula_ocl/06_movingAv/05_movingAverage.c",
+		"/home/gaburiero/git/jornada_parallel/02aula_omp/pi_expo/serial_pi.c",
+		"/home/gaburiero/git/jornada_parallel/02aula_omp/pi_expo/parallel_pi.c",
+		"/home/gaburiero/git/jornada_parallel/02aula_omp/pi_expo/loop_reduct_pi.c",
+		"/home/gaburiero/git/jornada_parallel/02aula_omp/pi_expo/critical_pi.c",
+		"/home/gaburiero/git/jornada_parallel/02aula_omp/01_simple/01_parallel_region.c",
+		"/home/gaburiero/git/jornada_parallel/02aula_omp/pi_expo/atomic_pi.c",
+		"/home/gaburiero/git/jornada_parallel/02aula_omp/06_priv/06_omp_priv.c",
+		"/home/gaburiero/git/jornada_parallel/02aula_omp/05_crit/05_omp_crit.c",
+		"/home/gaburiero/git/jornada_parallel/02aula_omp/04_parfor/04_omp_parfor.c",
+		"/home/gaburiero/git/jornada_parallel/02aula_omp/03_section/03_omp_section.c",
+		"/home/gaburiero/git/jornada_parallel/02aula_omp/02_for/02_omp_for.c",
+		"/home/gaburiero/git/jornada_parallel/02aula_omp/01_simple/01_omp_simple.c",
+		"/home/gaburiero/git/jornada_parallel/01aula_threads/exemplos/06_condvar/06_thread_cond_var.c",
+		"/home/gaburiero/git/jornada_parallel/01aula_threads/exemplos/02_arg/02_thread_arg.c",
+		"/home/gaburiero/git/jornada_parallel/01aula_threads/exemplos/05_stack/05_thread_stack.c",
+		"/home/gaburiero/git/jornada_parallel/01aula_threads/exemplos/04_mutex/04_thread_mutex.c",
+		"/home/gaburiero/git/jornada_parallel/01aula_threads/exemplos/04_mutex/dotprod_serial.c",
+		"/home/gaburiero/git/jornada_parallel/01aula_threads/exemplos/03_join/03_thread_join.c",
+		"/home/gaburiero/git/jornada_parallel/01aula_threads/exemplos/01_create/01_thread_create.c",
+		"/home/gaburiero/git/jornada_parallel/03aula_ocl/07_FFTapp/pgm.h",
+		"/home/gaburiero/git/jornada_parallel/03aula_ocl/05_img/05_image.c",
+		"/home/gaburiero/git/jornada_parallel/03aula_ocl/05_img/image.cl",
+		"/home/gaburiero/git/jornada_parallel/03aula_ocl/05_movingAverage.c",
+		"/home/gaburiero/git/jornada_parallel/03aula_ocl/movingAverage.cl",
+		"/home/gaburiero/git/jornada_parallel/03aula_ocl/stdCmovingAverage.c",
+		"/home/gaburiero/git/jornada_parallel/03aula_ocl/04_taskParallel.c",
+		"/home/gaburiero/git/jornada_parallel/03aula_ocl/taskParallel.cl",
+		"/home/gaburiero/git/jornada_parallel/03aula_ocl/03_dataParallel.c",
+		"/home/gaburiero/git/jornada_parallel/03aula_ocl/dataParallel.cl",
+		"/home/gaburiero/git/jornada_parallel/03aula_ocl/vectadd.cl",
+		"/home/gaburiero/git/jornada_parallel/03aula_ocl/02_ocl_vect.c",
+		"/home/gaburiero/git/jornada_parallel/03aula_ocl/stock_array1.txt"
+	],
+	"find":
+	{
+		"height": 41.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"Deterministic",
+			"Nao",
+			"sao",
+			"apos",
+			"arvore",
+			"simbolo",
+			"sequencia",
+			"Automato",
+			"_",
+			"$",
+			"_",
+			"ã",
+			"ô",
+			"^",
+			"_",
+			"db_phi.c",
+			"Computabilidade",
+			"gws",
+			"WINDOW_SIZE"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"Determinístic",
+			"Não",
+			"são",
+			"após",
+			"árvore",
+			"símbolo",
+			"sequência",
+			"Autômato",
+			"\\~{a}",
+			"\\^{o}"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "chapters/cap_fmcomms2.tex",
+					"settings":
+					{
+						"buffer_size": 151,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								151,
+								151
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/LaTeX/LaTeX.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 35.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"replace":
+	{
+		"height": 68.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"",
+				"abnt.bst"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+			[
+				"",
+				"/home/gaburiero/git/16_GabrielPeixoto/tcc_fmcomms2_v0.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true
+}
