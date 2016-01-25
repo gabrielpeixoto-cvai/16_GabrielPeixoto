@@ -1,0 +1,402 @@
+\chapter{FMComms2}
+\section{AD9361}
+\label{sec:ad9361}
+
+The AD9361 is a high performance RF transceiver. Its programmability and adaptability makes it ideal for a wide range of transceiver applications. This device combines a RF front end with a flexible and configurable mixed-signal baseband section and frequency synthesizers, simplified configuration digital interface to a processor. 
+The AD9361 operates from 70 MHz to 6.0GHz range with supported channel bandwidths from 200 KHz to 56 MHz and the AD9361 is a 2 Rx and 2 Tx device packed in a 10mm x10mm, 144 ball chip package ball grid array (CSP\_BGA).
+
+\subsection{General Description}
+
+AD9361 is a highly integrated RF frequency transceiver capable of being configured for a wide range of applications, including 3g and 4g frequency applications. AD9361 and AD9364 almost the same hardware and specifications, the difference is that AD9361 is a 2x2 MIMO and AD9364 is a 1x1 \cite{ad9361_wiki}.
+The programmability allows the AD9361 to be operated in Frequency Division Duplex (FDD) and Time Division Duplex (TDD) systems, allowing this transceiver to operate in a variety of communication standards. Another interesting feature is the capability of integration with a wide range of BBPs (Baseband Processors) using a single or dual 12-bit parallel data port or a 12-bit LVDS (Low voltage Differential signaling), which uses the FMC connector in the FMCommS2 \ref{sec:fmcomms2}.
+AD9361 also provides self-calibration and automatic gain control (AGC) systems to maintain good performance under variable conditions, such as temperature and signal quality. The transceiver has also various modes of test mode with the Built-in Self Test (BIST) modes which can be used for the designers to debug desgs during prototyping.
+This configurability and adaptability is very attractive for Software Defined Radio (SDR) and for C-RAN systems, indeed ad9361 is already being used in some Universal Software Radio Peripheral (USRP) from ettus research (National Instruments), this alone is a proof that AD9361 can work in a wide range of systems and standards.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{./figures/ad9361_functional_diagram}
+    \caption{ AD9361 Functional Block Diagram
+    \label{fig:ad9361func}}
+\end{figure}
+
+\subsection{Receiver}
+
+The receiver section has all the blocks necessary to receive analog RF signals and convert them to digital data which can be used by the BBP. there are two independently controlled channels that share same frequency synthesizer. This characteristic makes possible to the AD9361 to operate in MIMO systems.
+
+Each channel has 3 inputs which can be multiplexed into the signal chain, making possible to use the AD9361 into systems with multiple antenna inputs. The Receiver is a direct conversion system that contains a Low noise amplifier (LNA) , followed by a matched in-phase and quadrature amplifier, mixers, and band shaping filters that down convert received signals to baseband for digitization. External LNAs can also be interfaced to the AD9361 allowing more flexibility in the design.
+The receiver signal path passes downconverted signals (I and Q), which are schematically identical to each other,  to the baseband (BB) receiver section. The BB section is composed by two programmable low-pass filters, with programmable corner frequency for each filter, 12-bit ADC and four stages of decimating filters, each of the four decimation filters can be bypassed. 
+The gain control is achieved by a preprogrammed gain index map, a lookup table for example, this map distributes gain in order to achieve optimal performance at each level. This optimal behavior can be achieved by enabling AGC, which can run in two modes, fast and slow gain control. This allow for the BBP to make gain adjustments as needed.
+Each channel also contains independent RSSI measurement capability, DC offset tracking and all other circuitry needed for self-calibration.
+
+The receiver ADC is a 12-bit sigma-delta ($\Sigma-\Delta$) ADC which allows adjustable sample rates. This ADC produces data streams from the received signals and such digitalized signals can be conditioned further by a series of decimation filters and a 128-tap FIR filter with additional decimation settings.
+The sampling rate of each digital filter is adjustable through changes in the decimation factors to produce the needed data rate.
+
+In short, the Receiver chain has:
+
+\begin{itemize}
+	\item LNA - Low noise Amplifier
+	\item Matched in-phase amplifier;
+	\item Quadrature Amplifier;
+	\item Band Shaping Filters;
+	\item Analog low pass filters;
+	\item 12-bit DAC;
+	\item 4 stages of decimation filters (128-tap FIR filters);
+	\item Automatic gain Control;
+\end{itemize}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{./figures/rx_chain}
+    \caption{ Receiver Signal Path
+    \label{fig:rxchain}}
+\end{figure}
+
+
+\subsection{Transmitter}
+
+Like the receiver section, the transmitter section contains two identical and independently controller channels, which share the same frequency synthesizer,  that provide all digital signal processing, mixed signal and RF blocks necessary to implement a direct conversion system from digital data to RF.
+The Tx signal path receives from the BBP 12-bit 2s complement I-Q format data in the digital interface and each channel goes through a 128-tap FIR filter with interpolation options, which is fully programmable. Then the signal goes through a series of additional interpolation filters that manipulates the signal with additional filtering and data rate interpolation before reaching the 12-bit DAC, note that all these filtering and interpolation steps can be bypassed if desired.
+Each 12-bit DAC has an adjustable sampling rate and its analog output passes through to low pass filters to remove any sampling artifacts before going to the RF mixer, these low pass filters corner frequencies can be programmable too. After all these filtering and analog conversion steps, the I and Q signals are recombined and modulated in the carrier frequency, which can be adjusted by changing the synthesizer frequency. These analog combined signals passes through additional analog filters for better band shaping and then it can be transmitted to the output amplifier. Each Transmitting channel provides wide attenuation adjustment range with fine granularity in order to optimize SNR.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{./figures/tx_chain}
+    \caption{ Transmitter Signal Path
+    \label{fig:txchain}}
+\end{figure}
+
+
+Identical to the receiver chain, the transmitter chain has also built-in self-calibration circuitry into each transmitting channel providing an automatic real-time adjustment. The transmitter also provides a TX monitor block for each channel, this block monitors the transmission output and routes it back through an unused receiver channel to the BBP for signal monitoring, but these monitoring option is only available in TDD mode operation while the receiver is idle.
+
+In short the transmission chain has:
+
+\begin{itemize}
+	\item 128-tap FIR filters;
+	\item Interpolation Filters;
+	\item 12-bit DAC;
+	\item Analog Low-pass Filters;
+	\item Additional band shaping analog filters;
+	\item Attenuation adjustment;
+	\item self-calibration circuits;
+	\item Tx signal Monitor.
+\end{itemize}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{./figures/ad9361_block_diagram}
+    \caption{ AD9361 Block Diagram
+    \label{fig:ad9361blk}}
+\end{figure}
+
+\subsection{Filtering}
+
+In both receiver and transmitter there are:
+\begin{description}
+	\item[Receiver] \hfill \\
+	\begin{itemize}
+		\item Low pass filter : band shape to reduce adjacent-channel interference.
+		\item Decimation Filter: up convert from the digital baseband rate (64.11MSPS max) to the actual ADC (640MSPS) rate.
+	\end{itemize}
+	\item[Transmitter] \hfill \\
+\begin{itemize}
+		\item Low pass filter : remove sampling artifacts
+		\item Interpolation Filter : down convert from the digital baseband rate (64.11MSPS max) to the actual DAC (320MSPS) rate.
+	\end{itemize}
+\end{description}
+
+In both digital and analog implementations these filters have impact the magnitude and the phase in passband, such behavior must be compensated in the system, and this compensation is usually done inside the 128-tap FIR filter. The FIR filter is not only used for low pass filter realization but also to compensate for magnitude and phase impacts created by the analog and digital half band filters in the desired baseband area. 
+
+These filters depend in various other systems to work properly, such systems are sample rates, clock, data rates which sets the half band filters, and the desired RF bandwidth, which sets the analog filters. the process of loading a filter and after changing anything in the system will negatively affect the overall baseband performance. 
+
+There is a filter too created by analog devices,which designs a low-pass filter and sets the FIR coefficients in order to ensure compensation for magnitude and phase changes in the analog or half band filters.
+
+\subsection{Clocking}
+
+%reescrever
+The AD9361 has a series of internal PLL to generate and manipulate clock signals. There are fractional-n PLLs that generate the transmitter and receiver LO frequencies and there are the baseband PLL (BBPLL) used for the data converters, digital filters and I/O ports. All the frequency signals are generated using these PLLs clock outputs.
+
+All the PLLs require a reference clock input and for this there is the digitally controlled oscillator (DXCO) function, which is an in-chip programmable and variable capacitor, such capacitor can tune the crystal frequency variance before entering the system, having a precision of +/- 6 ppm it results in a more accurate reference clock and can be used, if needed, for synchronization purposes. this function can also be used together with the on-chip temperature sensor to provide temperature compensation depending enviroment in which the chip will be used. For the reference clock there are two options:
+
+\begin{description}
+	\item[External Oscillator] \hfill \\
+	In this option and external clock signal can be connected in the XTALP pin (Leaving the XTALP pin unconnected), this external clock frequency may vary from 10 MHz to 80 MHz. Such type of setup is needed when a wireless basestation (BTS) reference clock is locked to a master clock, and in such systems there is no or less need for clock synchronization.
+
+	\item[Dedicated Crystal] \hfill \\
+	In this option a dedicated crystal, with frequency varying from 19 MHz to 50 MHz, is connected in the XTALP and XTALN pins. This setup is usually used in wireless user equipment (UE), which do not need to be locked to a master clock but they do need to adjust periodically the LO frequency in order to maintain a connection with a BTS. The BTS periodically informs the UE of its frequency error relative to the BTS and the BBP can make adjustments to the reference clock and thus adjust the LO frequency if needed.
+
+\end{description} 
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{./figures/dcxo_graph}
+    \caption{ DCXO Behavior Graph
+    \label{fig:pll}}
+\end{figure}
+
+\subsection{Synthesizers}
+
+\begin{description}
+	\item[RF PLLs] \hfill \\
+	The AD9361 contains two identical synthesizers to generate the required LO signals for the RF signal path, one for the receiver and one for the transmitter. The PLL synthesizers are fractional-n PLLs with completely integrated VCOs and loop filters, requiring no other external components. In TDD operation mode, the synthesizers turn ON and OFF appropriate for the TX and RX frames, however in FDD TX PLL and RX PLL are activated at the same time.
+
+	\item[BB PLL] \hfill \\
+	The AD9361 contains also a baseband PLL synthesizer, which generate all the baseband related clock signals. The BBPLL feeds all the baseband related clock signals to ADC, DAC (Sampling Clock), DATA\_CLK signal and all data framing signals. This PLL has a frequency range from 700 Mhz to 1400 Mhz, and can be changed based on system requirements.
+
+\end{description}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{./figures/pll_ref_block}
+    \caption{ AD9361 PLL Reference Block Diagram
+    \label{fig:pll}}
+\end{figure}
+
+\subsection{Digital Data Interface}
+
+The AD9361 uses parallel data ports to transfer data between the device and the BBP. These data ports can be configured either single-ended CMOS format or LVDS format (used in this work). Both formats can be configured in multiple arrangements to adequate the system requirements for data transfer and connections. These arrangements can be of single port data bus, dual port data bus, single data rate, double data rate and other various combinations compatible with the device.\\
+Bus transfers are controlled using hardware handshake signalling, these two ports can be operated in TDD (bidirectional) or FDD (full duplex) where half of the bits are used for transmitting and the other half is used for receiving. The interface can also be configured to use only one of the data ports ( usually used in applications that do not require high data rates or samples).\\
+The communication between the BBP processor and the AD9361 rely on some signals to properly work, which are DATA\_CLK, FB\_CLK and RX\_FRAME, its operation is detailed below:
+
+\begin{description}
+	\item[DATA\_CLK Signal] \hfill \\
+	RX sends the signal DATA\_CLK to the BBP, which can be used when receiving data. DATA\_CLK can be used to control data sampling time, which can be single data rate (data is captured on rising clock edge) or double data rate (data is captured on both rising and falling clock edges). This can be applied using single or dual data port.
+
+	\item[FB\_CLK Signal] \hfill \\
+	The FB\_CLK signal must have the same frequency and duty cycle as DATA\_CLK and like DATA\_CLK it is used as timing reference for the interface. FB\_CLK allows source synchronous with rising edge capture for burst control signals and can be used like DATA\_CLK for rising edge, single data rate mode or in both edge capture, double data rate mode for transmit signal bursts.
+
+	\item[RF\_FRAME Signal] \hfill \\
+	The RF\_FRAME signal is generated by the device whenever the receiver outputs valid data. RF\_FRAME has two modes:
+	\begin{itemize}
+		\item \textbf{Level Mode:} RF\_FRAME stays high as long as the data is valid.
+		\item \textbf{Pulse Mode:} RF\_FRAME pulses with 30% duty cycle.
+	\end{itemize}
+	The BBP must provide a TX\_FRAME that indicates beginning of a valid data transmission with a rising edge. The TX\_FRAME operates similarly as the RF\_FRAME, on Level Mode or Pulse Mode.
+
+\end{description}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{./figures/ad9361_digital_interface}
+    \caption{ AD9361 Digital Data Interface
+    \label{fig:ad9361diginterface}}
+\end{figure}
+
+
+\subsection{Enable State Machine}
+
+The AD9361 has an Enable State Machine (ENSM) which allows real-time control over the current state of the device. The device can be place in several states like:
+
+\begin{itemize}
+		\item \textbf{Wait:} Power save, synthesizers disabled.
+		\item \textbf{Sleep:} Wait with all clocks and BBPLLs disabled.
+		\item \textbf{TX:} TX chain enabled.
+		\item \textbf{RX:} RX chain enabled.
+		\item \textbf{FDD:}TX and RX chains enabled.
+		\item \textbf{Alert:} Synthesizers enabled.
+	\end{itemize}
+	This ENSM can be controlled either by SPI or PIN (GPIO for example), where the SPI control mode is for a non real-time operation and the PIN control mode is for a much faster and real-time control.
+	
+
+\begin{description}
+	\item[SPI Control Mode] \hfill \\
+	In SPI control mode, the BBP writes registers asynchronously by using SPI protocol to access the addresses, and by writing these registers the state machine advances the current state to the next state. SPI communication is considerece asynchronous to the DATA\_CLK because the SPI\_CLK can be derived from another clock source, where BBP and the device does not share the same clock source. This control method is recommended when there is no need for a real-time control.
+
+	\item[Pin Control Mode] \hfill \\
+	In Pin control mode, there are pins dedicated to activate some states of the ENSM, like ENABLE pin and TXNRX pin, this mode allows a real-time control of the current state. This method is recommended in a system where the BBIC has extra pins to spare with the real-time control outputs, this 2-wire interface can control the state of the device.
+	To advance the current state to the next state of the ENSM, the enable function of the ENABLE pin can be driven by either pulse or level,if the pulse is used the minimum width of the pulse needs to be equal as the FB\_CLK cycle.
+	In FDD mode, the ENABLE and TXNRX pins can be remapped to be used as real-time control of the TX and RX data transfers. In this mode ENABLE enables or disables the receive signal and TXNRX enables or disables the transmit signal, using such mode  causes the ENSM to be removed from the system for data flow control and is replaced by these pins.
+
+\end{description}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{./figures/fdd_ensm}
+    \caption{ FDD Enable State Machine
+    \label{fig:pll}}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{./figures/tdd_ensm}
+    \caption{ TDD Enable State Machine
+    \label{fig:pll}}
+\end{figure}
+
+
+\subsection{SPI Interface}
+
+The AD9361 uses a SPI interface for communication with the BBP. Throught SPI is possible to access all the device registers. The PSI interface can be configured as a 4-wire interface with dedicated transmit and receive pins, duplex, or as 3-wire interface with bidirectional data port. 
+Write commands have a 24-bit format where the first six bits are for setting the bus direction and number of bytes to transfer, the next 10 bits set the address where the data is to be written and the final eight bits are the data to be transferred to the specific register address (MSB to LSB), a LSB-first format is also supported.
+Read commands follow a similar format, the difference is that the first 16 bits are transferred on the SPI\_DI pin and the final eight are read from the AD9361, either using SPI\_DO (4-wire interface) or SPI\_DI (3-wire interface).
+
+\subsection{Auxiliary Converters}
+
+\begin{description}
+
+	\item[AUXADC] \hfill \\
+	The AD(361 contains an auxiliary ADC that can be used to monitor some system functions such as temperature or power output, it is a 12-bit converter and has an input range of 0V to 1.25V. The SPI can read the last value latched at the output of the ADC when it is enabled for use, there is also a multiplexer that permits to select between AUXADC and built-in temperature sensor.
+
+	\item[AUXDAC1 and AUXDAC2] \hfill \\
+	The AD(361 also has two identical auxiliary DACs which can be used to provide power amplifier (PA) bias or other system functionality. Both the DACs are 10-bit wide and have an output range of 0.5 V to 0.3V and have a current drive of 10mA. The DACs can be directly controlled by the ENSM.
+
+\end{description}
+
+\subsection{Applications}
+
+
+\section{FMCommS2}
+
+FMCommS2 is basically evaluation board for the AD9361 that has a FPGA Mezzanine Card (FMC) connector for interfacing with the BBP (Usually FPGA). The FMComms2 has 5 SMA connectors, 2 for Rx, 2 for Tx and one for external reference clock input. The FMComms2 provides a 2x2 RF configuration, extended from the AD9361, and has  a narrow tuning range balun, which is performance optimized for 2.4GHz.
+The FMComms2 is a transceiver intended for use in RF applications such 3G or 4G BTS or SDR. Its programmability and wideband capability make it ideal for broad range of transceiver applications and make it very attractive for the new C-RAN paradigm.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{./figures/fmcomms2_pic}
+    \caption{ FMComms2 and its components
+    \label{fig:fmcomm}}
+\end{figure}
+
+
+\subsection{Functional Overview}
+
+The Block diagram show that there are 4 main functional partitions - receiver path, transmit path, clocking and power supply. Since the FMComms2 incorporates and extends the basic functionalities of the AD9361, thus the data path is fully integrated into the AD9361.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{./figures/fmcomms2_bd}
+    \caption{ FMComms2 and FPGA Block Diagram
+    \label{fig:fmcommbd}}
+\end{figure}
+
+
+
+\begin{description}
+	\item[Receive] \hfill \\
+	\begin{itemize}
+		\item Support up to 2 direct conversion RF receiver channels.
+		\item Fully integrated frequency synthesizers (including loop filter).
+		\item Data path consists in LNA, Demodulator, LPF, ADC and digital filters.
+		\item \textit{AGC:} quadrature calibration and DC offset calibration.
+		\item \textit{NF:} 2.5 dB at 1Ghz.
+		\item \textit{ADC:} Continuous time sigma-delta ( $\Sigma - \Delta$), 640 MSPS.
+		\item \textit{Digital FIlter:} 128 COmplex taps with decimation between 2 and 48.
+		\item \textit{Gain:} 1dB step size, 80 dB analog Range, 30 db digital range (post ADC scaling).
+		\item On-chip sensor for temperature corrected RSSI.
+	\end{itemize}
+
+	\item[Transmit] \hfill \\
+\begin{itemize}
+		\item Supports up to 2 direct conversion RF transmit channels.
+		\item Fully integrated frequency synthesizers (including loop filter).
+\item Data path consists of digital filters, DAC and modulators.
+		\item \textit{Digital FIlter:} 128 complex taps with interpolation between 2 and 48.
+		\item \textit{Gain:} 0.5 dB step size, 86 dB range.
+		\item \textit{ADC:} 340 MSPS.
+	\end{itemize}
+
+	\item[Clocking] \hfill \\
+		The FMComms2 board has a integrated crystal oscillator of 40 Mhz and has a SMA input for external clock input.
+
+	\item[Control/Monitor] \hfill \\
+		The board allows real time control and monitoring via dedicated pins, such pins functionality are programmable. The control and monitor programming configuration is specified in the ad9361 section \cite{sec:ad9361}.
+
+\end{description}
+
+\section{Basic Mathematical Background}
+
+\subsection{Complex Modulation}
+
+\begin{eqnarray}
+	I = sin(\omega \times t)\\
+	Q = cos(\omega \times t)
+\end{eqnarray}
+
+\begin{equation}
+	cos(\omega \times t) = sin(\frac{\pi}{2} - (\omega \times t))
+\end{equation}
+
+then:
+
+\begin{eqnarray}
+	I = sin(\omega \times t)\\
+	Q = sin(\frac{\pi}{2} - (\omega \times t))
+\end{eqnarray}
+
+These are the two signals coming out of the DAC, two sine waves, phase offset from each other, wich is called IQ.
+
+\subsection{Basic Modulation Mathematics}
+
+Start to modulating signal from a amplitude perspective:
+
+\begin{eqnarray}
+LO_I = A_x cos(k)\\
+LO_Q = B_x sin(k)
+\end{eqnarray}
+
+We still have the carrier:
+
+\begin{equation}
+LO_I = cos(\omega) ; LO_Q = sin(\omega)
+\end{equation}
+
+Will result:
+
+\begin{eqnarray}
+LO_I \times I = A_x cos(k) \times sin(\omega)\\
+LO_Q \times I = B_x sin(k) \times cos(\omega)
+\end{eqnarray}
+
+
+That gives the output:
+
+\begin{equation}
+x(t)=A_x cos(k)\times sin(\omega)+ B_x sin(k)\times cos(\omega)
+\end{equation}
+
+This does not match with any trigonometrical identities and it is easier to use Euler\'s formula:
+
+\begin{eqnarray}
+sin(x)=(\frac{1}{2}e^{-jx} - \frac{1}{2}e^{jx})\\
+cos(x)=(\frac{1}{2}e^{-jx} + \frac{1}{2}e^{jx})
+\end{eqnarray}
+
+Therefore:
+
+\begin{equation}
+x(t)=A_x (\frac{1}{2}e^{-jk} + \frac{1}{2}e^{jk})\times (\frac{1}{2}e^{-j\omega} - \frac{1}{2}e^{j\omega})+ B_x (\frac{1}{2}e^{-jk} - \frac{1}{2}e^{jk})\times (\frac{1}{2}e^{-j\omega} + \frac{1}{2}e^{j\omega})
+\end{equation}
+
+\begin{equation}
+x(t)=\frac{A}{2} (e^{-jk} + e^{jk})\times (e^{-j\omega} - e^{j\omega})+ \frac{B}{2} (e^{-jk} - e^{jk})\times (e^{-j\omega} + e^{j\omega})
+\end{equation}
+
+If we expand we get:
+
+\begin{equation}
+x(t)=\frac{1}{2} ((Ae^{-jk-j\omega} + Ae^{jk-j\omega} - Ae^{-jk+j\omega} - Ae^{jk+j\omega}) + (Be^{-jk-j\omega} - Be^{jk-j\omega} - Be^{-jk+j\omega} + Be^{jk+j\omega}))
+\end{equation}
+
+
+And then:
+
+\begin{equation}
+x(t)=\frac{1}{2} ((A+B)e^{-jk-j\omega} + (A-B)e^{jk-j\omega} - (A-B)e^{-jk+j\omega} - (A+B)e^{jk+j\omega})
+\end{equation}
+
+It is possible to rearrange as:
+
+\begin{equation}
+x(t)=\frac{1}{2} \times ((A+B)(e^{-jk-j\omega} - e^{jk+j\omega}) + (A-B)(e^{jk-j\omega} - e^{-jk+j\omega}))
+\end{equation}
+
+And then:
+
+\begin{equation}
+x(t)=(\frac{A+B}{2} )(sin(k+\omega)) + (\frac{A-B}{2} )(sin(k-\omega))
+\end{equation}
+
+If this due to amplitude mismatch, this creates an image on the other side of the local oscillator.
+
+
+
+
