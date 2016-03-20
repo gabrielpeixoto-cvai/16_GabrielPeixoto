@@ -7,12 +7,12 @@ As we could see in the previous chapter RAN as a service and cloud requires
 devices which are both scalable and reconfigurable following customer demands,
 in order to accomplish that there is a lot of schemes and theories involved,
 but this work will focus on \emph{Software Defined Radio} which is defined
-according to the \emph{SDR Forum} \ref{web:sdrforum}as:
+according to the \emph{SDR Forum} \cite{web:sdrforum} as:
 
 %citar sdr forum
 say{radios that provide software control of a variety of modulation techniques,
 wide-band or narrow-band operation, communications security functions
-(such as hopping), and waveform requirements of current & evolving standards
+(such as hopping), and waveform requirements of current \& evolving standards
 over a broad frequency range.}
 
 In short, Software-Defined Radio (SDR) refers to the technology wherein software
@@ -46,7 +46,7 @@ environment, where radio infrastructure would adapt itself to the customer needs
 \section{Applications}
 \label{sec:sdr_app}
 
-As stated before  at \cite{sdr:overview}, sdr has a wide range of applications,
+As stated before  at \ref{sdr:overview}, sdr has a wide range of applications,
 and very interesting advantages over the current systems. This work shall focus
 on the C-RAN and educational applications of \emph{Software Defined Radio}.
 
@@ -71,7 +71,7 @@ the main advantages of the use of SDR in CRAN environment, according to \cite{da
     \item Easier and cheaper maintenance;
     \item Remote Control over the systems.
     \item Worldwide Roaming made easier.
-\end{Itemize}
+\end{itemize}
 
 
 \subsection{Educational Environment}
@@ -91,7 +91,7 @@ suitable platform to teach digital signal processing, digital communications and
 
 A very famous setup for academic and research in SDR is the duo Gnuradio \cite{web:gnuradio} and
 USRP \cite{web:usrp} which can easily implement a communication system with drag
-and drop interface\ref{akbook}.\\
+and drop interface\cite{akbook}.\\
 
 
 \section{Implementations}
@@ -105,7 +105,7 @@ Software defined radio implementations vary widely depending on available equipm
 
  \begin{figure}[htbp]
      \centering
-     \includegraphics[width=0.65\textwidth]{./figures/sdr_basic_arch}
+     \includegraphics[width=0.8\textwidth]{./figures/sdr_basic_arch}
      \caption{ Software Defined Radio Basic Architecture
      \label{fig:sdr_basic}}
  \end{figure}
@@ -118,7 +118,7 @@ to implement the signal processing functions and some cheap ADC and DAC chips ca
 compose the SDR system.\\
 
 The most commercial and famous implementation of SDR is Gnuradio+USRP, USRP
-stands for Universal Software Radio Peripheral \ref{web:usrp} and Gnuradio \ref{web:gnuradio}
+stands for Universal Software Radio Peripheral \cite{web:usrp} and Gnuradio \cite{web:gnuradio}
 is a software for PC which has various digital signal processing functions and
 modulation schemes and comes with a driver to use USRP. The USRP itself is
 basically and FPGA hooked with a transceiver, so this pair is broadly used in
