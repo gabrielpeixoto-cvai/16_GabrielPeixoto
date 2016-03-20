@@ -136,7 +136,7 @@
 \RequirePackage[paper=a4paper,bottom=2cm,left=3cm,right=2cm,top=3cm,headheight=7mm,headsep=5mm,marginparsep=5mm,marginparwidth=10mm]{geometry}
 \RequirePackage{times}
 \RequirePackage{tocbibind}
-\RequirePackage [brazil]{babel}
+%\RequirePackage [brazil]{babel}
 \RequirePackage{graphicx}
 \RequirePackage{indentfirst}
 \RequirePackage[small]{caption}
