@@ -3,12 +3,12 @@
 \include{include}
 \include{packages}
 
-\ufpaTitulo{An FPGA-Based Radion Frontend for LTE Transmission on Cloud RAN}
+\ufpaTitulo{An FPGA-Based Radio Frontend for LTE Transmission on Cloud RAN}
 
 \ufpaAutor{Gabriel Peixoto de Carvalho}
 \ufpaSegundoAutor{}
 \ufpaOrientador{Prof. Aldebaro Barreto da Rocha Klautau Junior}
-\ufpaCoordenadorCurso{Prof. Jos\'{e} Augusto de Lima Barreiros}
+\ufpaCoordenadorCurso{Prof. Francisco Carlos Bentes Frey Muller}
 
 \ufpaCoOrientador{Prof. Wilson Pacheco Ferreira}
 \ufpaMembroBancaA{Prof. Francisco Carlos Bentes Frey Muller}
@@ -29,7 +29,7 @@
 
 \begin{ufpaOferecimento}
 \index{Oferecimento@Oferecimento}%
-\addcontentsline{toc}{chapter}{Dedicatória}
+\addcontentsline{toc}{chapter}{Dedicatoria}
 
 \end{ufpaOferecimento}
 
@@ -48,11 +48,11 @@ Gabriel Peixoto de Carvalho
 \end{ufpaAgradecimentos}
 
 %%%%%%%%%%%%%%%%%%%%
-%      Epígrafe     %
+%      Epï¿½grafe     %
 %%%%%%%%%%%%%%%%%%%%
 
 \begin{ufpaEpigrafe}
-Viva como se você fosse morrer amanhã. Aprenda como se você fosse viver para sempre.\\
+Viva como se vocï¿½ fosse morrer amanhï¿½. Aprenda como se vocï¿½ fosse viver para sempre.\\
 \begin{flushright}Mahatma Gandhi\end{flushright}
 \end{ufpaEpigrafe}
 
@@ -60,10 +60,10 @@ Viva como se você fosse morrer amanhã. Aprenda como se você fosse viver para sem
 %  Lista de Siglas  %
 %%%%%%%%%%%%%%%%%%%%%
 
-\chapter*{Lista de Siglas} \label{sec:siglas}
+\chapter*{List of Acronyms} \label{sec:siglas}
 \input{siglas}
 
-\chapter*{Lista de Símbolos} \label{sec:simbolos}
+\chapter*{List of Simbols} \label{sec:simbolos}
 \input{simbolos}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -73,7 +73,7 @@ Viva como se você fosse morrer amanhã. Aprenda como se você fosse viver para sem
 \listoffigures \clearpage \listoftables \clearpage
 
 %%%%%%%%%%%%%%%%%%%%
-%      Sumário     %
+%      Sumï¿½rio     %
 %%%%%%%%%%%%%%%%%%%%
 
 \tableofcontents    \clearpage
@@ -88,44 +88,44 @@ Viva como se você fosse morrer amanhã. Aprenda como se você fosse viver para sem
 \end{ufpaResumo}
 
 \begin{abstract}
-    
-The evolution of mobile services in terms of access technologies and application 
-layers is driving a huge change in mobile communication systems. A recent hot 
-topic in the field is the rise of the cloud computing paradigm, thus the idea 
-known as cloud radio access networks (Cloud-RAN) is growing in the industry. 
-This behavior comes from the potential of cloudification for improvement in the 
-efficiency of resource allocation, manageability and power consumption, aspects 
+
+The evolution of mobile services in terms of access technologies and application
+layers is driving a huge change in mobile communication systems. A recent hot
+topic in the field is the rise of the cloud computing paradigm, thus the idea
+known as cloud radio access networks (Cloud-RAN) is growing in the industry.
+This behavior comes from the potential of cloudification for improvement in the
+efficiency of resource allocation, manageability and power consumption, aspects
 inherent of traditional RANs.\\
 
-Thus, with the emerging of C-RAN, several questions about how to implement and 
-which tools to use come naturally. This work aims to evaluate the potential of a 
-programmable fronthaul radio interface, as known, actual network does not have 
-the adaptative capability needed for the C-RAN. For this work a setup of a radio 
+Thus, with the emerging of C-RAN, several questions about how to implement and
+which tools to use come naturally. This work aims to evaluate the potential of a
+programmable fronthaul radio interface, as known, actual network does not have
+the adaptative capability needed for the C-RAN. For this work a setup of a radio
 unit, composed by two fpgas (one acting as the Baseband unit and other as the
-(digital front-end) of the radio unity) connected through ethernet and two 
-transceivers (analog front-end), one in each FPGA. Within this setup various 
-algorithms can be tested and can be evaluated in LTE scenarios because the 
+(digital front-end) of the radio unity) connected through ethernet and two
+transceivers (analog front-end), one in each FPGA. Within this setup various
+algorithms can be tested and can be evaluated in LTE scenarios because the
 transceiver works in LTE and C-RAN .\\
 
-This work shall focus on the evaluation of the radio interface and perform the 
-tests inherent to it, exploring FPGA adaptability and parallelism with the 
-internal and external communication protocols, and so exploring the advantages 
-of the transceiver used, the fmcomms2  development board (AD9361 chip) from 
-Analog devices, which is a device broadly used in software defined radio 
+This work shall focus on the evaluation of the radio interface and perform the
+tests inherent to it, exploring FPGA adaptability and parallelism with the
+internal and external communication protocols, and so exploring the advantages
+of the transceiver used, the fmcomms2  development board (AD9361 chip) from
+Analog devices, which is a device broadly used in software defined radio
 hardwares, as known as USRPs (Universal Software Radio Peripheral). \\
 
-An aspect of the transceiver that is very attractive to the C-RAN paradigm is 
-its configurability and scalability, capable of real-time adjustments in the 
-sampling frequency or operation mode from 2x2 to 4x4 MIMO (Multiple Inputs and 
-Multiple Outputs), this real-time adaptive characteristic is ideal to C-RAN 
+An aspect of the transceiver that is very attractive to the C-RAN paradigm is
+its configurability and scalability, capable of real-time adjustments in the
+sampling frequency or operation mode from 2x2 to 4x4 MIMO (Multiple Inputs and
+Multiple Outputs), this real-time adaptive characteristic is ideal to C-RAN
 environment.\\
 
-The results are generated primarily aiming a fidelity in the transmitted and 
-receiver signals, after these results are conclusive it is possible to proceed 
-to more complex tests and approaches of this setup. Another test made was the 
-analysis of the synchronization between  receiver and transceiver using a CIPRI 
-emulator implemented in FPGA logic, which is the standard fronthaul interface, 
-in this test it is possible to observe the advantages of the programmable radio 
+The results are generated primarily aiming a fidelity in the transmitted and
+receiver signals, after these results are conclusive it is possible to proceed
+to more complex tests and approaches of this setup. Another test made was the
+analysis of the synchronization between  receiver and transceiver using a CIPRI
+emulator implemented in FPGA logic, which is the standard fronthaul interface,
+in this test it is possible to observe the advantages of the programmable radio
 front-end in the system.\\
 
 
@@ -140,14 +140,21 @@ front-end in the system.\\
 
 \part{Introduction}
 \input{chapters/cap_introducao}
+
 \part{Literature Review}
-\input{chapters/cap_synchronization}
+\input{chapters/cap_sdr}
+\input{chapters/cap_cran}
+\input{chapters/cap_digitalcomm}
+\input{chapters/cap_lte}
+
 \part{Implementation}
 \input{chapters/cap_fmcomms2}
 \input{chapters/cap_fpga}
 \input{chapters/cap_setup}
+
 \part{Final Results}
 \input{chapters/cap_results}
+
 \part{Conclusion and Future Work}
 \input{chapters/cap_conclusions}
 
@@ -155,7 +162,7 @@ front-end in the system.\\
 %   Referencias bibliograficas   %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\renewcommand\bibname{Referências Bibliográficas}
+\renewcommand\bibname{References}
 %\bibliographystyle{../../../public/ABNT-20020112}
 %\bibliographystyle{../public/IEEEtran}
 %\bibliographystyle{../../../Public/IEEEtran_pt}
