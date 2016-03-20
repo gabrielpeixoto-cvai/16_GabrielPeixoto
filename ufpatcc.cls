@@ -5,7 +5,7 @@
 %% Classe ``inetese''
 %%
 %% Para as disserta��es de mestrado e teses de doutorado
-%% do curso de p�s-gradua��o em Ci�ncia da Computa��o 
+%% do curso de p�s-gradua��o em Ci�ncia da Computa��o
 %% da Universidade Federal de Santa Catarina.
 %%
 %% Mantida pelo GruTeX (http://www.inf.ufsc.br/grutex)
@@ -105,9 +105,9 @@
 
 \typeout{}
 \typeout{***********************************************}
-\typeout{* ufpatcc.cls vers�o 0.8 - 08/10/2015}
-\typeout{* Estilo para Trabalho de Conclus�o de Curso}
-\typeout{* Universidade Federal do Par�}
+\typeout{* ufpatcc.cls versao 0.8 - 08/10/2015}
+\typeout{* Estilo para Trabalho de Conclusao de Curso}
+\typeout{* Universidade Federal do Para}
 \typeout{* Desenvolvido no LaPS: http://www.laps.ufpa.br}
 \typeout{***********************************************}
 \typeout{}
@@ -147,7 +147,7 @@
 \setlength{\belowcaptionskip}{.5cm}
 
 %%%%%
-%% 
+%%
 %% Comandos para formata��o de tamanhos (margens, espa�amento) e cabecalho
 %%
 %%%%%
@@ -155,15 +155,15 @@
 %  \setlength{\parindent}{1em}
   \setlength{\parindent}{1cm}
   \renewcommand{\baselinestretch}{1.5}
-  
+
   \flushbottom
-  
+
   \pagestyle{fancy}
   \renewcommand{\headrulewidth}{0pt}
   \fancyhead{}
   \fancyhead[R]{\thepage}
   \fancyfoot{}
-  
+
   \fancypagestyle{plain}{%
     \fancyhead{}
     \fancyfoot{}
@@ -281,7 +281,7 @@
 \newcommand*{\ufpaPaginaDeRosto}{
   \pagenumbering{roman}
   \thispagestyle{empty}
-  
+
   \begin{figure}[ht]
   \begin{center}
   \includegraphics[height=3cm]{ufpalogo}
@@ -303,11 +303,11 @@
 
 \begin{flushright}
     \vspace{4cm}
-  
+
     \fontsize{12pt}{12pt}\selectfont
     \textbf{\ufpa@Autor}
 \end{flushright}
-  
+
  \vspace{4cm}
 
   \begin{center}
@@ -319,12 +319,12 @@
 }
 
 %%%%%%%%%%%%%%%%%%%%%
-%Inicio da P�gina de rosto 2 
+%Inicio da P�gina de rosto 2
 %%%%%%%%%%%%%%%%%%%%%
 \newcommand*{\ufpaPagRostodo}{
   \pagenumbering{roman}
   \thispagestyle{empty}
-  
+
   \begin{figure}[ht]
   \begin{center}
   \includegraphics[height=3cm]{ufpalogo}
@@ -339,7 +339,7 @@
 %     CURSO DE ENGENHARIA DA COMPUTA\c{C}\~{A}O
 
     \vspace{4cm}
-  
+
     \fontsize{12pt}{12pt}\selectfont
     \textbf{\ufpa@Autor}
     \vspace{1cm}
@@ -351,7 +351,7 @@
 % \begin{flushright}
 % \begin{minipage}[right]{7cm}
 % TRABALHO SUBMETIDO AO COLEGIADO DO CURSO DE ENGENHARIA DA COMPUTA\c{C}\~{A}O PARA A OBTEN\c{C}\~{A}O
-% DO GRAU DE ENGENHEIRO DA COMPUTA\c{C}\~{A}O. 
+% DO GRAU DE ENGENHEIRO DA COMPUTA\c{C}\~{A}O.
 %  \end{minipage}
 % \end{flushright}
 \begin{flushright}
@@ -395,11 +395,11 @@
     \fontsize{12pt}{12pt}\selectfont
     \textbf{\ufpa@Titulo}
     \vspace{1cm}
-    
+
   \end{center}
-    
+
   \normalsize \noindent
-  Este trabalho foi julgado adequado em \_\_/\_\_/\_\_\_\_ para a obten\c{c}\~{a}o do Grau de 
+  Este trabalho foi julgado adequado em \_\_/\_\_/\_\_\_\_ para a obten\c{c}\~{a}o do Grau de
   Engenheiro da Computa\c{c}\~{a}o, aprovado em sua forma final pela banca examinadora
   que atribuiu o conceito $\underline{ \qquad \qquad \qquad}$.
 
@@ -408,9 +408,9 @@
   \fontsize{11pt}{11pt}\selectfont
 
   \normalsize
-  \begin{flushright}   
+  \begin{flushright}
   \fontsize{11pt}{11pt}\selectfont
-  
+
   \ufpa@Assinatura{\ufpa@Orientador}
   ORIENTADOR
   \ufpa@Assinatura{\ufpa@CoOrientador}
