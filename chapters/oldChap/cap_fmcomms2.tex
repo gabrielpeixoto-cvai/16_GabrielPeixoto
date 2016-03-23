@@ -1,11 +1,11 @@
-\chapter{FMComms2}
-\section{AD9361}
+\section{FMComms2}
+\subsection{AD9361}
 \label{sec:ad9361}
 
-The AD9361 is a high performance RF transceiver. Its programmability and adaptability makes it ideal for a wide range of transceiver applications. This device combines a RF front end with a flexible and configurable mixed-signal baseband section and frequency synthesizers, simplified configuration digital interface to a processor. 
+The AD9361 is a high performance RF transceiver. Its programmability and adaptability makes it ideal for a wide range of transceiver applications. This device combines a RF front end with a flexible and configurable mixed-signal baseband section and frequency synthesizers, simplified configuration digital interface to a processor.
 The AD9361 operates from 70 MHz to 6.0GHz range with supported channel bandwidths from 200 KHz to 56 MHz and the AD9361 is a 2 Rx and 2 Tx device packed in a 10mm x10mm, 144 ball chip package ball grid array (CSP\_BGA).
 
-\subsection{General Description}
+\subsubsection{General Description}
 
 AD9361 is a highly integrated RF frequency transceiver capable of being configured for a wide range of applications, including 3g and 4g frequency applications. AD9361 and AD9364 almost the same hardware and specifications, the difference is that AD9361 is a 2x2 MIMO and AD9364 is a 1x1 \cite{ad9361_wiki}.
 The programmability allows the AD9361 to be operated in Frequency Division Duplex (FDD) and Time Division Duplex (TDD) systems, allowing this transceiver to operate in a variety of communication standards. Another interesting feature is the capability of integration with a wide range of BBPs (Baseband Processors) using a single or dual 12-bit parallel data port or a 12-bit LVDS (Low voltage Differential signaling), which uses the FMC connector in the FMCommS2 \ref{sec:fmcomms2}.
@@ -19,12 +19,12 @@ This configurability and adaptability is very attractive for Software Defined Ra
     \label{fig:ad9361func}}
 \end{figure}
 
-\subsection{Receiver}
+\subsubsection{Receiver}
 
 The receiver section has all the blocks necessary to receive analog RF signals and convert them to digital data which can be used by the BBP. there are two independently controlled channels that share same frequency synthesizer. This characteristic makes possible to the AD9361 to operate in MIMO systems.
 
 Each channel has 3 inputs which can be multiplexed into the signal chain, making possible to use the AD9361 into systems with multiple antenna inputs. The Receiver is a direct conversion system that contains a Low noise amplifier (LNA) , followed by a matched in-phase and quadrature amplifier, mixers, and band shaping filters that down convert received signals to baseband for digitization. External LNAs can also be interfaced to the AD9361 allowing more flexibility in the design.
-The receiver signal path passes downconverted signals (I and Q), which are schematically identical to each other,  to the baseband (BB) receiver section. The BB section is composed by two programmable low-pass filters, with programmable corner frequency for each filter, 12-bit ADC and four stages of decimating filters, each of the four decimation filters can be bypassed. 
+The receiver signal path passes downconverted signals (I and Q), which are schematically identical to each other,  to the baseband (BB) receiver section. The BB section is composed by two programmable low-pass filters, with programmable corner frequency for each filter, 12-bit ADC and four stages of decimating filters, each of the four decimation filters can be bypassed.
 The gain control is achieved by a preprogrammed gain index map, a lookup table for example, this map distributes gain in order to achieve optimal performance at each level. This optimal behavior can be achieved by enabling AGC, which can run in two modes, fast and slow gain control. This allow for the BBP to make gain adjustments as needed.
 Each channel also contains independent RSSI measurement capability, DC offset tracking and all other circuitry needed for self-calibration.
 
@@ -52,7 +52,7 @@ In short, the Receiver chain has:
 \end{figure}
 
 
-\subsection{Transmitter}
+\subsubsection{Transmitter}
 
 Like the receiver section, the transmitter section contains two identical and independently controller channels, which share the same frequency synthesizer,  that provide all digital signal processing, mixed signal and RF blocks necessary to implement a direct conversion system from digital data to RF.
 The Tx signal path receives from the BBP 12-bit 2s complement I-Q format data in the digital interface and each channel goes through a 128-tap FIR filter with interpolation options, which is fully programmable. Then the signal goes through a series of additional interpolation filters that manipulates the signal with additional filtering and data rate interpolation before reaching the 12-bit DAC, note that all these filtering and interpolation steps can be bypassed if desired.
@@ -88,7 +88,7 @@ In short the transmission chain has:
     \label{fig:ad9361blk}}
 \end{figure}
 
-\subsection{Filtering}
+\subsubsection{Filtering}
 
 In both receiver and transmitter there are:
 \begin{description}
@@ -104,13 +104,13 @@ In both receiver and transmitter there are:
 	\end{itemize}
 \end{description}
 
-In both digital and analog implementations these filters have impact the magnitude and the phase in passband, such behavior must be compensated in the system, and this compensation is usually done inside the 128-tap FIR filter. The FIR filter is not only used for low pass filter realization but also to compensate for magnitude and phase impacts created by the analog and digital half band filters in the desired baseband area. 
+In both digital and analog implementations these filters have impact the magnitude and the phase in passband, such behavior must be compensated in the system, and this compensation is usually done inside the 128-tap FIR filter. The FIR filter is not only used for low pass filter realization but also to compensate for magnitude and phase impacts created by the analog and digital half band filters in the desired baseband area.
 
-These filters depend in various other systems to work properly, such systems are sample rates, clock, data rates which sets the half band filters, and the desired RF bandwidth, which sets the analog filters. the process of loading a filter and after changing anything in the system will negatively affect the overall baseband performance. 
+These filters depend in various other systems to work properly, such systems are sample rates, clock, data rates which sets the half band filters, and the desired RF bandwidth, which sets the analog filters. the process of loading a filter and after changing anything in the system will negatively affect the overall baseband performance.
 
 There is a filter too created by analog devices,which designs a low-pass filter and sets the FIR coefficients in order to ensure compensation for magnitude and phase changes in the analog or half band filters.
 
-\subsection{Clocking}
+\subsubsection{Clocking}
 
 %reescrever
 The AD9361 has a series of internal PLL to generate and manipulate clock signals. There are fractional-n PLLs that generate the transmitter and receiver LO frequencies and there are the baseband PLL (BBPLL) used for the data converters, digital filters and I/O ports. All the frequency signals are generated using these PLLs clock outputs.
@@ -124,7 +124,7 @@ All the PLLs require a reference clock input and for this there is the digitally
 	\item[Dedicated Crystal] \hfill \\
 	In this option a dedicated crystal, with frequency varying from 19 MHz to 50 MHz, is connected in the XTALP and XTALN pins. This setup is usually used in wireless user equipment (UE), which do not need to be locked to a master clock but they do need to adjust periodically the LO frequency in order to maintain a connection with a BTS. The BTS periodically informs the UE of its frequency error relative to the BTS and the BBP can make adjustments to the reference clock and thus adjust the LO frequency if needed.
 
-\end{description} 
+\end{description}
 
 \begin{figure}[htbp]
     \centering
@@ -133,7 +133,7 @@ All the PLLs require a reference clock input and for this there is the digitally
     \label{fig:pll}}
 \end{figure}
 
-\subsection{Synthesizers}
+\subsubsection{Synthesizers}
 
 \begin{description}
 	\item[RF PLLs] \hfill \\
@@ -151,7 +151,7 @@ All the PLLs require a reference clock input and for this there is the digitally
     \label{fig:pll}}
 \end{figure}
 
-\subsection{Digital Data Interface}
+\subsubsection{Digital Data Interface}
 
 The AD9361 uses parallel data ports to transfer data between the device and the BBP. These data ports can be configured either single-ended CMOS format or LVDS format (used in this work). Both formats can be configured in multiple arrangements to adequate the system requirements for data transfer and connections. These arrangements can be of single port data bus, dual port data bus, single data rate, double data rate and other various combinations compatible with the device.\\
 Bus transfers are controlled using hardware handshake signalling, these two ports can be operated in TDD (bidirectional) or FDD (full duplex) where half of the bits are used for transmitting and the other half is used for receiving. The interface can also be configured to use only one of the data ports ( usually used in applications that do not require high data rates or samples).\\
@@ -182,7 +182,7 @@ The communication between the BBP processor and the AD9361 rely on some signals 
 \end{figure}
 
 
-\subsection{Enable State Machine}
+\subsubsection{Enable State Machine}
 
 The AD9361 has an Enable State Machine (ENSM) which allows real-time control over the current state of the device. The device can be place in several states like:
 
@@ -195,7 +195,7 @@ The AD9361 has an Enable State Machine (ENSM) which allows real-time control ove
 		\item \textbf{Alert:} Synthesizers enabled.
 	\end{itemize}
 	This ENSM can be controlled either by SPI or PIN (GPIO for example), where the SPI control mode is for a non real-time operation and the PIN control mode is for a much faster and real-time control.
-	
+
 
 \begin{description}
 	\item[SPI Control Mode] \hfill \\
@@ -223,13 +223,13 @@ The AD9361 has an Enable State Machine (ENSM) which allows real-time control ove
 \end{figure}
 
 
-\subsection{SPI Interface}
+\subsubsection{SPI Interface}
 
-The AD9361 uses a SPI interface for communication with the BBP. Throught SPI is possible to access all the device registers. The PSI interface can be configured as a 4-wire interface with dedicated transmit and receive pins, duplex, or as 3-wire interface with bidirectional data port. 
+The AD9361 uses a SPI interface for communication with the BBP. Throught SPI is possible to access all the device registers. The PSI interface can be configured as a 4-wire interface with dedicated transmit and receive pins, duplex, or as 3-wire interface with bidirectional data port.
 Write commands have a 24-bit format where the first six bits are for setting the bus direction and number of bytes to transfer, the next 10 bits set the address where the data is to be written and the final eight bits are the data to be transferred to the specific register address (MSB to LSB), a LSB-first format is also supported.
 Read commands follow a similar format, the difference is that the first 16 bits are transferred on the SPI\_DI pin and the final eight are read from the AD9361, either using SPI\_DO (4-wire interface) or SPI\_DI (3-wire interface).
 
-\subsection{Auxiliary Converters}
+\subsubsection{Auxiliary Converters}
 
 \begin{description}
 
@@ -241,10 +241,10 @@ Read commands follow a similar format, the difference is that the first 16 bits 
 
 \end{description}
 
-\subsection{Applications}
+\subsubsection{Applications}
 
 
-\section{FMCommS2}
+\subsection{FMCommS2}
 
 FMCommS2 is basically evaluation board for the AD9361 that has a FPGA Mezzanine Card (FMC) connector for interfacing with the BBP (Usually FPGA). The FMComms2 has 5 SMA connectors, 2 for Rx, 2 for Tx and one for external reference clock input. The FMComms2 provides a 2x2 RF configuration, extended from the AD9361, and has  a narrow tuning range balun, which is performance optimized for 2.4GHz.
 The FMComms2 is a transceiver intended for use in RF applications such 3G or 4G BTS or SDR. Its programmability and wideband capability make it ideal for broad range of transceiver applications and make it very attractive for the new C-RAN paradigm.
@@ -257,7 +257,7 @@ The FMComms2 is a transceiver intended for use in RF applications such 3G or 4G 
 \end{figure}
 
 
-\subsection{Functional Overview}
+\subsubsection{Functional Overview}
 
 The Block diagram show that there are 4 main functional partitions - receiver path, transmit path, clocking and power supply. Since the FMComms2 incorporates and extends the basic functionalities of the AD9361, thus the data path is fully integrated into the AD9361.
 
@@ -302,9 +302,9 @@ The Block diagram show that there are 4 main functional partitions - receiver pa
 
 \end{description}
 
-\section{Basic Mathematical Background}
+\subsection{Basic Mathematical Background}
 
-\subsection{Complex Modulation}
+\subsubsection{Complex Modulation}
 
 \begin{eqnarray}
 	I = sin(\omega \times t)\\
@@ -324,7 +324,7 @@ then:
 
 These are the two signals coming out of the DAC, two sine waves, phase offset from each other, wich is called IQ.
 
-\subsection{Basic Modulation Mathematics}
+\subsubsection{Basic Modulation Mathematics}
 
 Start to modulating signal from a amplitude perspective:
 
@@ -396,7 +396,3 @@ x(t)=(\frac{A+B}{2} )(sin(k+\omega)) + (\frac{A-B}{2} )(sin(k-\omega))
 \end{equation}
 
 If this due to amplitude mismatch, this creates an image on the other side of the local oscillator.
-
-
-
-
