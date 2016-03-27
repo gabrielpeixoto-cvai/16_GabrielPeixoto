@@ -410,4 +410,87 @@ If this due to amplitude mismatch, this creates an image on the other side of th
 
 \subsection{Overview}
 
+As stated before, C-RAN is still in development and it is not already a solid
+standard, so exploring setups and their feasibility is very interesting to
+increase the ways to implement this new standard in countries which does not
+have a very good infrastructure.
+
+The first setup thought was using the ML605 FMC LPC connector and the FMComms2,
+this setup was very important because in it I could understand how to integrate
+the board design with the need of the project. Then the device was moved to the
+FMC HPC connector and the design with the ML605 was finished.
+
+After getting the experience with ML605 and ISE design tools, it was time to use
+a more updated board and tool, thus the idea of porting the initial design from
+ML605 to the VC707 board came. Since ISE has no support for VC707 and is a
+software with its development halted, going to the most updated tool from Xilinx
+is natural, so the second setup is using vivado design tools and VC707 with FMC
+HPC connector and FMComms2.
+
+%figura das duas fases do SETUP downlink e Uplink
+
 \subsection{Integration between FPGA and FMComms2}
+
+The first problem encountered in the development was the integration, since the
+company make a example project available and the IP cores for download it appear
+to be an easy job, however, for study purposes and for a simpler design it is
+better to begin a bottom up approach and so it was did.
+
+This approach was used in both ML605 and VC707 and it consists in basic steps:
+\begin{enumerate}
+    \item Analyse which ports to be connected
+    \item Analyse which Communications protocols are needed to communicate with the device;
+    \item Analyse the clock inputs and give the device the clocks it need to properly work;
+    \item Study both the HDL sources and the Driver to understand how the device works.
+\end{enumerate}
+
+This analyse work took around 3 weeks and the the integration became to work
+properly. In the ML605 the version of the IP and driver was one of the first
+ones, then it was needed only the SPI for registers read and write and one
+GPIO pin to reset the device.
+
+By default the AD9361 driver has a DDS which generates the carrier wave at 2.4Ghz,
+so if the initialization work it is possible to watch in the oscilloscope or
+spectrum analyser a sinusoidal wave at 2.4 Ghz
+
+%inserir figura do analisador de spectros
+
+\section{Transmitting custom data}
+
+After having the communication and initialization working properly, the next
+step was to input custom data into the device and analyse its output.
+
+There is two basic ways to input data into the AD9361, we need just to understand
+its communication interface, which is similar to the axi-stream interface with
+3 ports, one for data, one for enable and one for valid. The first approach for
+input data into the transceiver was use a FIFO with a DDS IP in the fpga, which
+is not so fast and reliable, but worked.
+
+%inserir figura do IP ad9361 highlight TX interface pins
+
+%inserir diagrama de blocos de entrada DDS>FIFO>AD9361
+
+After some time, the need for a faster interface rose, then the use of DMA came
+naturally, because it is faster and more reliable than the common FIFO.
+
+%inserir figura da interface DMA>AD9361
+
+\section{Receiving Custom data}
+
+Receiving is the exact opposite of transmitting custom data, in the beginning of
+the setup implementation using a DDS IP and a fifo to input IQ data into the
+AD9361 was intuitively the easier way for transmission, and indeed was the same
+thing for receiving.
+
+%inserir figura do IP ad9361 Highlight RX interface pins
+
+%inserir diagrama de blocos de entrada AD9361>FIFO>ILA
+
+The same idea used in transmission when the VC707 development began was applied
+to the receiver, use DMA.
+
+%inserir figura da interface AD9361>DMA
+
+\subsection{Driver}
+
+\subsection{Applications}
