@@ -418,16 +418,31 @@ have a very good infrastructure.
 The first setup thought was using the ML605 FMC LPC connector and the FMComms2,
 this setup was very important because in it I could understand how to integrate
 the board design with the need of the project. Then the device was moved to the
-FMC HPC connector and the design with the ML605 was finished.
+FMC HPC connector and the design with the ML605 was finished.\\
 
 After getting the experience with ML605 and ISE design tools, it was time to use
-a more updated board and tool, thus the idea of porting the initial design from
+a more updated board and design tool, thus the idea of porting the initial design from
 ML605 to the VC707 board came. Since ISE has no support for VC707 and is a
 software with its development halted, going to the most updated tool from Xilinx
 is natural, so the second setup is using vivado design tools and VC707 with FMC
-HPC connector and FMComms2.
+HPC connector and FMComms2.\\
+
+Another thing to give attention is that with ISE the design flow was more manual and if there was the need to rebuild a project almost from the scratch, just with the HDL source files, the other necessary ips should be created and configured again, which took a lot of time, but with Vivado the block diagram design flow and the .tcl scripts became more popular, they existed in ISE however they were not popular. With the TCL scripts it is possible to create project, import files, instantiate and configure both user and default IPs, as well as run synthesis, implementation and generate bitstream steps, which saves a lot of time in development.\\
 
 %figura das duas fases do SETUP downlink e Uplink
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{./figures/fmcomms2_pic}
+    \caption{ FMComms2 and its components
+    \label{fig:fmcomm}}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{./figures/fmcomms2_pic}
+    \caption{ FMComms2 and its components
+    \label{fig:fmcomm}}
+\end{figure}
 
 \subsection{Integration between FPGA and FMComms2}
 
@@ -437,8 +452,9 @@ to be an easy job, however, for study purposes and for a simpler design it is
 better to begin a bottom up approach and so it was did.
 
 This approach was used in both ML605 and VC707 and it consists in basic steps:
+
 \begin{enumerate}
-    \item Analyse which ports to be connected
+    \item Analyse which ports have to be connected
     \item Analyse which Communications protocols are needed to communicate with the device;
     \item Analyse the clock inputs and give the device the clocks it need to properly work;
     \item Study both the HDL sources and the Driver to understand how the device works.
@@ -451,31 +467,81 @@ GPIO pin to reset the device.
 
 By default the AD9361 driver has a DDS which generates the carrier wave at 2.4Ghz,
 so if the initialization work it is possible to watch in the oscilloscope or
-spectrum analyser a sinusoidal wave at 2.4 Ghz
+spectrum analyser a sinusoidal (Carrier) wave at 2.4 Ghz after all initialization procedures have been done.
 
 %inserir figura do analisador de spectros
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{./figures/fmcomms2_pic}
+    \caption{ FMComms2 and its components
+    \label{fig:fmcomm}}
+\end{figure}
 
-\section{Transmitting custom data}
+\subsection{Control Interface}
 
-After having the communication and initialization working properly, the next
-step was to input custom data into the device and analyse its output.
+As stated in the previous subsection the FMComms2 control and communication
+interface is implemented through GPIO pins and SPI protocol, basically SPI is
+used to write and read registers in the board while GPIO is used for real-time
+control, like reset or change states in the ENSM.\\
 
-There is two basic ways to input data into the AD9361, we need just to understand
+While the development was in its beginning the minimum pins for communication
+and reset work were assigned, however when the development wen to Vivado with
+the VC707 there was the need to build something more automated in order to be
+easily rebuild, so the \emph{ad9361\_comm} IP was created to route the respective
+pins from SPI and GPIO interfaces to the ad9361 control and communication interface.\\
+
+Below it is possible to see in a simple schematic what is the \emph{ad9361\_comm}
+IP and how it routes the respective ports to the ad9361 interface.
+
+%diagrama de blocos control interface
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{./figures/fmcomms2_pic}
+    \caption{ FMComms2 and its components
+    \label{fig:fmcomm}}
+\end{figure}
+
+\subsection{Transmitting custom data}
+
+After having the communication and initialization between FPGA and FMComms2 board
+working properly, the next step was to input custom data into the device and
+efficiently transmit modulated information in the carrier wave.
+
+There is two basic ways to input data into the AD9361, to do so it is necessary to understand
 its communication interface, which is similar to the axi-stream interface with
 3 ports, one for data, one for enable and one for valid. The first approach for
 input data into the transceiver was use a FIFO with a DDS IP in the fpga, which
-is not so fast and reliable, but worked.
+is not so fast and reliable, but worked for test purposes.
 
 %inserir figura do IP ad9361 highlight TX interface pins
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{./figures/fmcomms2_pic}
+    \caption{ FMComms2 and its components
+    \label{fig:fmcomm}}
+\end{figure}
 
 %inserir diagrama de blocos de entrada DDS>FIFO>AD9361
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{./figures/fmcomms2_pic}
+    \caption{ FMComms2 and its components
+    \label{fig:fmcomm}}
+\end{figure}
 
 After some time, the need for a faster interface rose, then the use of DMA came
 naturally, because it is faster and more reliable than the common FIFO.
 
 %inserir figura da interface DMA>AD9361
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{./figures/fmcomms2_pic}
+    \caption{ FMComms2 and its components
+    \label{fig:fmcomm}}
+\end{figure}
 
-\section{Receiving Custom data}
+\subsection{Receiving Custom data}
 
 Receiving is the exact opposite of transmitting custom data, in the beginning of
 the setup implementation using a DDS IP and a fifo to input IQ data into the
@@ -483,14 +549,46 @@ AD9361 was intuitively the easier way for transmission, and indeed was the same
 thing for receiving.
 
 %inserir figura do IP ad9361 Highlight RX interface pins
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{./figures/fmcomms2_pic}
+    \caption{ FMComms2 and its components
+    \label{fig:fmcomm}}
+\end{figure}
 
 %inserir diagrama de blocos de entrada AD9361>FIFO>ILA
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{./figures/fmcomms2_pic}
+    \caption{ FMComms2 and its components
+    \label{fig:fmcomm}}
+\end{figure}
 
 The same idea used in transmission when the VC707 development began was applied
 to the receiver, use DMA.
 
 %inserir figura da interface AD9361>DMA
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{./figures/fmcomms2_pic}
+    \caption{ FMComms2 and its components
+    \label{fig:fmcomm}}
+\end{figure}
 
-\subsection{Driver}
+\subsection{Data Interface}
+After various experimentations in data transmission, the data interface with the
+DAC and ADC was planned,
 
-\subsection{Applications}
+%ad9361_data interface image
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{./figures/fmcomms2_pic}
+    \caption{ FMComms2 and its components
+    \label{fig:fmcomm}}
+\end{figure}
+
+\section{Driver}
+
+
+
+\section{Applications}
