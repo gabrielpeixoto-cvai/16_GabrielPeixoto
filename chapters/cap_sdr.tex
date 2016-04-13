@@ -5,42 +5,40 @@
 
 As we could see in the previous chapter RAN as a service and cloud requires
 devices which are both scalable and reconfigurable following customer demands,
-in order to accomplish that there is a lot of schemes and theories involved,
-but this work will focus on \emph{Software Defined Radio} which is defined
-according to the \emph{SDR Forum} \cite{web:sdrforum} as:
+in order to accomplish that there is a lot of schemes and theories involved, but
+this work will focus on \emph{Software Defined Radio} which is defined according
+to the \emph{SDR Forum} \cite{web:sdrforum} as:
 
-%citar sdr forum
 say{radios that provide software control of a variety of modulation techniques,
-wide-band or narrow-band operation, communications security functions
-(such as hopping), and waveform requirements of current \& evolving standards
-over a broad frequency range.}
+wide-band or narrow-band operation, communications security functions (such as
+hopping), and waveform requirements of current \& evolving standards over a
+broad frequency range.}
 
 In short, Software-Defined Radio (SDR) refers to the technology wherein software
- modules running on a generic hardware platform consisting of DSPs, FPGA and
- general purpose microprocessors are used to implement radio functions such as
- generation of transmitted signal (modulation) at transmitter and tuning/detection
- of received radio signal (demodulation) at receiver.
-
-%citar sdr in electrical and computer engineering curriculum article
+modules running on a generic hardware platform consisting of DSPs, FPGA and
+general purpose microprocessors are used to implement radio functions such as
+generation of transmitted signal (modulation) at transmitter and
+tuning/detection of received radio signal (demodulation) at receiver.\\
 
 This is a very powerful concept and it has been idealized over 20 years ago,
 however only with the recent DSP and FPGA technology its implementation became
 feasible \cite{ladimer2009}. SDR has some very interesting applications, in this
-work the educational and telecommunications applications shall be explored.
+work the educational and telecommunications applications shall be explored.\\
 
 For its elastic characteristic, SDR , depending on the application is more
-costly than a normal analog radio, thus \emph{what is the real advantage in SDR?},
-according to worldwide telecommunication reports and works, every time a standard
-is changed there is a huge cost in equipment change in both user and provider so
-SDR tries to reduce these costs by maintaining legacy systems while being able
-to upgrade to newer systems\cite{dayananda2012}.
+costly than a normal analog radio, thus \emph{what is the real advantage in
+SDR?}, according to worldwide telecommunication reports and works, every time a
+standard is changed there is a huge cost in equipment change in both user and
+provider so SDR tries to reduce these costs by maintaining legacy systems while
+being able to upgrade to newer systems\cite{dayananda2012}.\\
 
 This fact generated a lot of interest in the wireless communication industry
-because of the economic advantages SDR could bring. Another great advantage
-for companies to implement SDR is that they can use the same hardware and such
+because of the economic advantages SDR could bring. Another great advantage for
+companies to implement SDR is that they can use the same hardware and such
 hardware would work in all communication schemes around the world. The use of
 SDR is growing in the industry and seems to be a promise for the Cloud-RAN
-environment, where radio infrastructure would adapt itself to the customer needs.
+environment, where radio infrastructure would adapt itself to the customer
+needs.
 
 \section{Cloud Overview}
 \label{sec:sdr_cloud}
@@ -85,6 +83,64 @@ There are three main types of cloud in current use:
 \end{itemize}
 
 
+\subsection{Gnuradio}
+
+When SDR is mentioned the first thing that comes in mind is Gnuradio, because it
+is a Open Source Software widely used in academic environment to teach and
+research software defined Radios and implement very interesting applications.
+
+\subsection{Gnuradio Project}
+
+%inserir figura gnuradio
+
+GNU Radio is a free \& open-source software development toolkit that provides
+signal processing blocks to implement software radios. It can be used with
+low-cost external RF hardware to implement software-defined radios, or without
+hardware in a simulation environment. It is widely used in radio ammateur,
+academic and commercial environments to support both wireless communications
+research and real-world radio systems.
+
+\subsection{Capabilities}
+
+GNU Radio performs all the signal processing. It is possible write applications
+to receive data out of digital streams or to push data into digital streams,
+which is then transmitted using hardware (USRP). GNU Radio has filters, channel
+codes, synchronisation elements, equalizers, demodulators, vocoders, decoders,
+and many other elements , these elements are represented as blocks, which are
+typically found in radio systems. It also includes a method of connecting these
+blocks and then manages how data is passed from one block to another. Extending
+GNU Radio is straightforward, because everything is modular, if there is need
+for a block, it is just a matter of following the conventions and the block can
+easily fit in the system.\\
+
+Since GNU Radio is a software, it can only handle digital data. Usually, complex
+baseband samples are the input data type for receivers and the output data type
+for transmitters. Analog hardware is then used to shift the signal to the
+desired centre frequency. That requirement aside, any data type can be passed
+from one block to another - be it bits, bytes, vectors, bursts or more complex
+data types.\\
+
+GNU Radio applications are primarily written using the Python programming
+language, while the supplied, performance-critical signal processing path is
+implemented in C++ using processor floating point extensions, where available.
+Thus, the developer is able to implement real-time, high-throughput radio
+systems in a simple-to-use, rapid-application-development environment.\\
+
+\subsection{USRP - Universal Software Radio Peripheral}
+
+USRP stands for Universal Software Radio Peripheral and it is a hardware
+developed by Ettus research, a National Instruments company. This hardware is
+basically an FPGA and a transceiver connected allows the systems made inside the
+Gnuradio software to be implemented in real-world, it means that USRP is a
+hardware for implementing Software Radios.
+
+The USRP communicates with the computer by the UHD (USRP Hardware Driver), and
+gnuradio automatically recognizes it, making possible to send and receive
+signals in the desired band. Gnuradio can read and write in the USRP from both
+USB and ETHERNET connection, which a easy to setup system
+
+%figura usrp
+
 \section{Applications}
 \label{sec:sdr_app}
 
@@ -94,32 +150,56 @@ on the C-RAN and educational applications of \emph{Software Defined Radio}.
 
 \subsection{Military Environment}
 
-The flexibility and adaptability of the Software defined radios have been getting
-attention even from the military engineering to be applied in military radio
-systems. When it is about military environment, everything has to be as much
-reliable as possible, because any fault can cost a human life and having a good
-communication system between the troops is a key to be successful in any incursion.\\
+The flexibility and adaptability of the Software defined radios have been
+getting attention even from the military engineering to be applied in military
+radio systems. When it is about military environment, everything has to be as
+much reliable as possible, because any fault can cost a human life and having a
+good communication system between the troops is a key to be successful in any
+incursion.\\
 
-For such needs SDR is platform widely explored by then military segment, not
-only in the incursions but when there is any disaster, SDR systems can be applied
-to enable a temporary network inside a natural disaster area or can be applied
-to troops using MPR (Man Pack Radio) \cite(chamberlain2005), thus being able to
-adapt itself to the network which the radio is inserted.
+The military environment could benefit a lot from the implementation of SDR
+systems, so the Joint Tactical Radio System (JTRS) Program was created by the US
+military to develop and produce flexible and interoperable communication
+systems, like hand-held communicators, vehicle, airborne and base-stations. The
+goal of the JTRS was achieved through SDR systems based on the Software
+Communications Architecture (SCA), which uses CORBA on POSIX operating systems
+to organize a myriad of software modules.\\
+
+The SCA program provided a flexible, interoperable and scalable system which met
+the needs of the military segment through the use of SDR, all the functionality
+and expandability is built upon the SCA. The SCA has its military origin but can
+and is used by commercial vendors too. The use of SDR outside military and
+Network operator environment makes no sense at the first glance, however
+software defined radio's inherent flexibility can yield substantial benefits in
+the longer run, once the fixed costs of implementing it have gone down enough to
+overtake the cost of iterated redesign of purpose built systems. This then
+explains the increasing commercial interest in the technology.\\
+
+SCA-based infrastructure software and rapid development tools for SDR education
+and research are provided by the Open Source SCA Implementation – Embedded
+(OSSIE) project. The Wireless Innovation Forum funded the SCA Reference
+Implementation project, an open source implementation of the SCA specification.\\
+
+The work in \cite{Chamberlain2005} show an implementation of a Man Pack Radio
+using all the SDR techniques, this enlightens the strategic importance of such
+systems to the military environment, in incursions or in disaster aid.
 
 \subsection{C-RAN Environment}
 
 CRAN comes from the cloud idea of Infrastructure as a service (IaaS) or in this
-case RAN as a service, thus it needs a reconfigurable and scalable infrastructure
-to fulfill the customer needs. SDR is perfect for such applications because  it
-is in essence reconfigurable and scalable.\\
+case RAN as a service, thus it needs a reconfigurable and scalable
+infrastructure to fulfill the customer needs. SDR is perfect for such
+applications because  it is in essence reconfigurable and scalable.\\
 
-There are a lot of works in SDR for modern communication schemes being done in recent years,
-and before the concept of CRAN was a buzz they already began to think how to control
-SDR in cloud environments \cite{dayananda2012} and other works were focusing on transmitting on the
-Ghz frequency band of the modern communications schemes (3GPP, LTE) \cite{kelley2009} and \cite{neenu2014}.\\
+There are a lot of works in SDR for modern communication schemes being done in
+recent years, and before the concept of CRAN was a buzz they already began to
+think how to control SDR in cloud environments \cite{dayananda2012} and other
+works were focusing on transmitting on the Ghz frequency band of the modern
+communications schemes (3GPP, LTE) \cite{kelley2009} and \cite{neenu2014}.\\
 
 Since the same hardware is used to implement various telecommunications schemes,
-the main advantages of the use of SDR in CRAN environment, according to \cite{dayananda2012} are:
+the main advantages of the use of SDR in CRAN environment, according to
+\cite{dayananda2012} are:
 
 \begin{itemize}
     \item Reduction of costs to maintain Legacy systems;
@@ -133,64 +213,65 @@ the main advantages of the use of SDR in CRAN environment, according to \cite{da
 \subsection{Educational Environment}
 
 In the educational environment SDR brings real-world conditions to the lab, the
-student or researcher can experiment in a myriad of configurations and make tests
-in the real-world channels instead of just simulating a random white noise, however
-this is only possible with a hardware implementation of the SDR, there are still
-software implementations which use computer sound card ADC and DAC to communicate
-on voice range frequencies \cite{ladimer2009}.\\
+student or researcher can experiment in a myriad of configurations and make
+tests in the real-world channels instead of just simulating a random white
+noise, however this is only possible with a hardware implementation of the SDR,
+there are still software implementations which use computer sound card ADC and
+DAC to communicate on voice range frequencies \cite{ladimer2009}.\\
 
 Having a testbed or simulation to apply all the knowledge acquired in classroom
 is crucial to engineering courses, the engineering students often get bored easy
 by all the theoretical study and prefer to learn by practice, thus SDR is a
 suitable platform to teach digital signal processing, digital communications and
- any course related to those subjects.\\
+any course related to those subjects.\\
 
-A very famous setup for academic and research in SDR is the duo Gnuradio \cite{web:gnuradio} and
-USRP \cite{web:usrp} which can easily implement a communication system with drag
-and drop interface\cite{akbook}.\\
+A very famous setup for academic and research in SDR is the duo Gnuradio
+\cite{web:gnuradio} and USRP \cite{web:usrp} which can easily implement a
+communication system with drag and drop interface\cite{akbook}.\\
 
 
 \section{Implementations}
 
 %citar sdr in electrical and computer engineering curriculum article
-Software defined radio implementations vary widely depending on available equipment
- or type of application, according to \cite{ladimer2009} the basic architecture of sdr is
- composed by filters, analog to digital converters (ADC) , digital to analog
- converters (DAC) and a processor in the core of the system which could be
- implemented using DSP for example.\\
+Software defined radio implementations vary widely depending on available
+equipment or type of application, according to \cite{ladimer2009} the basic
+architecture of sdr is composed by filters, analog to digital converters (ADC) ,
+digital to analog converters (DAC) and a processor in the core of the system
+which could be implemented using DSP for example.\\
 
- \begin{figure}[htbp]
-     \centering
-     \includegraphics[width=0.8\textwidth]{./figures/sdr_basic_arch}
-     \caption{ Software Defined Radio Basic Architecture
-     \label{fig:sdr_basic}}
- \end{figure}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./figures/sdr_basic_arch}
+    \caption{ Software Defined Radio Basic Architecture
+    \label{fig:sdr_basic}}
+\end{figure}
 
 
 Implementations may vary a lot, some common implementations are Made in matlab
 through Simulink and use the computer’s video card as a medium of communication.
-A more difficult but more interesting implementation involves the use of DSP chips
-to implement the signal processing functions and some cheap ADC and DAC chips can
-compose the SDR system.\\
+A more difficult but more interesting implementation involves the use of DSP
+chips to implement the signal processing functions and some cheap ADC and DAC
+chips can compose the SDR system.\\
 
 The most commercial and famous implementation of SDR is Gnuradio+USRP, USRP
-stands for Universal Software Radio Peripheral \cite{web:usrp} and Gnuradio \cite{web:gnuradio}
-is a software for PC which has various digital signal processing functions and
-modulation schemes and comes with a driver to use USRP. The USRP itself is
-basically and FPGA hooked with a transceiver, so this pair is broadly used in
-research and academic environments.\\
+stands for Universal Software Radio Peripheral \cite{web:usrp} and Gnuradio
+\cite{web:gnuradio} is a software for PC which has various digital signal
+processing functions and modulation schemes and comes with a driver to use USRP.
+The USRP itself is basically and FPGA hooked with a transceiver, so this pair is
+broadly used in research and academic environments.\\
 
-When we talk about research and development of real-world systems there is always
-a tradeoff or bottleneck, in SDR the bottleneck is the hardware related to the
-antenna interface, the antenna is designed to work better in a specific bandwidth,
-this can limit the application, of course this is only one example of bottleneck,
-there are others like Oscillator frequency, PLL, and processor capability.\\
-
+When we talk about research and development of real-world systems there is
+always a tradeoff or bottleneck, in SDR the bottleneck is the hardware related
+to the antenna interface, the antenna is designed to work better in a specific
+bandwidth, this can limit the application, of course this is only one example of
+bottleneck, there are others like Oscillator frequency, PLL, and processor
+capability.\\
 
 This work has a SDR like implementation done in FPGA and using the transceiver
-AD9361 which makes baseband upconversion (Transmitter) and downconversion (Receiver),
-filters and make analog to digital conversion and digital to analog conversion,
-thus it is possible to implement transmitter and receiver with only one board,
-however the most complex part does not lie in the system itself because some electronic
-parts became a commodity, the complexity is in the modulation/demodulation blocks
-and all the synchronization process, such topics shall be discussed in the chapter \ref{cap:digitalcomm}.
+AD9361 which makes baseband upconversion (Transmitter) and downconversion
+(Receiver), filters and make analog to digital conversion and digital to analog
+conversion, thus it is possible to implement transmitter and receiver with only
+one board, however the most complex part does not lie in the system itself
+because some electronic parts became a commodity, the complexity is in the
+modulation/demodulation blocks and all the synchronization process, such topics
+shall be discussed in the chapter \ref{cap:digitalcomm}.
