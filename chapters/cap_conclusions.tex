@@ -1,2 +1,36 @@
 \chapter{Conclusion}
+\section{Conclusion}
 
+The development of this setup was mented to be general and be used in both
+research and teaching environments. The process of implementing this setup went
+through a myriad of fields in telecommunications and embedded systems, such as
+communication protocols, embedded programming, electronics and many others,
+being this setup a testbed for more complex processes inside the LTE band saves
+a lot of time in development. \\
+
+The FMComms2 board allows real-time and scalable change in parameters by
+software or hardware signals, and it recalibrates and reconfigures itself if
+needed so, which makes a very good transceiver board to be used in a C-RAN
+environment.\\
+
+This setup was extensively documented and can be used in digital communication
+classes to show how a real radio frontend system is made, of course there is
+much to improve, there is no dynamic synchronization between the FPGA and the
+FMComms2, there is no communication protocol between the FPGA (BBP) and the
+external world other than the FMComms2 such things are necessary to have a real
+frontend but were outside the scope of this project which was just to evaluate a
+setup for a scalable and dynamically configurable frontend.\\
+
+Although the FMComms2 and the FPGA operates on different clocks, thus no real
+synchronization was implemented, this setup has the minimal capability of
+transmitting and receiving signals and reconfigure itself on real-time, the main
+goal of this work was reached, however there is much to explore with these tools
+and devices.
+
+\section{Future Works}
+
+Having finished this part of the work a natural sequel would be implementing
+ethernet connection driver in the FPGA, making it possible to receive data from
+ethernet and hand this to the transceiver board following the schematic on
+figure X. This would be a challenge because there is a lot of things to
+consider, but the most problematic of them all is synchronization
