@@ -63,7 +63,40 @@ this work.
 
 
 \subsection{ML605 - Virtex6}
+
+%ml605 board
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{./figures/ml605}
+    \caption{ ML605 Development Board
+    \label{fig:ml605}}
+\end{figure}
+
+%ml605 block diagram
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{./figures/ml605_bd}
+    \caption{ ML605 Functional Block Diagram
+    \label{fig:ml605bd}}
+\end{figure}
+
 \subsection{VC707 - Virtex7}
+
+%vc707 board
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{./figures/vc707}
+    \caption{ VC707 Development Board
+    \label{fig:vc707}}
+\end{figure}
+
+%vc707 block diagram
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{./figures/vc707_bd}
+    \caption{ VC707 Functional Block Diagram
+    \label{fig:vc707bd}}
+\end{figure}
 
 \subsection{IP Cores}
 
@@ -717,25 +750,18 @@ This approach was used in both ML605 and VC707 and it consists in basic steps:
     \item Study both the HDL sources and the Driver to understand how the device works.
 \end{enumerate}
 
-This analyse work took around 3 weeks and the the integration became to work
+This analyze work took around 3 weeks and the the integration became to work
 properly. In the ML605 the version of the IP and driver was one of the first
 ones, then it was needed only the SPI for registers read and write and one
 GPIO pin to reset the device.\\
 
 By default the AD9361 driver has a DDS which generates the carrier wave at 2.4Ghz,
 so if the initialization work it is possible to watch in the oscilloscope or
-spectrum analyser a sinusoidal (Carrier) wave at 2.4 Ghz after all initialization
+spectrum analyzer a sinusoidal (Carrier) wave at 2.4 Ghz after all initialization
 procedures have been done.
 
-%inserir figura do analisador de spectros
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.65\textwidth]{./figures/fmcomms2_pic}
-    \caption{ FMComms2 and its components
-    \label{fig:fmcomm}}
-\end{figure}
-
 \subsection{Control Interface}
+\label{subs:controlif}
 
 As stated in the previous subsection the FMComms2 control and communication
 interface is implemented through GPIO pins and SPI protocol, basically SPI is
@@ -783,7 +809,7 @@ is not so fast and reliable, but worked for test purposes.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.65\textwidth]{./figures/fmcomms2_pic}
+    \includegraphics[width=0.65\textwidth]{./figures/dac_fifo}
     \caption{ FMComms2 and its components
     \label{fig:fmcomm}}
 \end{figure}
@@ -794,7 +820,7 @@ naturally, because it is faster and more reliable than the common FIFO.
 %inserir figura da interface DMA>AD9361
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.65\textwidth]{./figures/fmcomms2_pic}
+    \includegraphics[width=0.65\textwidth]{./figures/dac_dma}
     \caption{ FMComms2 and its components
     \label{fig:fmcomm}}
 \end{figure}
@@ -817,7 +843,7 @@ thing for receiving.
 %inserir diagrama de blocos de entrada AD9361>FIFO>ILA
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.65\textwidth]{./figures/fmcomms2_pic}
+    \includegraphics[width=0.65\textwidth]{./figures/adc_fifo}
     \caption{ FMComms2 and its components
     \label{fig:fmcomm}}
 \end{figure}
@@ -828,7 +854,7 @@ to the receiver, use DMA.
 %inserir figura da interface AD9361>DMA
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.65\textwidth]{./figures/fmcomms2_pic}
+    \includegraphics[width=0.65\textwidth]{./figures/adc_dma}
     \caption{ FMComms2 and its components
     \label{fig:fmcomm}}
 \end{figure}
@@ -916,3 +942,12 @@ a
 
 
 \section{Applications}
+
+This setup was meant to be used in the academic and research and development
+environments for such it is extensively documented in this document and in the
+source codes in the repository, thus this section aims to be a guideline for whoever needs to
+use this work for research or study.
+
+\subsection{Academic Environment}
+
+\subsection{Research environment}
