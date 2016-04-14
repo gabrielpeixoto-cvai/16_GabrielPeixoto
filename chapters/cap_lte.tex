@@ -5,6 +5,14 @@
 \section{Digital Communications Overview}
 \label{sec:digitalcomm}
 
+%digital communication system block diagram
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{./figures/digicomm_block}
+    \caption{ Digital Communication System Block Diagram
+    \label{fig:digcomm}}
+\end{figure}
+
 \subsection{Synchronization}
 
 \subsubsection{Carrier Recovery}
@@ -115,6 +123,19 @@ solutions for very wide carriers with high peak rates. It is a well-established
 technology: for example, in standards such as IEEE 802.11a/b/g, 802.16, HIPERLAN-2,
 DVB and DAB.\cite{introlte} \cite{umtslte}\\
 
+Figure 2 shows a representation of an OFDM signal. In this figure, a signal with
+5 MHz bandwidth is shown, but the principle is of course the same for the other
+E-UTRA bandwidths. Data symbols are independently modulated and
+transmitted over a high number of closely spaced orthogonal subcarriers.\\
+
+%ofdm scheme
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{./figures/ofdm_frequency}
+    \caption{ Frequency-Time Representation of OFDM signal
+    \label{fig:ofdmfreq}}
+\end{figure}
+
 OFDM uses a large number of narrow sub-carriers for multi-carrier transmission.
 The basic LTE downlink physical resource can be seen as a time-frequency grid.
 In the frequency domain, the spacing between the sub-carriers, $\Delta f$, is 15
@@ -174,12 +195,12 @@ in that way, that it is greater than the maximum expected delay spread. In E-UTR
 the guard interval is a cyclic prefix which is inserted prior to each OFDM symbol.
 
 %figura ondas
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.65\textwidth]{./figures/ad9361_digital_interface}
-    \caption{ AD9361 Digital Data Interface
-    \label{fig:ad9361diginterface}}
-\end{figure}
+%\begin{figure}[htbp]
+%    \centering
+%    \includegraphics[width=0.65\textwidth]{./figures/ad9361_digital_interface}
+%    \caption{ AD9361 Digital Data Interface
+%    \label{fig:ad9361diginterface}}
+%\end{figure}
 
 In practice, the OFDM signal can be generated using IFFT (Inverse Fast Fourier Transform)
 digital signal processing. The IFFT converts a number N of complex data
@@ -187,14 +208,13 @@ symbols used as frequency domain bins into the time domain signal. Such an N-poi
 IFFT is illustrated in Figure X where $a(mN+n)$ refers to the nth subcarrier
 modulated data symbol, during the time period $mTu < t £ (m+1)Tu$.
 
-%figura esquema
+%ofdm symbols
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.65\textwidth]{./figures/ad9361_digital_interface}
-    \caption{ AD9361 Digital Data Interface
-    \label{fig:ad9361diginterface}}
+    \includegraphics[width=0.65\textwidth]{./figures/ofdm_symbol_gen}
+    \caption{ OFDM Symbol Generation
+    \label{fig:ofdmsymbol}}
 \end{figure}
-
 
 The vector $sm$ is defined as the useful OFDM symbol. It is the time superposition
 of the $N$ narrowband modulated subcarriers. Therefore, from a parallel stream
@@ -205,13 +225,12 @@ serial stream of QAM symbols to N parallel streams, used as frequency domain bin
 for the IFFT. The N-point time domain blocks obtained from the IFFT are then
 serialized to create a time domain signal.
 
-%figura signal generation
-
+%ofdm signal chain
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.65\textwidth]{./figures/ad9361_digital_interface}
-    \caption{ AD9361 Digital Data Interface
-    \label{fig:ad9361diginterface}}
+    \includegraphics[width=0.65\textwidth]{./figures/ofdm_signal_chain}
+    \caption{ OFDM Signal Generation
+    \label{fig:ofdmchain}}
 \end{figure}
 
 In contrast to an OFDM transmission scheme, OFDMA allows the access of multiple
@@ -229,14 +248,12 @@ users, the overall interference situation, Quality of Service requirements, serv
 priorities, etc. and is a vendor-specific implementation. Figure 8 shows an example
 for allocating downlink user data to different users.\\
 
-
-%figura resource block
-
+%ofdm resource block
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.65\textwidth]{./figures/ad9361_digital_interface}
-    \caption{ AD9361 Digital Data Interface
-    \label{fig:ad9361diginterface}}
+    \includegraphics[width=0.65\textwidth]{./figures/ofdm_resource_block}
+    \caption{ Resource Block Organization Example
+    \label{fig:ofdmresblk}}
 \end{figure}
 
 The user data is carried on the Physical Downlink Shared Channel (PDSCH). The
@@ -245,8 +262,8 @@ PDSCH(s) is the only channel that can be QPSK, 16QAM or 64QAM modulated.
 %downlink channel figura
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.65\textwidth]{./figures/ad9361_digital_interface}
-    \caption{ AD9361 Digital Data Interface
+    \includegraphics[width=0.65\textwidth]{./figures/downlink_channels}
+    \caption{ OFDMA time-frequency multiplexing
     \label{fig:ad9361diginterface}}
 \end{figure}
 
@@ -280,7 +297,7 @@ followed by addition of the cyclic prefix and parallel to serial conversion.
 %figura uplink
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.65\textwidth]{./figures/ad9361_digital_interface}
-    \caption{ AD9361 Digital Data Interface
-    \label{fig:ad9361diginterface}}
+    \includegraphics[width=0.65\textwidth]{./figures/uplink_scheme}
+    \caption{ LTE Uplink Block diagram of DFT-s-OFDM
+    \label{fig:uplinkbd}}
 \end{figure}
