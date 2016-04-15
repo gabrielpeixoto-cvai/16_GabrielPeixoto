@@ -190,9 +190,7 @@ In the figure \ref{fig:ml605} there is a picture of the board and in the figure
 
 The final results of this setup were generated in the VC707 board, because it
 has a possibility of expansion and has better clock generation and treatment
-options compared to the ML605 board. In the figures \ref{fig:vc707} and
-\ref{fig:vc707bd} there are the evaluation board picture and the high-level block
-diagram respectively.\\
+options compared to the ML605 board.
 
 \textbf{VC707 Evaluation Board Features}
 
@@ -295,6 +293,14 @@ diagram respectively.\\
 
 \end{enumerate}
 
+The characteristic which make this project be ported to the VC707 board is the
+clock generation options that can be used to synchronize the FMComms2 and the FPGA
+board in a future implementation.\\
+
+In the figures \ref{fig:vc707} and
+\ref{fig:vc707bd} there are the evaluation board picture and the high-level block
+diagram respectively.\\
+
 %vc707 board
 \begin{figure}[htbp]
     \centering
@@ -329,15 +335,42 @@ transceiver IP.
 \begin{description}
 	\item[Microblaze] \hfill \\
 
+  Microblaze is a soft processor, created in FPGA logic and synthesized inside
+the FPGA, it runs usually at 100 Mhz clock, and has only one interrupt input. The
+Microblaze function is basically to initialize all the software drivers, configure
+such drivers and execute interrupt routines.
+
 	\item[DMA Engine] \hfill \\
+
+  The DMA is the core which makes possible reading and writing from the memory in
+a very fast rate. There are various modes of operation, but in this project the
+Scatter gather mode is used, in this mode the reading and writing is possible in
+a non-continuous memory addresses by the use of block descriptors.
 
   \item[Memory Interface Generator] \hfill \\
 
+  The MIG (Memory interface generator) creates a software and hardware interface
+to the DDR3 memory inside the FPGA board.
+
   \item[SPI] \hfill \\
+
+  The SPI is a communication protocol, thus the SPI core  is used to write/read
+registers in the FMComms2 board. It is hardware initializable and controllable.
 
   \item[GPIO] \hfill \\
 
+  GPIO stands for General Purpose Input and Output, this core implements general
+purpose pins which can be configured via software to act as an input or output pin,
+or even both. For this project specifically, GPIO core is used to make real-time
+operations in the AD9361 internal state-machine and for reset.
+
   \item[UART] \hfill \\
+  UART is also a communication protocol and stands for universal asynchronous
+receiver/transmitter and in this case it is used for debugging purposes, all the
+standard I/O form the software comes from the UART and it is possible to show
+error messages and status messages from the code in the terminal, like any normal
+print, but such messages are comming from the FPGA elf file being executed in the
+Microblaze soft processor.
 
 \end{description}
 
@@ -1014,8 +1047,8 @@ and efficiently transmit modulated information in the carrier wave.
 There is two basic ways to input data into the AD9361, to do so it is necessary to understand
 its communication interface, which is similar to the axi-stream interface with
 3 ports, one for data, one for enable and one for valid. The first approach for
-input data into the transceiver was use a FIFO with a DDS IP in the fpga, which
-is not so fast and reliable, but worked for test purposes.
+input data into the transceiver was use a FIFO with a DDS IP in the FPGA, which
+is not so fast and reliable, but it was enough for test purposes.
 
 %inserir figura do IP ad9361 highlight TX interface pins
 \begin{figure}[htbp]
