@@ -1098,7 +1098,7 @@ thing for receiving.
     \centering
     \includegraphics[width=0.65\textwidth]{./figures/adc_fifo}
     \caption{ FMComms2 and its components
-    \label{fig:fmcomm}}
+    \label{fig:ad9361rxfifo}}
 \end{figure}
 
 The same idea used in transmission when the VC707 development began was applied
@@ -1108,8 +1108,8 @@ to the receiver, use DMA.
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.65\textwidth]{./figures/adc_dma}
-    \caption{ FMComms2 and its components
-    \label{fig:fmcomm}}
+    \caption{
+    \label{fig:ad9361rxdma}}
 \end{figure}
 
 
@@ -1126,8 +1126,8 @@ in the subsections below the two interface will be more explored.
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.65\textwidth]{./figures/fmcomms2_pic}
-    \caption{ FMComms2 and its components
-    \label{fig:fmcomm}}
+    \caption{ High-level block diagram of the data interface
+    \label{fig:databd}}
 \end{figure}
 
 \subsubsection{Transmitting Interface (Tx)}
@@ -1149,8 +1149,8 @@ Below it is possible to see a block diagram of the interface:
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.65\textwidth]{./figures/fmcomms2_pic}
-    \caption{ FMComms2 and its components
-    \label{fig:fmcomm}}
+    \caption{ Block diagram of the TX part in the data interface
+    \label{fig:dataiftx}}
 \end{figure}
 
 \subsubsection{Receiving Interface (Rx)}
@@ -1166,11 +1166,11 @@ more details,
 \section{Driver}
 
 This setup driver has several parts, it not only initiates the FMComms2 hardware
-but also initiates all the systems in the FPGA design, like Interrupt Controller
-and DMA.\\
+but also initiates all the systems in the FPGA design, like Interrupt Controller,
+ DMA, SPI and GPIO needed to control and read/write data into the FMComms2.\\
 
 The hardware drivers itself are not extremely complicated nor needed to be changed
-too much, Xilinx offers all the basic drivers for the boards, for example, Dma Engine,
+too much, Xilinx offers all the basic drivers for the boards, for example, DMA Engine,
 Ethernet PHY and Interrupt System, the only thing which must be handled with care is
 the address space and device ID for each block, knowing how the IP is configured,
 or which option he is configured to run is the key to make a driver work.\\
@@ -1215,4 +1215,14 @@ use this work for research or study.
 
 \subsection{Academic Environment}
 
+This setup was meant to be used in such academic environment, the data and control
+interface are ready to be used, for this the student can generate the data in
+matlab and load it as a vector in a .h file, this file shall be read by the DMA
+driver.\\
+There is also the possibility to develop a modulation/demodulation block
+and input this block feeding the data interface, thus all the modulated data can
+be transmitted.
+
 \subsection{Research environment}
+
+In the research and development environment,
