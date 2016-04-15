@@ -63,6 +63,112 @@ this work.
 
 
 \subsection{ML605 - Virtex6}
+This board was used in the first version of the setup, still it lacked better
+clock sources and dividers, it was also older the the VC707, thus the design was
+ported to VC707, below there is a list of the features of the ML605 development
+board.\\
+
+In the figure \ref{fig:ml605} there is a picture of the board and in the figure
+\ref{fig:ml605bd} there is also a functional block diagram of the board.\\
+%citar user manual e quick reference
+
+\textbf{ML605 Evaluation Module Features:}
+\begin{enumerate}
+  \item Virtex-6 XC6VLX240T-1FFG1156 FPGA
+  \item 512 MB DDR3 Memory SODIMM
+  \item 128 Mb Platform Flash XL
+  \item 32 MB Linear BPI Flash
+  \item System ACE CF and CompactFlash Connector
+  \item USB JTAG
+  \item Clock Generation
+  \begin{itemize}
+    \item Fixed 200 MHz oscillator (differential)
+    \item Socketed 2.5V oscillator (single-ended)
+    \item SMA connectors (differential)
+    \item SMA connectors for MGT clocking
+  \end{itemize}
+
+  \item Multi-Gigabit Transceivers (GTX MGTs)
+
+  \begin{itemize}
+    \item FMC - HPC connector
+    \item FMC - LPC connector
+    \item SMA
+    \item PCIe
+    \item SFP Module connector
+    \item Ethernet PHY SGMII interface
+  \end{itemize}
+
+  \item PCI Express Endpoint Connectivity
+
+  \begin{itemize}
+    \item Gen1 8-lane (x8)
+    \item Gen2 4-lane (x4)
+  \end{itemize}
+
+  \item SFP Module Connector
+  \item 10/100/1000 Tri-Speed Ethernet PHY
+  \item USB-to-UART Bridge
+  \item USB Controller
+  \item DVI Codec
+  \item IIC Bus
+
+  \begin{itemize}
+    \item IIC EEPROM - 1 KB
+    \item DDR3 SODIMM socket
+    \item DVI CODEC
+    \item DVI connector
+    \item FMC HPC connector
+    \item FMC LPC connector
+    \item SFP module connector
+  \end{itemize}
+
+  \item Status LEDs
+
+  \begin{itemize}
+    \item Ethernet status
+    \item FPGA INIT
+    \item FPGA DONE
+    \item System ACE CF Status
+  \end{itemize}
+  \item User I/O
+
+  \begin{itemize}
+    \item USER LED Group 1 - GPIO (8)
+    \item USER LED Group 2 - directional (5)
+    \item User pushbuttons - directional (5)
+    \item CPU reset pushbutton
+    \item User DIP switch - GPIO (8-pole)
+    \item User SMA GPIO connectors (2)
+    \item LCD character display (16 characters x 2 lines)
+  \end{itemize}
+
+  \item Switches
+  \begin{itemize}
+    \item Power on/off slide switch
+    \item System ACE CF reset pushbutton
+    \item System ACE CF bitstream image select DIP switch
+    \item Configuration MODE DIP switch
+  \end{itemize}
+
+  \item VITA 57.1 FMC HPC Connector
+  \item VITA 57.1 FMC LPC Connector
+  \item Power Management
+
+  \begin{itemize}
+    \item PMBus voltage and current monitoring via TI power controller
+  \end{itemize}
+
+  \item System Monitor
+  \item Configuration Options
+  \begin{enumerate}
+    \item 128 Mb Platform Flash XL
+    \item 32 MB Linear BPI Flash
+    \item System ACE CF and CompactFlash Connector
+    \item USB JTAG
+  \end{enumerate}
+
+\end{enumerate}
 
 %ml605 board
 \begin{figure}[htbp]
@@ -81,6 +187,113 @@ this work.
 \end{figure}
 
 \subsection{VC707 - Virtex7}
+
+The final results of this setup were generated in the VC707 board, because it
+has a possibility of expansion and has better clock generation and treatment
+options compared to the ML605 board. In the figures \ref{fig:vc707} and
+\ref{fig:vc707bd} there are the evaluation board picture and the high-level block
+diagram respectively.\\
+
+\textbf{VC707 Evaluation Board Features}
+
+\begin{enumerate}
+
+  \item Virtex-7 XC7VX485T-2FFG1761C FPGA
+  \item 1 GB DDR3 memory SODIMM
+  \item 128 MB Linear byte peripheral interface (BPI) Flash memory
+  \item USB 2.0 ULPI Transceiver
+  \item Secure Digital (SD) connector
+  \item USB JTAG through Digilent module
+  \item Clock Generation
+
+  \begin{itemize}
+    \item Fixed 200 MHz LVDS oscillator (differential)
+    \item IIC programmable LVDS oscillator (differential)
+    \item SMA connectors (differential)
+    \item SMA connectors for GTX transceiver clocking
+  \end{itemize}
+
+  \item GTX transceivers
+
+  \begin{itemize}
+    \item FMC1 HPC connector (eight GTX transceivers)
+    \item FMC2 HPC connector (eight GTX transceiver)
+    \item SMA connectors (one pair each for TX, RX, and REFCLK)
+    \item PCI Express (eight lanes)
+    \item Small form-factor pluggable plus (SFP+) connector
+    \item Ethernet PHY SGMII interface (RJ-45 connector)
+  \end{itemize}
+
+  \item PCI Express endpoint connectivity
+
+  \begin{itemize}
+    \item Gen1 8-lane (x8)
+    \item Gen2 8-lane (x8)
+  \end{itemize}
+
+  \item SFP+ Connector
+  \item 10/100/1000 tri-speed Ethernet PHY
+  \item USB-to-UART bridge
+  \item HDMI codec
+  \item I2C bus
+
+  \begin{itemize}
+    \item IIC MUX
+    \item IIC EEPROM (1 KB)
+    \item USER I2C programmable LVDS oscillator
+    \item DDR3 SODIMM socket
+    \item HDMI codec
+    \item FMC1 HPC connector
+    \item FMC2 HPC connector
+    \item SFP+ connector
+    \item IIC programmable jitter-attenuating precision clock multiplier
+  \end{itemize}
+
+  \item Status LEDs
+
+  \begin{itemize}
+    \item Ethernet status
+    \item Power good
+    \item FPGA INIT
+    \item FPGA DONE
+  \end{itemize}
+
+  \item User I/O
+  \begin{itemize}
+    \item User LEDs (eight GPIO)
+    \item User pushbuttons (five directional)
+    \item CPU reset pushbutton
+    \item User DIP switch (8-pole GPIO)
+    \item User SMA GPIO connectors (one pair)
+    \item LCD character display (16 characters x 2 lines)
+  \end{itemize}
+
+  \item Switches
+
+  \begin{itemize}
+    \item Power on/off slide switch
+    \item FPGA\_PROB\_B pushbutton
+    \item Configuration mode DIP switch
+  \end{itemize}
+
+  \item VITA 57.1 FMC1 HPC Connector
+  \item VITA 57.1 FMC2 HPC Connector
+  \item Power management
+
+  \begin{itemize}
+    \item PMBus voltage and current monitoring through TI power controller
+  \end{itemize}
+
+  \item XADC header
+  \item Configuration options
+
+  \begin{itemize}
+    \item Linear BPI Flash memory
+    \item USB JTAG configuration port
+    \item Platform cable header JTAG configuration port
+  \end{itemize}
+
+\end{enumerate}
 
 %vc707 board
 \begin{figure}[htbp]
@@ -111,13 +324,25 @@ companies that develop peripherals to be integrated with Xilinx FPGAs also have
 to develop and provide their own IP cores, like the FMComms2 board which has its
 transceiver IP.
 
-\subsubsection{Microblaze}
+%escrever um pouco sobre os ips usados
 
-\subsubsection{Direct Memory Access}
+\begin{description}
+	\item[Microblaze] \hfill \\
+
+	\item[DMA Engine] \hfill \\
+
+  \item[Memory Interface Generator] \hfill \\
+
+  \item[SPI] \hfill \\
+
+  \item[GPIO] \hfill \\
+
+  \item[UART] \hfill \\
+
+\end{description}
 
 
-
-%---------------------------------------------------FMCOMMS2-----------------------------------------------
+%--------------------------------FMCOMMS2---------------------------------------
 \section{Transceiver - FMComms2}
 \subsection{AD9361}
 \label{sec:ad9361}
@@ -150,7 +375,7 @@ of test mode with the Built-in Self Test (BIST) modes which can be used for the
 designers to debug designs during prototyping. This configurability and
 adaptability is very attractive for Software Defined Radio (SDR) and for C-RAN
 systems, indeed ad9361 is already being used in some Universal Software Radio
-Peripheral (USRP) from ettus research (National Instruments), this alone is a
+Peripheral (USRP) from Ettus research (National Instruments), this alone is a
 proof that AD9361 can work in a wide range of systems and standards.
 
 \begin{figure}[htbp]
@@ -233,7 +458,8 @@ recombined and modulated in the carrier frequency, which can be adjusted by
 changing the synthesizer frequency. These analog combined signals passes through
 additional analog filters for better band shaping and then it can be transmitted
 to the output amplifier. Each Transmitting channel provides wide attenuation
-adjustment range with fine granularity in order to optimize SNR.
+adjustment range with fine granularity in order to optimize SNR.\\
+
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.65\textwidth]{./figures/tx_chain}
@@ -248,7 +474,8 @@ real-time adjustment. The transmitter also provides a TX monitor block for each
 channel, this block monitors the transmission output and routes it back through
 an unused receiver channel to the BBP for signal monitoring, but these
 monitoring option is only available in TDD mode operation while the receiver is
-idle.
+idle.\\
+
 In short the transmission chain has:
 
 \begin{itemize}
@@ -719,14 +946,7 @@ project, import files, instantiate and configure both user and default IPs, as
 well as run synthesis, implementation and generate bitstream steps, which saves
 a lot of time in development.\\
 
-%figura das duas fases do SETUP downlink e Uplink
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.65\textwidth]{./figures/fmcomms2_pic}
-    \caption{ FMComms2 and its components
-    \label{fig:fmcomm}}
-\end{figure}
-
+%figura do setup com diagrama de blocos
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.65\textwidth]{./figures/fmcomms2_pic}
@@ -863,10 +1083,11 @@ to the receiver, use DMA.
 \subsection{Data Interface}
 
 The data interface from the ad9361 to the FPGA logic is implemented as an IP in
-the FPGA design and is composed by two parts, a transmitting interface and a receiving
-interface. The transmitting interface connects the DMA, which is reading data from the main
-memory, with the DAC interface and the receiving interface connects the ADC output with the
-DMA that writes on the main memory, in the subsections below the two interface will be more explored.
+the FPGA design and is composed by two parts, a transmitting interface and a
+receiving interface. The transmitting interface connects the DMA, which is
+reading data from the main memory, with the DAC interface and the receiving
+interface connects the ADC output with the DMA that writes on the main memory,
+in the subsections below the two interface will be more explored.
 
 %ad9361_data interface image
 \begin{figure}[htbp]
@@ -885,9 +1106,12 @@ clock, thus the DMA reading is limited by the reading clock, which is a way of
 synchronizing the DMA reading by the DAC clock, it does not work in perfectly but
 is a better solution than simply use FIFOs. \\
 
-The DAC-DMA is implemented
+The DAC-DMA is implemented using a commuter controlling a demultiplexer block,
+this means that the data read from the memory by the DMA is loaded one into the
+demultiplexer and it feeds one channel at the time, both channels are enabled
+for use\\
 
-Below it is possible to see a schematic of the interface:
+Below it is possible to see a block diagram of the interface:
 
 \begin{figure}[htbp]
     \centering
@@ -897,6 +1121,14 @@ Below it is possible to see a schematic of the interface:
 \end{figure}
 
 \subsubsection{Receiving Interface (Rx)}
+
+The receiving interface itself is rather simple in comparison with the transmitting
+interface because the speed in which the data is read by the DMA is already limited
+by the DAC clock from the ad9361 interface, thus the ADC interface has just to commute
+both channels into one, feeding one sample from each ADC channel at a time to the DMA.\\
+
+Below it is possible to see a block diagram describing the Receiving interface with
+more details,
 
 \section{Driver}
 
