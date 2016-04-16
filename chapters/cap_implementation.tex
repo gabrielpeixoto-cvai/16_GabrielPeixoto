@@ -1224,6 +1224,8 @@ are not worth to explain deeply because they are used for control and communicat
 and there was no need to modify or to add any functions to those, their role on the
 ad9361 is explained in the section \ref{sec:fmcomms2}.\\
 
+
+
 The steps of initialization are described in the figure %ref figure
 
 %adicionar diagrama de fluxo da inicialização do ad9361
@@ -1235,19 +1237,26 @@ the DDR3 Memory and thus DMA Engine uses interrupt to inform the processor regar
 the data read and write. So basically the DMA has to initialize the configuration,
 and then configure the device.\\
 
-After device is configured there is the need to allocate the Block Descriptors
-for Transmitting (reading) and Receiving (writing), each block descriptor carries
-a
+After device is configured, since the DMA is configured in scatter gather mode,
+there is the need to allocate the Block Descriptors for Transmitting (reading)
+and Receiving (writing), each block descriptor carries a the beginning address
+of the memory to be read, the size of the reading operation and the address of
+the next block to read, basically this allows for the DMA to read non continuous
+memory spaces.\\
 
-
-
+After all the blocks are processed by DMA and all the reading is done, the DMA
+generates an interrupt to inform the processor that the reading process is done
+and in such interrupt routine the cyclic process is implemented, it basically
+sends DMA back to the start Block descriptor and the process of reading the
+memory runs again and again until the kill signal is asserted, this is not the
+optimal solution, however it is the one which worked for now.\\
 
 \section{Applications}
 
 This setup was meant to be used in the academic and research and development
 environments for such it is extensively documented in this document and in the
-source codes in the repository, thus this section aims to be a guideline for whoever needs to
-use this work for research or study.
+source codes in the repository, thus this section aims to be a guideline for
+whoever needs to use this work for research or study.
 
 \subsection{Academic Environment}
 
@@ -1257,8 +1266,8 @@ matlab and load it as a vector in a .h file, this file shall be read by the DMA
 driver.\\
 There is also the possibility to develop a modulation/demodulation block
 and input this block feeding the data interface, thus all the modulated data can
-be transmitted.
+be transmitted and received.
 
 \subsection{Research environment}
 
-In the research and development environment,
+In the research and development environment, this work can be used to
