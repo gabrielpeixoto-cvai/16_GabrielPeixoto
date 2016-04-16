@@ -1,9 +1,8 @@
 \chapter{Long Term Evolution}
+\label{chap:lte}
 
-\section{Communication Systems Overview}
-
-\section{Digital Communications Overview}
-\label{sec:digitalcomm}
+\section{Digital Communication System Overview}
+\label{lte:digicomm}
 
 %digital communication system block diagram
 \begin{figure}[htbp]
@@ -32,6 +31,7 @@ recovering, such as Phase locked loops, costas loop and others.\\
 
 
 \section{Long Term Evolution}
+\label{let:lte}
 
 \subsection{Overview}
 
@@ -192,15 +192,7 @@ the time between the symbol arriving on the first multi-path signal and the last
 multi-path signal component, typically several $\mu s$ dependent on the environment
 (i.e. indoor, rural, suburban, city center). The guard interval has to be selected
 in that way, that it is greater than the maximum expected delay spread. In E-UTRA,
-the guard interval is a cyclic prefix which is inserted prior to each OFDM symbol.
-
-%figura ondas
-%\begin{figure}[htbp]
-%    \centering
-%    \includegraphics[width=0.65\textwidth]{./figures/ad9361_digital_interface}
-%    \caption{ AD9361 Digital Data Interface
-%    \label{fig:ad9361diginterface}}
-%\end{figure}
+the guard interval is a cyclic prefix which is inserted prior to each OFDM symbol.\\
 
 In practice, the OFDM signal can be generated using IFFT (Inverse Fast Fourier Transform)
 digital signal processing. The IFFT converts a number N of complex data
