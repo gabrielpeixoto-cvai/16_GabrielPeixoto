@@ -31,6 +31,22 @@ a lot of time in development.\\
 
 %figura das duas fases do SETUP downlink e Uplink
 
+%tx block diagram
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{./figures/tx_setup}
+    \caption{ Transmitter Setup Block Diagram
+    \label{fig:txsetup}}
+\end{figure}
+
+%rx block diagram
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{./figures/rx_setup}
+    \caption{ Receiver Setup Block Diagram
+    \label{fig:rxsetup}}
+\end{figure}
+
 %--------------------------------------------FPGA-----------------------------------------
 \section{FPGA}
 
@@ -335,10 +351,22 @@ transceiver IP.
 \begin{description}
 	\item[Microblaze] \hfill \\
 
-  Microblaze is a soft processor, created in FPGA logic and synthesized inside
-the FPGA, it runs usually at 100 Mhz clock, and has only one interrupt input. The
-Microblaze function is basically to initialize all the software drivers, configure
-such drivers and execute interrupt routines.
+Microblaze is a soft processor core designed for Xilinx FPGAs, MicroBlaze is
+implemented entirely in the general-purpose memory and logic fabric of Xilinx
+FPGAs and synthesized inside the FPGA, it has a 32 bit instruction set and runs
+usually at 100 Mhz clock, and has only one interrupt input. The Microblaze function
+in this system is basically to initialize all the software drivers, configure
+such drivers and execute interrupt routines.\\
+
+Below it is possible to see a block schematic of microblaze core:
+
+%ublaze block diagram
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{./figures/mb_bd}
+    \caption{ Microblaze core Block Diagram
+    \label{fig:mbbd}}
+\end{figure}
 
 	\item[DMA Engine] \hfill \\
 
@@ -346,6 +374,14 @@ such drivers and execute interrupt routines.
 a very fast rate. There are various modes of operation, but in this project the
 Scatter gather mode is used, in this mode the reading and writing is possible in
 a non-continuous memory addresses by the use of block descriptors.
+
+%dma block diagram
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{./figures/dma_bd}
+    \caption{ AXI DMA Block Diagram
+    \label{fig:dmabd}}
+\end{figure}
 
   \item[Memory Interface Generator] \hfill \\
 
@@ -982,9 +1018,9 @@ a lot of time in development.\\
 %figura do setup com diagrama de blocos
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.65\textwidth]{./figures/fmcomms2_pic}
-    \caption{ FMComms2 and its components
-    \label{fig:fmcomm}}
+    \includegraphics[width=0.65\textwidth]{./figures/setup_ipbd}
+    \caption{ Setup Components block diagram
+    \label{fig:setupip}}
 \end{figure}
 
 \subsection{Integration between FPGA and FMComms2}
@@ -1033,9 +1069,9 @@ IP and how it routes the respective ports to the ad9361 interface.
 %diagrama de blocos control interface
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.65\textwidth]{./figures/fmcomms2_pic}
-    \caption{ FMComms2 and its components
-    \label{fig:fmcomm}}
+    \includegraphics[width=0.65\textwidth]{./figures/comm_if}
+    \caption{ Control Interface Block Diagram
+    \label{fig:commif}}
 \end{figure}
 
 \subsection{Transmitting custom data}
@@ -1053,9 +1089,9 @@ is not so fast and reliable, but it was enough for test purposes.
 %inserir figura do IP ad9361 highlight TX interface pins
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.65\textwidth]{./figures/fmcomms2_pic}
-    \caption{ FMComms2 and its components
-    \label{fig:fmcomm}}
+    \includegraphics[width=0.65\textwidth]{./figures/ad9361tx_pins}
+    \caption{ AD9361 Transmitter (DAC) interface pins
+    \label{fig:txpins}}
 \end{figure}
 
 %inserir diagrama de blocos de entrada DDS>FIFO>AD9361
@@ -1088,9 +1124,9 @@ thing for receiving.
 %inserir figura do IP ad9361 Highlight RX interface pins
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.65\textwidth]{./figures/fmcomms2_pic}
-    \caption{ FMComms2 and its components
-    \label{fig:fmcomm}}
+    \includegraphics[width=0.65\textwidth]{./figures/ad9361rx_pins}
+    \caption{ AD9361 Receiver (ADC) interface pins
+    \label{fig:rxpins}}
 \end{figure}
 
 %inserir diagrama de blocos de entrada AD9361>FIFO>ILA
@@ -1125,8 +1161,8 @@ in the subsections below the two interface will be more explored.
 %ad9361_data interface image
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.65\textwidth]{./figures/fmcomms2_pic}
-    \caption{ High-level block diagram of the data interface
+    \includegraphics[width=0.65\textwidth]{./figures/data_if}
+    \caption{ AD9361 Data Interface Block Diagram
     \label{fig:databd}}
 \end{figure}
 
@@ -1148,7 +1184,7 @@ Below it is possible to see a block diagram of the interface:
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.65\textwidth]{./figures/fmcomms2_pic}
+    \includegraphics[width=0.65\textwidth]{./figures/txdata_if}
     \caption{ Block diagram of the TX part in the data interface
     \label{fig:dataiftx}}
 \end{figure}
