@@ -1,0 +1,19 @@
+Gitignore noob how to
+
+create a simple .gitignore_global file in your git folder, add all the extensions
+you do not want to track, like:
+
+figures/*.pdf
+*.pdf
+*.aux
+*.bbl
+*.blg
+*.log
+*.lof
+*.lot
+*.out
+*.toc
+
+and then execute:
+
+git config --global core.excludesfile ~.gitignore_global
