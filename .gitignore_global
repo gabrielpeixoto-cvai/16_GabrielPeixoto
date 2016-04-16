@@ -1,2 +1,12 @@
 figures/*.pdf
+*.pdf
+*.aux
+*.bbl
+*.blg
+*.log
+*.lof
+*.lot
+*.out
+*.toc
+
 
