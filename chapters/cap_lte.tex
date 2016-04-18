@@ -4,7 +4,12 @@
 \section{Digital Communication System Overview}
 \label{lte:digicomm}
 
-%digital communication system block diagram
+The purpose of any Communication System is to transport an information bearing
+signal from a source to a user destination via a communication channel. Being
+Transmitter, Receiver and Channel the three basic elements of every
+communication systems whose block diagram can be seen in figure X.\\
+
+%esquema básico do sistema de comunicação
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.65\textwidth]{./figures/digicomm_block}
@@ -12,23 +17,219 @@
     \label{fig:digcomm}}
 \end{figure}
 
+The overall purpose of the system is to transfer information from one point (
+Source) to another point, the destination.The message produced by a source,
+normally, it is a digital message, usually binary, thus not electrical. Hence an
+input transducer is used for converting the message to a time-varying electrical
+quantity called message signal. Similarly, at the destination point,another
+transducer converts the electrical waveform to the appropriate message.\\
+
+The transmitter is located at one point in space, the receiver is located at
+some other point separate from the transmitter, and the channel is the medium
+that provides the electrical connection between them. Its purpose is to
+transform the message signal produced by the source of information into a form
+suitable for transmission over the channel.\\
+
+The received signal is normally corrupted version of the transmitted signal,
+which is due to channel imperfections, noise and interference from other
+sources.It has the task of operating on the received signal so as to reconstruct
+a recognizable form of the original message signal and to deliver it to the user
+destination.
+
+Communication Systems are divided into 3 categories:
+
+\begin{enumerate}
+
+  \item Analog Communication Systems are designed to transmit analog information
+  using analog modulation methods, FM and AM, common radio.
+
+  \item DigitalCommunication Systems are designed for transmitting digital
+  information using digital modulation schemes, like FSK and PSK.
+
+  \item Hybrid Systems that use digital modulation schemes for transmitting
+  sampled and quantized values of an analog message signal.
+
+\end{enumerate}
+
+\subsection{Elements of Digital Communications Systems}
+
+%block diagram of a digital communication system
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{./figures/digicomm_block}
+    \caption{ Digital Communication System Block Diagram
+    \label{fig:digcomm}}
+\end{figure}
+
+\subsubsection{Source of information}
+
+The sources of information can be of two main kinds, \emph{Analog Information
+sources} and \emph{Digital Information Sources}. The Analog information sources
+are, for example, microphones and cathodic ray tube televisions, usually any
+device that have to reproduce or record anything in the real-world is analogic,
+because the real world is analogic. \\
+
+In the other side there are the digital information sources which are composed
+by a discrete sequence of symbols, thus the main digital information source is
+the PC.
+
+\subsubsection{Source Encoder / Decoder}
+
+The \emph{Source encoder}  and \emph{Source coder} converts the input symbol
+sequence into a binary sequence (0 and 1) by assigning code words to the symbols
+in the input sequence.\\
+
+If a source set is having hundred symbols, then the number of bits used to
+represent each symbol will be 7 because $27=128$ unique combinations are
+available. The important parameters of a source encoder are block size, code
+word lengths, average data rate and the efficiency of the coder, which is the
+actual output data rate compared to the minimum achievable rate.\\
+
+At the receiver, the source decoder converts the binary output of the channel
+decoder into a symbol sequence. The decoder for a system using fixed length code
+words is quite simple, but the decoder for a system using variable length code
+words will be very complex.\\
+
+Aim of the source coding is to remove the redundancy in the transmitting
+information, so that bandwidth required for transmission is minimized. Based on
+the probability of the symbol codeword is assigned. Higher the probability,
+shorter is the codeword.
+
+\subsubsection{Channel Encoder / Decoder}
+
+Error control is accomplished by the channel coding operation that consists of
+systematically adding extra bits to the output of the source coder. These extra
+bits do not convey any information but helps the receiver to detect and / or
+correct some of the errors in the information bearing bits.\\
+
+There are two methods of channel coding:
+
+\begin{enumerate}
+
+  \item \textbf{Block Coding:} The encoder takes a block of ‘k’ information bits
+  from the source encoder and adds ‘r’ error control bits, where ‘r’ is dependent
+  on ‘k’ and error control capabilities desired.
+
+  \item \textbf{Convolution Coding:} The information bearing message stream is
+  encoded in a continuous fashion by continuously interleaving information bits
+  and error control bits.
+
+\end{enumerate}
+
+
+The Channel decoder recovers the information bearing bits from the coded binary
+stream. Error detection and possible correction is also performed by the channel
+decoder.
+
+\subsubsection{Modulator}
+
+The Modulator converts the input bit stream into an electrical waveform suitable
+for transmission over the communication channel, the carrier wave. Modulator can
+be effectively used to minimize the effects of channel noise, to match the
+frequency spectrum of transmitted signal with channel characteristics, to
+provide the capability to multiplex many signals.
+
+\subsubsection{Demodulator}
+
+The extraction of the message from the information bearing waveform produced by
+the modulation is accomplished by the demodulator. The output of the demodulator
+is bit stream.
+
+\subsubsection{Channel}
+
+The Channel provides the electrical connection between the source and
+destination. The different channels are: Pair of wires, Coaxial cable, Optical
+fibre, Radio channel, Satellite channel or combination of any of these.\\
+
+The communication channels have only finite Bandwidth, non-ideal frequency
+response, the signal often suffers amplitude and phase distortion as it travels
+over the channel. Also, the signal power decreases due to the attenuation of the
+channel. The signal is corrupted by unwanted, unpredictable electrical signals
+referred to as noise. The important parameters of the channel are Signal to
+Noise power Ratio (SNR), usable bandwidth, amplitude and phase response and the
+statistical properties of noise.
+
+\subsection{Additional Blocks}
+%augmented block diagram
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{./figures/digicomm_block}
+    \caption{ Digital Communication System Block Diagram
+    \label{fig:digcomm}}
+\end{figure}
+
+Some additional blocks as shown in the block diagram are used in most of digital
+communication system:
+
+\begin{itemize}
+
+  \item \textbf{Encryptor:} Encryptor prevents unauthorized users from
+understanding the messages and from injecting false messages into the system.
+
+  \item \textbf{Multiplexer:} Multiplexer is used for combining signals from
+different sources so that they share a portion of the communication system.
+
+  \item \textbf{Demultiplexer:} DeMultiplexer is used for separating the different
+signals so that they reach their respective destinations.
+
+  \item \textbf{Decryptor:} It does the reverse operation of that of the Encryptor.
+
+\end{itemize}
+
 \subsection{Synchronization}
 
-\subsubsection{Carrier Recovery}
+Synchronization involves the estimation of both time and frequency coherent
+systems need to synchronize their frequency reference with carrier in both
+frequency and phase.
 
-Carrier recovery is a process used in coherent demodulation where the phase
-and the frequency of the transmitter carrier wave are recovered by the receiver
-and thus after having such information it is possible to extract the information
-in the transmitted signal.\\
-Considering that the phase and frequency of the transmitted wave probably will
-be affected by noise, it is not a straight-forward method, it includes filtering
-and usually feedback systems to correct the erros in phase or frequency caused
-by the noise.\\
-This chapter aims in the brief exploration of some techniques used for carrier
-recovering, such as Phase locked loops, costas loop and others.\\
+\subsection{Advantages and Disadvantages}
 
-\subsubsection{Costas Loop}
+Advantages:
 
+\begin{enumerate}
+
+  \item The effect of distortion, noise and interference is less in a digital
+  communication system. This is because the disturbance must be large enough to
+  change the pulse from one state to the other.
+
+  \item Regenerative repeaters can be used at fixed distance along the link, to
+  identify and regenerate a pulse before it is degraded to an ambiguous state.
+
+  \item Digital circuits are more reliable and cheaper compared to analog
+  circuits.
+
+  \item The Hardware implementation is more flexible than analog hardware because
+  of the use of microprocessors, VLSI chips etc.
+
+  \item Signal processing functions like encryption, compression can be employed
+  to maintain the secrecy of the information.
+
+  \item Error detecting and Error correcting codes improve the system performance
+  by reducing the probability of error.
+
+  \item Combining digital signals using TDM is simpler than combining analog
+  signals using FDM. The different types of signals such as data, telephone, TV
+  can be treated as identical signals in transmission and switching in a digital
+  communication system.
+
+  \item We can avoid signal jamming using spread spectrum technique.
+
+\end{enumerate}
+
+Disadvantages:
+
+\begin{enumerate}
+
+  \item \textbf{Large System Bandwidth:} Digital transmission requires a large system
+  bandwidth to communicate the same information in a digital format as compared to
+  analog format.
+
+  \item \textbf{System Synchronization:} Digital detection requires system synchronization
+  whereas the analog signals generally have no such requirement.
+
+\end{enumerate}
+
+%-----------------------------------LTE-----------------------------------------
 
 \section{Long Term Evolution}
 \label{let:lte}
@@ -180,10 +381,10 @@ modulated by a low rate data stream. OFDM is used as well in WLAN, WiMAX and
 broadcast technologies like DVB. OFDM has several benefits including its robustness
 against multipath fading and its efficient receiver architecture.\\
 
-Figure 2 shows a representation of an OFDM signal. In this figure, a signal with
-5 MHz bandwidth is shown, but the principle is of course the same for the other
-E-UTRA bandwidths. Data symbols are independently modulated and
-transmitted over a high number of closely spaced orthogonal subcarriers.\\
+%Figure 2 shows a representation of an OFDM signal. In this figure, a signal with
+%5 MHz bandwidth is shown, but the principle is of course the same for the other
+%E-UTRA bandwidths. Data symbols are independently modulated and
+%transmitted over a high number of closely spaced orthogonal subcarriers.\\
 
 In E-UTRA, downlink modulation schemes QPSK, 16QAM, and 64QAM are available.
 In the time domain, a guard interval is added to each symbol to combat
@@ -212,7 +413,7 @@ The vector $sm$ is defined as the useful OFDM symbol. It is the time superpositi
 of the $N$ narrowband modulated subcarriers. Therefore, from a parallel stream
 of $N$ sources of data, each one independently modulated, a waveform composed of
 N orthogonal subcarriers is obtained, with each subcarrier having the shape of a
-frequency sinc function (see Figure 2). Figure 4 illustrates the mapping from a
+frequency sinc function. Figure 4 illustrates the mapping from a
 serial stream of QAM symbols to N parallel streams, used as frequency domain bins
 for the IFFT. The N-point time domain blocks obtained from the IFFT are then
 serialized to create a time domain signal.
