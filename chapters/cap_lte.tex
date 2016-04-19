@@ -43,7 +43,7 @@ Communication Systems are divided into 3 categories:
   \item Analog Communication Systems are designed to transmit analog information
   using analog modulation methods, FM and AM, common radio.
 
-  \item DigitalCommunication Systems are designed for transmitting digital
+  \item Digital Communication Systems are designed for transmitting digital
   information using digital modulation schemes, like FSK and PSK.
 
   \item Hybrid Systems that use digital modulation schemes for transmitting
@@ -231,7 +231,7 @@ Disadvantages:
 
 %-----------------------------------LTE-----------------------------------------
 
-\section{Long Term Evolution}
+\section{Long Term Evolution} %OK
 \label{let:lte}
 
 \subsection{Overview}
@@ -316,7 +316,7 @@ of subscription or application.
     \label{fig:ad9361diginterface}}
 \end{figure}
 
-\subsection{Orthogonal Frequency-division Multiplexing Radio Technology}
+\subsection{Orthogonal Frequency-division Multiplexing Radio Technology} %+/-ok
 
 LTE uses OFDM for the downlink ( from the base station to the terminal or UE).
 OFDM meets the LTE requirement for spectrum flexibility and enables cost-efficient
@@ -324,10 +324,11 @@ solutions for very wide carriers with high peak rates. It is a well-established
 technology: for example, in standards such as IEEE 802.11a/b/g, 802.16, HIPERLAN-2,
 DVB and DAB.\cite{introlte} \cite{umtslte}\\
 
-Figure 2 shows a representation of an OFDM signal. In this figure, a signal with
-5 MHz bandwidth is shown, but the principle is of course the same for the other
-E-UTRA bandwidths. Data symbols are independently modulated and
-transmitted over a high number of closely spaced orthogonal subcarriers.\\
+A representation of an OFDM signal can be seen in figure \ref{fig:ofdmfreq}. In
+this figure, a signal with 5 MHz bandwidth is shown, but the principle is of
+course the same for the other E-UTRA bandwidths. Data symbols are independently
+modulated and transmitted over a high number of closely spaced orthogonal
+subcarriers.\\
 
 %ofdm scheme
 \begin{figure}[htbp]
@@ -372,19 +373,15 @@ Since this work shall focus on the Radio Frontend part of the systems, implement
 a downlink scheme, it is interesting to dwell more in the LTE downlink and uplink
 schemes.
 
-\subsection{Downlink Scheme}
+\subsection{Downlink Scheme}%aqui
 
 The downlink transmission scheme for E-UTRA FDD and TDD modes is based on
 conventional OFDM. In an OFDM system, the available spectrum is divided into
-multiple carriers, called subcarriers. Each of these subcarriers is independently
-modulated by a low rate data stream. OFDM is used as well in WLAN, WiMAX and
-broadcast technologies like DVB. OFDM has several benefits including its robustness
-against multipath fading and its efficient receiver architecture.\\
-
-%Figure 2 shows a representation of an OFDM signal. In this figure, a signal with
-%5 MHz bandwidth is shown, but the principle is of course the same for the other
-%E-UTRA bandwidths. Data symbols are independently modulated and
-%transmitted over a high number of closely spaced orthogonal subcarriers.\\
+multiple carriers, called subcarriers. Each of these subcarriers is
+independently modulated by a low rate data stream. OFDM is used as well in WLAN,
+WiMAX and broadcast technologies like DVB (Digital Video Broadcasting). OFDM has
+several benefits including its robustness against multipath fading and its
+efficient receiver architecture.\\
 
 In E-UTRA, downlink modulation schemes QPSK, 16QAM, and 64QAM are available.
 In the time domain, a guard interval is added to each symbol to combat
