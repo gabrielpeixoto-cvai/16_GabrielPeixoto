@@ -1099,8 +1099,8 @@ is not so fast and reliable, but it was enough for test purposes.
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.65\textwidth]{./figures/dac_fifo}
-    \caption{ FMComms2 and its components
-    \label{fig:fmcomm}}
+    \caption{ ad9361 DAC interface with FIFO
+    \label{fig:ad9361txfifo}}
 \end{figure}
 
 After some time, the need for a faster interface rose, then the use of DMA came
@@ -1110,8 +1110,8 @@ naturally, because it is faster and more reliable than the common FIFO.
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.65\textwidth]{./figures/dac_dma}
-    \caption{ FMComms2 and its components
-    \label{fig:fmcomm}}
+    \caption{ ad9361 DAC interface with DMA
+    \label{fig:ad9361txdma}}
 \end{figure}
 
 \subsection{Receiving Custom data}
@@ -1133,7 +1133,7 @@ thing for receiving.
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.65\textwidth]{./figures/adc_fifo}
-    \caption{ FMComms2 and its components
+    \caption{ ad9361 ADC interface with FIFO
     \label{fig:ad9361rxfifo}}
 \end{figure}
 
@@ -1144,7 +1144,7 @@ to the receiver, use DMA.
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.65\textwidth]{./figures/adc_dma}
-    \caption{
+    \caption{ ad9361 ADC interface with DMA
     \label{fig:ad9361rxdma}}
 \end{figure}
 
@@ -1197,7 +1197,14 @@ by the DAC clock from the ad9361 interface, thus the ADC interface has just to c
 both channels into one, feeding one sample from each ADC channel at a time to the DMA.\\
 
 Below it is possible to see a block diagram describing the Receiving interface with
-more details,
+more details:
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{./figures/txdata_if}
+    \caption{ Block diagram of the RX part in the data interface
+    \label{fig:dataifrx}}
+\end{figure}
 
 \section{Driver}
 
@@ -1218,17 +1225,26 @@ Microblaze.
 
 \subsection{AD9361 Driver}
 
-The ad9361 driver is very complex and carries the job of initializing and configuring
-the FMcomms2 chip, it also initializes the GPIO and SPI drivers, which functionality
-are not worth to explain deeply because they are used for control and communication
-and there was no need to modify or to add any functions to those, their role on the
-ad9361 is explained in the section \ref{sec:fmcomms2}.\\
+The ad9361 driver is very complex and carries the job of initializing and
+configuring the FMcomms2 chip, it also initializes the GPIO and SPI drivers,
+which functionality are not worth to explain deeply because they are used for
+control and communication and there was no need to modify or to add any
+functions to those, their role on the ad9361 is explained in the section
+\ref{sec:fmcomms2}.In the appendix, there is also a table with of all the
+drivers main functions explained.\\
 
 
 
 The steps of initialization are described in the figure %ref figure
 
 %adicionar diagrama de fluxo da inicialização do ad9361
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{./figures/txdata_if}
+    \caption{ AD9361 initialization diagram
+    \label{fig:ad9361init}}
+\end{figure}
 
 \subsection{Interrupts and DMA}
 
@@ -1250,6 +1266,13 @@ and in such interrupt routine the cyclic process is implemented, it basically
 sends DMA back to the start Block descriptor and the process of reading the
 memory runs again and again until the kill signal is asserted, this is not the
 optimal solution, however it is the one which worked for now.\\
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{./figures/txdata_if}
+    \caption{ Interrupts and DMA flux diagram
+    \label{fig:intcdmainit}}
+\end{figure}
 
 \section{Applications}
 
