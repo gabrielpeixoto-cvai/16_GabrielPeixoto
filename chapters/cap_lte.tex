@@ -373,19 +373,17 @@ Since this work shall focus on the Radio Frontend part of the systems, implement
 a downlink scheme, it is interesting to dwell more in the LTE downlink and uplink
 schemes.
 
-\subsection{Downlink Scheme}%aqui
+\subsection{Downlink Scheme}%OK
 
 The downlink transmission scheme for E-UTRA FDD and TDD modes is based on
 conventional OFDM. In an OFDM system, the available spectrum is divided into
-multiple carriers, called subcarriers. Each of these subcarriers is
-independently modulated by a low rate data stream. OFDM is used as well in WLAN,
-WiMAX and broadcast technologies like DVB (Digital Video Broadcasting). OFDM has
-several benefits including its robustness against multipath fading and its
-efficient receiver architecture.\\
-
-In E-UTRA, downlink modulation schemes QPSK, 16QAM, and 64QAM are available.
-In the time domain, a guard interval is added to each symbol to combat
-inter-symbolinterference (ISI) due to channels delay spread. The delay spread is
+multiple carriers, called subcarriers as explained in the previus section. Each
+of these subcarriers is independently modulated by a low rate data stream. OFDM
+is used as well in WLAN, WiMAX and broadcast technologies like DVB (Digital
+Video Broadcasting). OFDM has several benefits including its robustness against
+multipath fading and its efficient The user data is carried on the Physical Downlink Shared Channel (PDSCH). The
+PDSCH(s) is the only channel that can be QPSK, 16QAM or 64QAM modulated. The
+Downlink channel schematic can be seen in \ref{fig:dlchann}to channels delay spread. The delay spread is
 the time between the symbol arriving on the first multi-path signal and the last
 multi-path signal component, typically several $\mu s$ dependent on the environment
 (i.e. indoor, rural, suburban, city center). The guard interval has to be selected
@@ -428,15 +426,17 @@ users on the available bandwidth. Each user is assigned a specific time-frequenc
 resource.
 
 As stated before the data is allocated to a device (User Equipment, UE) in terms
-of resource blocks, i.e. one UE can be allocated integer multiples of one resource
-block in the frequency domain. These resource blocks do not have to be adjacent to
+of resource blocks, this means that one UE can be allocated integer multiples of
+one resource block in the frequency domain, which representation can be seen in
+figure \ref{fig:ofdmresblk}. These resource blocks do not have to be adjacent to
 each other. In the time domain, the scheduling decision can be modified every
 transmission time interval of 1 ms. All scheduling decisions for downlink and
-uplink are done in the base station (enhanced NodeB, eNodeB or eNB). The scheduling
-algorithm has to take into account the radio link quality situation of different
-users, the overall interference situation, Quality of Service requirements, service
-priorities, etc. and is a vendor-specific implementation. Figure 8 shows an example
-for allocating downlink user data to different users.\\
+uplink are done in the base station (enhanced NodeB, eNodeB or eNB). The
+scheduling algorithm has to take into account the radio link quality situation
+of different users, the overall interference situation, Quality of Service
+requirements, service priorities, etc. and is a vendor-specific implementation.
+Figure 8 shows an example for allocating downlink user data to different
+users.\\
 
 %ofdm resource block
 \begin{figure}[htbp]
@@ -447,17 +447,18 @@ for allocating downlink user data to different users.\\
 \end{figure}
 
 The user data is carried on the Physical Downlink Shared Channel (PDSCH). The
-PDSCH(s) is the only channel that can be QPSK, 16QAM or 64QAM modulated.
+PDSCH(s) is the only channel that can be QPSK, 16QAM or 64QAM modulated. The
+Downlink channel schematic can be seen in \ref{fig:dlchann}
 
 %downlink channel figura
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.65\textwidth]{./figures/downlink_channels}
     \caption{ OFDMA time-frequency multiplexing
-    \label{fig:ad9361diginterface}}
+    \label{fig:dlchann}}
 \end{figure}
 
-\subsection{Uplink Scheme}
+\subsection{Uplink Scheme}%ok?
 
 During the study item phase of LTE, alternatives for the optimum uplink transmission
 scheme were investigated. While OFDMA is seen optimum to fulfill the LTE
@@ -475,7 +476,7 @@ Still, SC-FDMA signal processing has some similarities with OFDMA signal process
 so parameterization of downlink and uplink can be harmonized.\\
 
 There are different possibilities how to generate an SC-FDMA signal. DFT-spread-
-OFDM (DFT-s-OFDM) has been selected for E-UTRA which can be seen in figure X. For
+OFDM (DFT-s-OFDM) has been selected for E-UTRA. For
 DFT-s-OFDM, a size-M DFT is first applied to a block of M modulation
 symbols. QPSK, 16QAM and 64QAM are used as uplink E-UTRA modulation
 schemes, the latter being optional for the UE. The DFT transforms the modulation
