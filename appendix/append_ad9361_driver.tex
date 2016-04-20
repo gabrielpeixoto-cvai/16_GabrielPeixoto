@@ -1,1 +1,50 @@
 \chapter{AD9361 NO-OS Driver}
+\label{app:noos}
+
+
+\begin{table}[]
+\centering
+\caption{ad9361 Base Configuration}
+\label{tab:basecf}
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Linux Device Tree Attribute}               & \textbf{No-OS AD9361\_ParamInit structure member}  & \textbf{Description}                              \\ \hline
+adi,2rx-2tx-mode-enable                   & two\_rx\_two\_tx\_mode\_enable            & Use 2Rx2Tx mode - default 1Rx1Tx (AD9364 must clear this)           \\ \hline
+adi,frequency-division-duplex-mode-enable & frequency\_division\_duplex\_mode\_enable & Use FDD mode - default TDD                                          \\ \hline
+adi,tdd-use-dual-synth-mode-enable        & tdd\_use\_dual\_synth\_mode\_enable       & In TDD mode use Dual Synth mode - default only one Synth is enabled \\ \hline
+adi,tdd-use-fdd-vco-tables-enable         & tdd\_use\_fdd\_vco\_tables\_enable        & In TDD mode use the FDD VCO tables                                  \\ \hline
+adi,tdd-skip-vco-cal-enable               & tdd\_skip\_vco\_cal\_enable               & Option to skip VCO cal in TDD mode when moving from TX/RX to Alert  \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[]
+\centering
+\caption{ENSM Control}
+\label{tab:ensm}
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Linux Device Tree Attribute}                  & \textbf{No-OS AD9361\_ParamInit structure member}      & \textbf{Description}                                                                \\ \hline
+adi,ensm-enable-pin-pulse-mode-enable                 & ensm\_enable\_pin\_pulse\_mode\_enable                 & ENSM control Pins (ENABLE/TXNRX) use Pulse mode - default Level Mode                \\ \hline
+adi,ensm-enable-txnrx-control-enable                  & ensm\_enable\_txnrx\_control\_enable                   & ENSM control Pins (ENABLE/TXNRX) control ENSM state - default SPI writes            \\ \hline
+adi,frequency-division-duplex-independent-mode-enable & frequency\_division\_duplex\_independent\_mode\_enable & Use independent FDD mode - allows individual control over RX and TX (Pin Mode Only) \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[]
+\centering
+\caption{My caption}
+\label{my-label}
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Linux Device Tree Attribute}         & \textbf{No-OS AD9361\_ParamInit structure member} & \textbf{Description}                                                                   \\ \hline
+adi,rx-synthesizer-frequency-hz              & rx\_synthesizer\_frequency\_hz                    & RX LO power-up Frequency in Hz                                                         \\ \hline
+adi,tx-synthesizer-frequency-hz              & tx\_synthesizer\_frequency\_hz                    & TX LO power-up Frequency in Hz                                                         \\ \hline
+adi,tx-fastlock-delay-ns                     & tx\_fastlock\_delay\_ns                           & TX fastlock delay in ns                                                                \\ \hline
+adi,rx-fastlock-delay-ns                     & rx\_fastlock\_delay\_ns                           & RX fastlock delay in ns                                                                \\ \hline
+adi,rx-fastlock-pincontrol-enable            & rx\_fastlock\_pincontrol\_enable                  & RX fastlock pin control enable                                                         \\ \hline
+adi,tx-fastlock-pincontrol-enable            & tx\_fastlock\_pincontrol\_enable                  & RX fastlock pin control enable                                                         \\ \hline
+adi,trx-synthesizer-target-fref-overwrite-hz & trx\_synthesizer\_target\_fref\_overwrite\_hz     & This allows forcing a lower F\_REF window (worse phase noise, better fractional spurs) \\ \hline
+adi,external-tx-lo-enable                    & external\_tx\_lo\_enable                          & Enables external LO for TX                                                             \\ \hline
+adi,external-rx-lo-enable                    & external\_rx\_lo\_enable                          & Enables external LO for RX                                                             \\ \hline
+\end{tabular}
+\end{table}
