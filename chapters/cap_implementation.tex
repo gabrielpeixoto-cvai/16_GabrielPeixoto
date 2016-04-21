@@ -1191,10 +1191,13 @@ Below it is possible to see a block diagram of the interface:
 
 \subsubsection{Receiving Interface (Rx)}
 
-The receiving interface itself is rather simple in comparison with the transmitting
-interface because the speed in which the data is read by the DMA is already limited
-by the DAC clock from the ad9361 interface, thus the ADC interface has just to commute
-both channels into one, feeding one sample from each ADC channel at a time to the DMA.\\
+The receiving interface itself is rather simple in comparison with the
+transmitting interface because the speed in which the data is read by the DMA is
+already limited by the DAC clock from the ad9361 interface, thus the ADC
+interface has just to commute both channels into one, feeding one sample from
+each ADC channel at a time to the DMA, be able to accomplish such, there is a
+state machine to control the fifo output to the DMA as can be seen in figure
+\ref{fig:dataifrx}.\\
 
 Below it is possible to see a block diagram describing the Receiving interface with
 more details:
@@ -1307,8 +1310,12 @@ matlab and load it as a vector in a .h file, this file shall be read by the DMA
 driver.\\
 There is also the possibility to develop a modulation/demodulation block
 and input this block feeding the data interface, thus all the modulated data can
-be transmitted and received.
+be transmitted and received, the only limitation of such development would be the
+FPGA board own DSP capability.
 
 \subsection{Research environment}
 
-In the research and development environment, this work can be used to
+In the research and development environment, this work can be used as a testbed
+for any algorithm in LTE frequency range like compression, synchronization and
+transmission tests. This setup saves time in the development where the developer
+does not need to worry about any hardware issues and focus on the algorithm.
