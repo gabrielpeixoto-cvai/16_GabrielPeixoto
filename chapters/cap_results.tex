@@ -87,7 +87,43 @@ both analyzers outputs can be seen in the figures below:
     \label{fig:oscillfft}}
 \end{figure}
 
+\section{Simulation}
 
+An important step in HDL development is the logic simulation of the circuit,
+through this simulation it is possible to watch every port and be able to
+understand the block behavior, thus correcting any problem or misbehavior.\\
+
+\subsection{Transmit (DAC) Interface Simulation}
+
+The simulation of the transmit interface, which interfaces the FPGA with DAC was
+made in three steps, since the interface is composed by two blocks, there was
+the need to simulate each block separately and after this simulate both blocks
+connected and working together, in the figures \ref{fig:simdacdma},
+\ref{fig:simdac} and \ref{fig:simtxif} it is possible to see the simulation
+results and wave diagrams of the three steps.\\
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{./figures/dac_dmaInterface}
+    \caption{ Step 1: DAC-DMA Interface SImulation
+    \label{fig:simdacdma}}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{./figures/dacInterface}
+    \caption{ Step 2: DAC Interface Simulation
+    \label{fig:simdac}}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{./figures/txInterface}
+    \caption{ Step 3: Transmitting Interface Simulation
+    \label{fig:simtxif}}
+\end{figure}
+
+\subsection{Receive (ADC) Interface Simulation}
 
 \section{Transmission Tests (DAC)}
 \label{result:dac}
