@@ -104,26 +104,40 @@ results and wave diagrams of the three steps.\\
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.85\textwidth]{./figures/dac_dmaInterface}
-    \caption{ Step 1: DAC-DMA Interface SImulation
+    \includegraphics[width=0.95\textwidth]{./figures/dac_dmaInterface}
+    \caption{ Step 1: DAC-DMA Interface Block Simulation
     \label{fig:simdacdma}}
 \end{figure}
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.85\textwidth]{./figures/dacInterface}
-    \caption{ Step 2: DAC Interface Simulation
+    \includegraphics[width=0.95\textwidth]{./figures/dacInterface}
+    \caption{ Step 2: DAC Interface Block Simulation
     \label{fig:simdac}}
 \end{figure}
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.85\textwidth]{./figures/txInterface}
-    \caption{ Step 3: Transmitting Interface Simulation
+    \includegraphics[width=0.95\textwidth]{./figures/txInterface}
+    \caption{ Step 3: Transmitting Interface Block Simulation
     \label{fig:simtxif}}
 \end{figure}
 
 \subsection{Receive (ADC) Interface Simulation}
+
+As stated before on chapter \ref{chap:implementation} in the section \ref{impl:setup},
+the DAC interface is simple beacause the data input is already limited by the DAC
+clock, so there is no need to make a bottleneck like in the DAC interface.\\
+
+In the figure \ref{fig:simdac} it is possible to see the output and wave diagram
+in the simulation window.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\textwidth]{./figures/adcInterface}
+    \caption{ ADC Interface Block Simulation
+    \label{fig:simadc}}
+\end{figure}
 
 \section{Transmission Tests (DAC)}
 \label{result:dac}
