@@ -1,1 +1,68 @@
 \chapter{Introduction}
+\label{chap:intro}
+
+The world is much more interconnected and the economy is growing wilder and
+wilder, a lot of economical crisis rise in different countries almost every
+year. The climate changes are also a concern to the modern governments, thus the
+idea of re-utilizing resources and  make these resources be more economically
+and environmentally friendly are a goal for modern research and development.\\
+
+Cloud computing is a paradigm which is growing every year in the companies and
+developers, it is not a magic method to solve all the problems but it solves
+some infrastructure problems of small and big companies, where companies does
+not need to won computers or anything locally to operate, everything can be done
+remotely and a more experienced company and staff can offer such infrastructure
+or application as a service. Such idea of having everything as a service is very
+attractive both economically  and environmentally because there is no waste of
+resource, everything is scalable to the need of the client and upgradeable if
+needed.\\
+
+The Radio access technologies have been evolving from audio traffic to
+intensive data traffic over the recent standards, because the mobile devices
+got a myriad of functions which could only be executed by Personal computers,
+however the implementations of such networks demand a huge amount of resources
+and with the economy becoming harder every year, there is the concern about how
+to develop and deploy such networks and of course backwards compatibility of
+these networks, because an operator would never deploy a network which is not
+compatible with previous standards equipments, this is not profitable. Having
+these ideas in mind the Centralized RAN idea began to be developed, such as
+cloud computing, now there is the technology for the RANs to be scalable and
+configurable to the needs of the clients and operators, where the baseband
+processing is all done on the cloud and the radio front-ends are reconfigurable
+to handle different data and modulation outputs.\\
+
+The FPGA is very attractive to implement such radio front-ends and other
+reconfigurable computing tasks, because it is flexible too be reconfigured
+on-the-run and offers a really good processing and I/O capabilities. Thus this
+work aims to evaluate the implementation feasibility of a radio front-end to
+LTE transmissions (LTE band) in a Cloud RAN environment (adaptability and
+reconfigurability).\\
+
+This work is implemented in a Xilinx Virtex 7 FPGA and using the transceiver
+FMComms2 from analog devices, this transceiver can be reconfigured in real time
+and runs up to 6 GHz band, it has been chosen because of such reconfigurability
+properties. This text is composed by 6 chapters divided in 5 parts.\\
+
+The first part aims to introduce the environment in which this work was planned
+with this introduction chapter. The second part is a literature review of
+everything theoretical used in this work development, it is composed by two
+chapters, the second chapter describing Cloud and Software defined radio
+\ref{chap:sdr}, because this reconfigurability property has been widely
+explored in software defined radio field. The third chapter is about Digital
+communications and LTE, describing the basic blocks of digital communications
+systems and briefly talking about LTE standard and how it is implemented
+\ref{chap:lte}.\\
+
+The third part is the core of the work, the implementation, in this chapter
+the functionalities of both FPGA and transceiver shall be explained and the
+work development will be described and how it was implemented in both FPGA
+logic and software drivers \ref{chap:implementation}.\\
+
+The fourth part reports all the results obtained in such work.The configuration
+results report how the transceiver board communication and configuration were
+succeed, the simulation results aim to show the VHDL blocks simulation prior to
+hardware implementation and at last the transmission results \ref{chap:results}.
+
+The last part is the conclusions and future works, which aim to report
+everything learned from this work and what can be done to improve the
+transmission/reception quality or communication \ref{chap:conclusion}.
