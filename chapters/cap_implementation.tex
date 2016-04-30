@@ -86,8 +86,10 @@ ported to VC707, below there is a list of the features of the ML605 development
 board.\\
 
 In the figure \ref{fig:ml605} there is a picture of the board and in the figure
-\ref{fig:ml605bd} there is also a functional block diagram of the board.\\
-%citar user manual e quick reference
+\ref{fig:ml605bd} there is also a functional block diagram of the board, this
+information was acquired in the official boards manuals \cite{xilinx:ml605} and
+\cite{xilinx:vc707}.\\
+
 
 \textbf{ML605 Evaluation Module Features:}
 \begin{enumerate}
@@ -350,7 +352,7 @@ transceiver IP.
 %escrever um pouco sobre os ips usados
 
 \begin{description}
-	\item[Microblaze] \hfill \\
+	\item[Microblaze \cite{xilinx:ublaxe}] \hfill \\
 
 Microblaze is a soft processor core designed for Xilinx FPGAs, MicroBlaze is
 implemented entirely in the general-purpose memory and logic fabric of Xilinx
@@ -369,7 +371,7 @@ Below it is possible to see a block schematic of microblaze core:
     \label{fig:mbbd}}
 \end{figure}
 
-	\item[DMA Engine] \hfill \\
+	\item[DMA Engine \cite{xilinx:axidma}] \hfill \\
 
   The DMA is the core which makes possible reading and writing from the memory in
 a very fast rate. There are various modes of operation, but in this project the
@@ -384,24 +386,24 @@ a non-continuous memory addresses by the use of block descriptors.
     \label{fig:dmabd}}
 \end{figure}
 
-  \item[Memory Interface Generator] \hfill \\
+  \item[Memory Interface Generator \cite{xilinx:mig7}] \hfill \\
 
   The MIG (Memory interface generator) creates a software and hardware interface
 to the DDR3 memory inside the FPGA board.
 
-  \item[SPI] \hfill \\
+  \item[SPI \cite{xilinx:axiquadspi}] \hfill \\
 
   The SPI is a communication protocol, thus the SPI core  is used to write/read
 registers in the FMComms2 board. It is hardware initializable and controllable.
 
-  \item[GPIO] \hfill \\
+  \item[GPIO \cite{xilinx:axigpio}] \hfill \\
 
   GPIO stands for General Purpose Input and Output, this core implements general
 purpose pins which can be configured via software to act as an input or output pin,
 or even both. For this project specifically, GPIO core is used to make real-time
 operations in the AD9361 internal state-machine and for reset.
 
-  \item[UART] \hfill \\
+  \item[UART \cite{xilinx:axiuart}] \hfill \\
   UART is also a communication protocol and stands for universal asynchronous
 receiver/transmitter and in this case it is used for debugging purposes, all the
 standard I/O form the software comes from the UART and it is possible to show
