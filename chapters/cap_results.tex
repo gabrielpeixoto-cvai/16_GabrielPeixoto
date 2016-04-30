@@ -103,6 +103,12 @@ connected and working together, in the figures \ref{fig:simdacdma},
 \ref{fig:simdac} and \ref{fig:simtxif} it is possible to see the simulation
 results and wave diagrams of the three steps.\\
 
+In the figure \ref{fig:simdacdma} it is possible to watch the behavior of the
+\textit{dac-dmaIterface} block where the signal \textit{sig\_dma\_data} is fed to
+the block, and the signals \textit{ sig\_axis\_axc0\_itdata, sig\_axis\_axc0\_qtdata,
+sig\_axis\_axc1\_itdata and sig\_axis\_axc1\_qtdata} are the \textit{IQ data} being
+fed to both to the \textit{dacInterface} block.\\
+
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.95\textwidth]{./figures/dac_dmaInterface}
@@ -110,12 +116,37 @@ results and wave diagrams of the three steps.\\
     \label{fig:simdacdma}}
 \end{figure}
 
+ In the figure \ref{fig:simdac} the \textit{dacInterface} is simulated and again
+ it is possible to watch teh signals \textit{sig\_axis\_axc0\_itdata,
+ sig\_axis\_axc0\_qtdata, sig\_axis\_axc1\_itdata and sig\_axis\_axc1\_qtdata} being fed
+ to the block and the outputs \textit{sig\_dac\_i0data, sig\_dac\_q0data,
+ sig\_dac\_i1data and sig\_dac\_q1data}, teh point in both \textit{dac-dmaIterface}
+ and \textit{dacInterface} is to watch ghanges in outputs accompanying
+ \textit{ready and valid} signals whcih are used as a way of controlling reading
+ speed from the \textit{DMA}, in such scheme, the \textit{DMA} assets
+ \textit{valid} whenever is can send data, however it only send teh data when
+ fed by a ready signal, meaning that the reading block can read the \textit{DMA}
+ data.
+
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.95\textwidth]{./figures/dacInterface}
     \caption{ Step 2: DAC Interface Block Simulation
     \label{fig:simdac}}
 \end{figure}
+
+In the final simulation of the transmitting interface the whole transmit chain
+blocks were simulated toghether and then is is possible to understand the
+behavior of the whole transmit interface block. In the figure \ref{fig:simtxif}
+it is possible to watch the \textit{DMA} data in the signal in
+\textit{dac-dmaIterface} and the outputs which woul fedd the \textit{AD9361}
+two \textit{DACs} in the signals \textit{sig\_dac\_i0data, sig\_dac\_q0data,
+sig\_dac\_i1data and sig\_dac\_q1data}, again the important thing in the simulation
+is to watch for the data change and the  \textit{ready and valid} changes.
+Another interesting thing to observ is the two clock variables \textit{axi\_clk}
+and \textit{dac\_clk} which represent both axi system clock $ 100 MHz$ and the
+dac clock $40 MHz$, this difference justifies the use of such interface.
+
 
 \begin{figure}[htbp]
     \centering
@@ -130,8 +161,13 @@ As stated before on chapter \ref{chap:implementation} in the section \ref{impl:s
 the DAC interface is simple beacause the data input is already limited by the DAC
 clock, so there is no need to make a bottleneck like in the DAC interface.\\
 
-In the figure \ref{fig:simdac} it is possible to see the output and wave diagram
-in the simulation window.
+ In the figure \ref{fig:simdac} it is possible to see the output and wave
+diagram in the simulation window. Since the \textit{adcInterface} is much more
+simpler, because the data input is already limited by the \textit{AD9361}
+clock, in the signals \textit{sig\_rx\_i0\_data, sig\_rx\_q0\_data,
+sig\_rx\_i1\_data, sig\_rx\_q1\_data} there is the outputs from both
+\textit{DACs} and \textit{dout} is the data that will be fed to the
+\textit{DMA}.\\
 
 \begin{figure}[htbp]
     \centering
@@ -143,8 +179,53 @@ in the simulation window.
 \section{Transmission Tests (DAC)}
 \label{result:dac}
 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{./figures/adcInterface}
+    \caption{ DAC signals from AD9361 block
+    \label{fig:dacsignals}}
+\end{figure}
+
 \section{Reception Tests (ADC)}
 \label{result:adc}
 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{./figures/adcInterface}
+    \caption{ ADC signals from AD9361 block
+    \label{fig:adcsignals}}
+\end{figure}
+
 \section{Optimum Results}
 \label{result:optimum}
+
+The expected transmission of lTE signals are below demonstrated by the Analog
+devices IIO scope application.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{./figures/adcInterface}
+    \caption{ ADC signals from AD9361 block
+    \label{fig:adcsignals}}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{./figures/adcInterface}
+    \caption{ ADC signals from AD9361 block
+    \label{fig:adcsignals}}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{./figures/adcInterface}
+    \caption{ ADC signals from AD9361 block
+    \label{fig:adcsignals}}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{./figures/adcInterface}
+    \caption{ ADC signals from AD9361 block
+    \label{fig:adcsignals}}
+\end{figure}
