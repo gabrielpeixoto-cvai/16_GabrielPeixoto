@@ -379,26 +379,29 @@ schemes.
 
 \subsection{Downlink Scheme}%OK
 
-The downlink transmission scheme for E-UTRA FDD and TDD modes is based on
+ The downlink transmission scheme for E-UTRA FDD and TDD modes is based on
 conventional OFDM. In an OFDM system, the available spectrum is divided into
 multiple carriers, called subcarriers as explained in the previus section. Each
 of these subcarriers is independently modulated by a low rate data stream. OFDM
 is used as well in WLAN, WiMAX and broadcast technologies like DVB (Digital
 Video Broadcasting). OFDM has several benefits including its robustness against
-multipath fading and its efficient The user data is carried on the Physical Downlink Shared Channel (PDSCH). The
-PDSCH(s) is the only channel that can be QPSK, 16QAM or 64QAM modulated. The
-Downlink channel schematic can be seen in \ref{fig:dlchann}to channels delay spread. The delay spread is
-the time between the symbol arriving on the first multi-path signal and the last
-multi-path signal component, typically several $\mu s$ dependent on the environment
-(i.e. indoor, rural, suburban, city center). The guard interval has to be selected
-in that way, that it is greater than the maximum expected delay spread. In E-UTRA,
-the guard interval is a cyclic prefix which is inserted prior to each OFDM symbol.\\
+multipath fading and its efficient The user data is carried on the Physical
+Downlink Shared Channel (PDSCH). The PDSCH(s) is the only channel that can be
+QPSK, 16QAM or 64QAM modulated. The Downlink channel schematic can be seen in
+\ref{fig:dlchann}to channels delay spread. The delay spread is the time between
+the symbol arriving on the first multi-path signal and the last multi-path
+signal component, typically several $\mu s$ dependent on the environment (i.e.
+indoor, rural, suburban, city center). The guard interval has to be selected in
+that way, that it is greater than the maximum expected delay spread. In E-UTRA,
+the guard interval is a cyclic prefix which is inserted prior to each OFDM
+symbol.\\
 
-In practice, the OFDM signal can be generated using IFFT (Inverse Fast Fourier Transform)
-digital signal processing. The IFFT converts a number N of complex data
-symbols used as frequency domain bins into the time domain signal. Such an N-point
-IFFT is illustrated in Figure X where $a(mN+n)$ refers to the nth subcarrier
-modulated data symbol, during the time period $mTu < t £ (m+1)Tu$.
+In practice, the OFDM signal can be generated using \textit{IFFT} (Inverse Fast Fourier
+Transform) digital signal processing. The \textit{IFFT} converts a number N of complex
+data symbols used as frequency domain bins into the time domain signal. Such an
+N-point \textit{IFFT} is illustrated in Figure \ref{fig:ofdmsymbol} where $a(mN+n)$
+refers to the nth subcarrier modulated data symbol, during the time period $mT_u <
+t \le (m+1)T_u$.
 
 %ofdm symbols
 \begin{figure}[htbp]
@@ -408,14 +411,15 @@ modulated data symbol, during the time period $mTu < t £ (m+1)Tu$.
     \label{fig:ofdmsymbol}}
 \end{figure}
 
-The vector $sm$ is defined as the useful OFDM symbol. It is the time superposition
-of the $N$ narrowband modulated subcarriers. Therefore, from a parallel stream
-of $N$ sources of data, each one independently modulated, a waveform composed of
-N orthogonal subcarriers is obtained, with each subcarrier having the shape of a
-frequency sinc function. Figure 4 illustrates the mapping from a
-serial stream of QAM symbols to N parallel streams, used as frequency domain bins
-for the IFFT. The N-point time domain blocks obtained from the IFFT are then
-serialized to create a time domain signal.
+The vector $sm$ is defined as the useful \textit{OFDM} symbol. It is the time
+superposition of the $N$ narrowband modulated subcarriers. Therefore, from a
+parallel stream of $N$ sources of data, each one independently modulated, a
+waveform composed of N orthogonal subcarriers is obtained, with each subcarrier
+having the shape of a frequency sinc function. Figure \ref{fig:ofdmchain}
+illustrates the mapping from a serial stream of QAM symbols to N parallel
+streams, used as frequency domain bins for the \textit{IFFT}. The N-point time domain
+blocks obtained from the \textit{IFFT} are then serialized to create a time domain
+signal.
 
 %ofdm signal chain
 \begin{figure}[htbp]
@@ -425,7 +429,7 @@ serialized to create a time domain signal.
     \label{fig:ofdmchain}}
 \end{figure}
 
-In contrast to an OFDM transmission scheme, OFDMA allows the access of multiple
+In contrast to an OFDM transmission scheme, \textit{OFDM}A allows the access of multiple
 users on the available bandwidth. Each user is assigned a specific time-frequency
 resource.
 
@@ -438,9 +442,7 @@ transmission time interval of 1 ms. All scheduling decisions for downlink and
 uplink are done in the base station (enhanced NodeB, eNodeB or eNB). The
 scheduling algorithm has to take into account the radio link quality situation
 of different users, the overall interference situation, Quality of Service
-requirements, service priorities, etc. and is a vendor-specific implementation.
-Figure 8 shows an example for allocating downlink user data to different
-users.\\
+requirements, service priorities, etc. and is a vendor-specific implementation.\\
 
 %ofdm resource block
 \begin{figure}[htbp]
@@ -462,32 +464,34 @@ Downlink channel schematic can be seen in \ref{fig:dlchann}
     \label{fig:dlchann}}
 \end{figure}
 
-\subsection{Uplink Scheme}%ok?
+\subsection{Uplink Scheme}%ok
 
-During the study item phase of LTE, alternatives for the optimum uplink transmission
-scheme were investigated. While OFDMA is seen optimum to fulfill the LTE
-requirements in downlink, OFDMA properties are less favorable for the uplink. This is
-mainly due to weaker peak-to-average power ratio (PAPR) properties of an OFDMA
-signal, resulting in worse uplink coverage and challenges in power amplifier design for
-battery operated handset, as it requires very linear power amplifiers.\\
+ During the study item phase of LTE, alternatives for the optimum uplink
+transmission scheme were investigated. While \textit{OFDMA} is seen optimum to fulfill
+the LTE requirements in downlink, \textit{OFDMA} properties are less favorable for the
+uplink. This is mainly due to weaker peak-to-average power ratio (PAPR)
+properties of an \textit{OFDMA} signal, resulting in worse uplink coverage and
+challenges in power amplifier design for battery operated handset, as it
+requires very linear power amplifiers.\\
 
 Thus, the LTE uplink transmission scheme for FDD and TDD mode is based on SC-
-FDMA (Single Carrier Frequency Division Multiple Access) with cyclic prefix. SCFDMA
-signals have better PAPR properties compared to an OFDMA signal. This was
+FDMA (Single Carrier Frequency Division Multiple Access) with cyclic prefix.
+SCFDMA signals have better PAPR properties compared to an \textit{OFDMA} signal. This was
 one of the main reasons for selecting SC-FDMA as LTE uplink access scheme. The
-PAPR characteristics are important for cost-effective design of UE power amplifiers.
-Still, SC-FDMA signal processing has some similarities with OFDMA signal processing,
-so parameterization of downlink and uplink can be harmonized.\\
+PAPR characteristics are important for cost-effective design of UE power
+amplifiers. Still, SC-FDMA signal processing has some similarities with \textit{OFDMA}
+signal processing, so parameterization of downlink and uplink can be
+harmonized.\\
 
 There are different possibilities how to generate an SC-FDMA signal. DFT-spread-
-OFDM (DFT-s-OFDM) has been selected for E-UTRA. For
-DFT-s-OFDM, a size-M DFT is first applied to a block of M modulation
-symbols. QPSK, 16QAM and 64QAM are used as uplink E-UTRA modulation
-schemes, the latter being optional for the UE. The DFT transforms the modulation
-symbols into the frequency domain. The result is mapped onto the available number
-of subcarriers. For LTE Release 8 uplink, only localized transmission on consecutive
-subcarriers is allowed. An N-point IFFT where N>M is then performed as in OFDM,
-followed by addition of the cyclic prefix and parallel to serial conversion.
+\textit{OFDM} \textit{(DFT-s-OFDM)} has been selected for E-UTRA. For DFT-s-OFDM, a size-M DFT is
+first applied to a block of M modulation symbols. QPSK, 16QAM and 64QAM are used
+as uplink E-UTRA modulation schemes, the latter being optional for the UE. The
+DFT transforms the modulation symbols into the frequency domain. The result is
+mapped onto the available number of subcarriers. For LTE Release 8 uplink, only
+localized transmission on consecutive subcarriers is allowed. An N-point \textit{IFFT}
+where $N>M$ is then performed as in OFDM, followed by addition of the cyclic
+prefix and parallel to serial conversion.
 
 %figura uplink
 \begin{figure}[htbp]
