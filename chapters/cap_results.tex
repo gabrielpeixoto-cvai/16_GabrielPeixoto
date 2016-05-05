@@ -16,6 +16,13 @@ the design and how each component is connected.
     \label{fig:setup}}
 \end{figure}
 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.35\textwidth]{./figures/fpga_area}
+    \caption{ FPGA area used in this Setup
+    \label{fig:fpgaarea}}
+\end{figure}
+
 %foto diagrama de blocos
 \begin{figure}[htbp]
     \centering
@@ -24,7 +31,8 @@ the design and how each component is connected.
     \label{fig:setupbd}}
 \end{figure}
 
-\newpage
+\vfill
+\clearpage
 
 \section{Preliminary Tests}
 \label{result:conf}
@@ -87,6 +95,9 @@ both analyzers outputs can be seen in the figures below:
     \caption{ FFT and Carrier Waveform
     \label{fig:oscillfft}}
 \end{figure}
+
+\vfill
+\clearpage
 
 \section{Simulation}
 
@@ -176,56 +187,107 @@ sig\_rx\_i1\_data, sig\_rx\_q1\_data} there is the outputs from both
     \label{fig:simadc}}
 \end{figure}
 
+\vfill
+\clearpage
+
 \section{Transmission Tests (DAC)}
 \label{result:dac}
 
+ The transmission tests aim to evaluate a Donwlink LTE transmission, it means
+that the data is being transmitted from the BTS to the UE. In this trnasmission
+test there were generated LTE samples in matlab, and these samples were loaded
+in the memory by putting them in a header file, the as explained before, DMA
+shall read them and the DAC shall make an analog output. In the figure
+\ref{fig:dacsignals} there are the DAC control signals sent to the data
+interface block in order to control the data flow, thus this control makes a
+back-pressure in the DMA engine controlling if DMA reads or not data from
+memory, thus the DMA Engine reading output can be seen in the figures
+\ref{fig:dataflowdig} and \ref{fig:dataflowana}, digital and analog waveforms
+respectively.\\
+
+ It is possible to configure in the driver if the AD9361 ouputs or not a clock
+in a special clock\_output pin, so in order to evaluate frequency and clock
+quality, the figure \ref{fig:dacclk} shows the clock output from the AD9361 and
+last but not least the figure \ref{fig:lte5m} show the output spectrum of the
+LTE analog wave outputted from the FMComms2 board.
+
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.85\textwidth]{./figures/adcInterface}
-    \caption{ DAC signals from AD9361 block
+    \includegraphics[width=0.85\textwidth]{./figures/dac_signals}
+    \caption{ DAC signals controlling data reading
     \label{fig:dacsignals}}
 \end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{./figures/ila_dataflow}
+    \caption{ Digital Data read from memory by DMA.
+    \label{fig:dataflowdig}}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{./figures/ltedac_ila}
+    \caption{ \"Analog\" form Data read form memory by DMA.
+    \label{fig:dataflowana}}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{./figures/oscill_ad9361_dac_clk}
+    \caption{ DAC Clock Output
+    \label{fig:dacclk}}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{./figures/lte_5m}
+    \caption{ LTE signal output from FMComms2 Spectrum
+    \label{fig:lte5m}}
+\end{figure}
+
+\vfill
+\clearpage
 
 \section{Reception Tests (ADC)}
 \label{result:adc}
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.85\textwidth]{./figures/adcInterface}
-    \caption{ ADC signals from AD9361 block
+    \includegraphics[width=0.85\textwidth]{./figures/dac_signals}
+    \caption{ DAC signals controlling data writing
     \label{fig:adcsignals}}
 \end{figure}
+
+\vfill
+\clearpage
 
 \section{Optimum Results}
 \label{result:optimum}
 
 The expected transmission of lTE signals are below demonstrated by the Analog
-devices IIO scope application.
+Devices IIO scope application.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.85\textwidth]{./figures/adcInterface}
-    \caption{ ADC signals from AD9361 block
-    \label{fig:adcsignals}}
+    \includegraphics[width=0.85\textwidth]{./figures/lte_spectrum_iio}
+    \caption{ LTE Spectrum
+    \label{fig:ltespectrumiio}}
 \end{figure}
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.85\textwidth]{./figures/adcInterface}
-    \caption{ ADC signals from AD9361 block
-    \label{fig:adcsignals}}
+    \includegraphics[width=0.85\textwidth]{./figures/lte_constellation_iio}
+    \caption{ LTE Constellation
+    \label{fig:lteconstellationiio}}
 \end{figure}
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.85\textwidth]{./figures/adcInterface}
-    \caption{ ADC signals from AD9361 block
-    \label{fig:adcsignals}}
+    \includegraphics[width=0.85\textwidth]{./figures/lte_evm_iio}
+    \caption{ LTE EVM
+    \label{fig:lteevmiio}}
 \end{figure}
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.85\textwidth]{./figures/adcInterface}
-    \caption{ ADC signals from AD9361 block
-    \label{fig:adcsignals}}
-\end{figure}
+\vfill
+\clearpage
