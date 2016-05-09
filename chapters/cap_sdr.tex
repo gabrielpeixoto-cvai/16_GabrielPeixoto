@@ -8,12 +8,12 @@ In the modern world everything is becoming \"smarter\", and the cloud paradigm i
 creating a new way to organize the infrastructure, so telecommunications will
 also be affected by such changes. The RAN as a service  paradigm and cloud
 requires devices which are both scalable and reconfigurable following customer
-demands, in order to accomplish that there is a lot of schemes and theories
+demands in order to accomplish that there is a lot of schemes and theories
 involved, but this work will focus on a device that fits in the \emph{Software
 Defined Radio} scope, which is defined according to the \emph{SDR Forum}
 \cite{web:sdrforum} as:
 
-say{radios that provide software control of a variety of modulation techniques,
+\say{Radios that provide software control of a variety of modulation techniques,
 wide-band or narrow-band operation, communications security functions (such as
 hopping), and waveform requirements of current \& evolving standards over a
 broad frequency range.}
@@ -24,27 +24,27 @@ general purpose microprocessors are used to implement radio functions such as
 generation of transmitted signal (modulation) at transmitter and
 tuning/detection of received radio signal (demodulation) at receiver.\\
 
-This is a very powerful concept and it has been idealized over 20 years ago,
-however only with the recent era , after 2000, DSP and FPGA technology grew and
+This is a very powerful concept and it has been idealized over 20 years ago.
+However only in the 2000's the DSP and FPGA technology improved and
 its implementation became feasible \cite{ladimer2009}. SDR has some very
 interesting applications, in this chapter the educational and telecommunications
 applications of SDR shall be explored.\\
 
-For its elastic characteristic, SDR is recommended or not depending on the
-application because it is more costly than a normal analog radio, thus
+Because of its elastic characteristic, SDR is recommended or not depending on
+the application because it is more costly than a normal analog radio, so
 \emph{what is the real advantage in SDR?}, according to worldwide
 telecommunication reports and works, every time a standard is changed there is a
-huge cost in equipment change in both user and provider so SDR tries to reduce
+huge cost in equipment update in both user and operator so SDR tries to reduce
 these costs by maintaining legacy systems while being able to upgrade to newer
-systems\cite{dayananda2012}.\\
+systems\cite{dayananda2012}. This fact generated a lot of interest in SDR by the
+wireless communication industry because of the economic advantages it could
+bring. Another great advantage for companies to implement SDR is that they can
+use the same hardware and this hardware would work in all communication schemes
+around the world.
 
-This fact generated a lot of interest in the wireless communication industry
-because of the economic advantages SDR could bring. Another great advantage for
-companies to implement SDR is that they can use the same hardware and such
-hardware would work in all communication schemes around the world. The use of
-SDR is growing in the industry and seems to be a promise for the Cloud-RAN
-environment, where radio infrastructure would adapt itself to the customer
-needs.
+% The use of SDR is growing in the industry and seems to be a promise for the
+%Cloud-RAN environment, where radio infrastructure would adapt itself to the
+%customer needs.
 
 \section{Cloud Overview}
 \label{sec:sdr_cloud}
@@ -55,37 +55,39 @@ infrastructure for application, data and file storage. With the advent of this
 technology, the cost of computation resources, application hosting, content
 storage and delivery is reduced significantly. \\
 
-Cloud computing is a practical approach to experience direct cost benefits and
-it has the potential to transform a data center from a capital-intensive set up
-to a variable priced environment. \\
+%Cloud computing is a practical approach to experience direct cost benefits and
+%it has the potential to transform a data center from a capital-intensive set up
+%to a variable priced environment. \\
 
 The idea of cloud computing is based on a very fundamental principle of
 \emph{reusability of IT resources}. The difference that cloud computing brings
-compared to traditional concepts of \"grid computing\", \"distributed computing\",
-\"utility computing\", or \"autonomic computing\" is to broaden horizons across
+compared to traditional concepts of "grid computing", "distributed computing",
+"utility computing", or "autonomic computing" is to broaden horizons across
 organizational boundaries.\\
 
 There are three main types of cloud in current use:
 
 \begin{itemize}
-    \item \textbf{Infrastructure as a Service (IaaS):} also referred to as
-    Resource Clouds, provide (managed and scalable) resources as services to
-    the user - in other words, they basically provide enhanced virtualization
+  
+    \item \textbf{Infrastructure as a Service (IaaS):} Make available managed
+    and scalable resources as services to the user, by enhancing virtualization
     capabilities. Servers, storage systems, switches, routers, and other systems
-    are pooled and made available to handle workloads that range from application
-    components to high-performance computing applications. For 5G there is the
-    idea to implement RAN as a Service or C-RAN, meaning that all the
-    telecommunication devices can be used on an on-demand basis by costumers.
+    are pooled and made available to handle workloads that range from
+    application components to high-performance computing applications. For 5G
+    there is the idea to implement RAN as a Service or C-RAN, meaning that all
+    the telecommunication devices can be used on an on-demand basis by
+    costumers.
 
-    \item \textbf{Platform as a Service (PaaS):} provide computational resources
-    via a platform upon which applications and services can be developed and hosted.
-    PaaS typically makes use of dedicated APIs to control the behavior of a server
-    hosting engine which executes and replicates the execution according to user
-    requests (e.g. access rate).
+    \item \textbf{Platform as a Service (PaaS):} Make available computational
+    resources via a platform upon which applications and services can be developed
+    and hosted. \textit{PaaS} typically makes use of dedicated \textit{APIs} to
+    control the behavior of a server hosting engine which executes and replicates
+    the execution according to user requests (e.g. access rate).
 
     \item \textbf{Software as a Service (IaaS):}Features a complete application
     offered as a service on demand. A single instance of the software runs on the
     cloud and services multiple end users or client organizations.
+
 \end{itemize}
 
 With the recent crisis in economic markets, companies goal changed from selling
