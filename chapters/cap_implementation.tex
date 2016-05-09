@@ -9,9 +9,9 @@ increase the ways to implement this new standard in countries which does not
 have a very good infrastructure.
 
 The first setup thought was using the ML605 FMC LPC connector and the FMComms2,
-this setup was very important because in it I could understand how to integrate
-the board design with the need of the project. Then the device was moved to the
-FMC HPC connector and the design with the ML605 was finished.\\
+this setup was very important because in it was possible to understand how to
+integrate the board design with the need of the project. Then the device was
+moved to the FMC HPC connector and the design with the ML605 was finished.\\
 
 After getting the experience with ML605 and ISE design tools, it was time to use
 a more updated board and design tool, thus the idea of porting the initial
@@ -87,8 +87,7 @@ board.\\
 
 In the figure \ref{fig:ml605} there is a picture of the board and in the figure
 \ref{fig:ml605bd} there is also a functional block diagram of the board, this
-information was acquired in the official boards manuals \cite{xilinx:ml605} and
-\cite{xilinx:vc707}.\\
+information was acquired in the official board manual \cite{xilinx:ml605}.\\
 
 
 \textbf{ML605 Evaluation Module Features:}
@@ -200,16 +199,16 @@ information was acquired in the official boards manuals \cite{xilinx:ml605} and
 %ml605 block diagram
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.65\textwidth]{./figures/ml605_bd}
+    \includegraphics[width=0.35\textwidth]{./figures/ml605_bd}
     \caption{ ML605 Functional Block Diagram
     \label{fig:ml605bd}}
 \end{figure}
 
 \subsection{VC707 - Virtex7}
 
-The final results of this setup were generated in the VC707 board, because it
-has a possibility of expansion and has better clock generation and treatment
-options compared to the ML605 board.
+The final results of this setup were generated in the VC707 board
+\cite{xilinx:vc707}, because it has a possibility of expansion and has better
+clock generation and treatment options compared to the ML605 board.
 
 \textbf{VC707 Evaluation Board Features}
 
@@ -417,7 +416,7 @@ Microblaze soft processor.
 %--------------------------------FMCOMMS2---------------------------------------
 \section{Transceiver - FMComms2}
 \subsection{AD9361}
-\label{sec:ad9361}
+\label{subsec:ad9361}
 
 The AD9361 is a high performance RF transceiver. Its programmability and
 adaptability makes it ideal for a wide range of transceiver applications. This
@@ -431,28 +430,30 @@ supported channel bandwidths from 200 KHz to 56 MHz and the AD9361 is a 2 Rx and
 \subsubsection{General Description}
 
 AD9361 is a highly integrated RF frequency transceiver capable of being
-configured for a wide range of applications, including 3g and 4g frequency
+configured for a wide range of applications, including 3G and 4G frequency
 applications. AD9361 and AD9364 almost the same hardware and specifications, the
-difference is that AD9361 is a 2x2 MIMO and AD9364 is a 1x1 \cite{ad9361_wiki}.
-The programmability allows the AD9361 to be operated in Frequency Division
-Duplex (FDD) and Time Division Duplex (TDD) systems, allowing this transceiver
-to operate in a variety of communication standards. Another interesting feature
-is the capability of integration with a wide range of BBPs (Baseband Processors)
-using a single or dual 12-bit parallel data port or a 12-bit LVDS (Low voltage
-Differential signaling), which uses the FMC connector in the FMCommS2
-\ref{sec:fmcomms2}. AD9361 also provides self-calibration and automatic gain
-control (AGC) systems to maintain good performance under variable conditions,
-such as temperature and signal quality. The transceiver has also various modes
-of test mode with the Built-in Self Test (BIST) modes which can be used for the
-designers to debug designs during prototyping. This configurability and
-adaptability is very attractive for Software Defined Radio (SDR) and for C-RAN
-systems, indeed ad9361 is already being used in some Universal Software Radio
-Peripheral (USRP) from Ettus research (National Instruments), this alone is a
-proof that AD9361 can work in a wide range of systems and standards.
+difference is that AD9361 is a 2x2 MIMO and AD9364 is a 1x1
+\cite{web:ad9361wiki}. The programmability allows the AD9361 to be operated in
+Frequency Division Duplex (FDD) and Time Division Duplex (TDD) systems, allowing
+this transceiver to operate in a variety of communication standards. Another
+interesting feature is the capability of integration with a wide range of BBPs
+(Baseband Processors) using a single or dual 12-bit parallel data port or a
+12-bit LVDS (Low voltage Differential signaling), which uses the FMC connector
+in the FMCommS2 \ref{subsec:fmcomms2}. AD9361 also provides self-calibration and
+automatic gain control (AGC) systems to maintain good performance under variable
+conditions, such as temperature and signal quality. The transceiver has also
+various modes of test mode with the Built-in Self Test (BIST) modes which can be
+used for the designers to debug designs during prototyping. This configurability
+and adaptability is very attractive for Software Defined Radio (SDR) and for
+C-RAN systems, indeed AD9361 is already being used in some Universal Software
+Radio Peripheral (USRP) from Ettus research (National Instruments)
+\ref{sd:usrp}, this alone is a proof that AD9361 can work in a wide range of
+systems and standards, below there is a functional block diagram od the AD9361
+chip \ref{fig:ad9361func}.\\
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.65\textwidth]{./figures/ad9361_functional_diagram}
+    \includegraphics[width=0.45\textwidth]{./figures/ad9361_functional_diagram}
     \caption{ AD9361 Functional Block Diagram
     \label{fig:ad9361func}}
 \end{figure}
@@ -488,8 +489,8 @@ adjustable sample rates. This ADC produces data streams from the received
 signals and such digitalized signals can be conditioned further by a series of
 decimation filters and a 128-tap FIR filter with additional decimation settings.
 The sampling rate of each digital filter is adjustable through changes in the
-decimation factors to produce the needed data rate.
-In short, the Receiver chain has:
+decimation factors to produce the needed data rate.\\
+In short, the Receiver chain , in figure \ref{fig:rxchain}, has:
 
 \begin{itemize}
 	\item LNA - Low noise Amplifier
@@ -540,13 +541,13 @@ adjustment range with fine granularity in order to optimize SNR.\\
 \end{figure}
 
 
-Identical to the receiver chain, the transmitter chain has also built-in
-self-calibration circuitry into each transmitting channel providing an automatic
-real-time adjustment. The transmitter also provides a TX monitor block for each
-channel, this block monitors the transmission output and routes it back through
-an unused receiver channel to the BBP for signal monitoring, but these
-monitoring option is only available in TDD mode operation while the receiver is
-idle.\\
+Identical to the receiver chain, the transmitter chain , in figure
+\ref{fig:txchain} has also built-in self-calibration circuitry into each
+transmitting channel providing an automatic real-time adjustment. The
+transmitter also provides a TX monitor block for each channel, this block
+monitors the transmission output and routes it back through an unused receiver
+channel to the BBP for signal monitoring, but these monitoring option is only
+available in TDD mode operation while the receiver is idle.\\
 
 In short the transmission chain has:
 
@@ -560,6 +561,10 @@ In short the transmission chain has:
 	\item self-calibration circuits;
 	\item Tx signal Monitor.
 \end{itemize}
+
+In the figure \ref{fig:ad9361blk} below there is a full block diagram with both
+\textit{receiver Chain}, \textit{Transmitting Chain} and other key components of
+the AD9361 chip.
 
 \begin{figure}[htbp]
     \centering
@@ -610,7 +615,7 @@ converters, digital filters and I/O ports. All the frequency signals are
 generated using these PLLs clock outputs.
 
 All the PLLs require a reference clock input and for this there is the digitally
-controlled oscillator (DXCO) function, which is an in-chip programmable and
+controlled oscillator (DCXO) function, which is an in-chip programmable and
 variable capacitor, such capacitor can tune the crystal frequency variance
 before entering the system, having a precision of +/- 6 ppm it results in a more
 accurate reference clock and can be used, if needed, for synchronization
@@ -622,7 +627,7 @@ chip will be used. For the reference clock there are two options:
 	\item[External Oscillator] \hfill \\
 	In this option and external clock signal can be connected in the XTALP pin
 (Leaving the XTALP pin unconnected), this external clock frequency may vary from
-10 MHz to 80 MHz. Such type of setup is needed when a wireless basestation (BTS)
+10 MHz to 80 MHz. Such type of setup is needed when a wireless base-station (BTS)
 reference clock is locked to a master clock, and in such systems there is no or
 less need for clock synchronization.
 
@@ -639,7 +644,7 @@ clock and thus adjust the LO frequency if needed.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.65\textwidth]{./figures/dcxo_graph}
+    \includegraphics[width=0.45\textwidth]{./figures/dcxo_graph}
     \caption{ DCXO Behavior Graph
     \label{fig:pll}}
 \end{figure}
@@ -710,7 +715,7 @@ capture, double data rate mode for transmit signal bursts.
 valid data. RF\_FRAME has two modes:
 	\begin{itemize}
 		\item \textbf{Level Mode:} RF\_FRAME stays high as long as the data is valid.
-		\item \textbf{Pulse Mode:} RF\_FRAME pulses with 30% duty cycle.
+		\item \textbf{Pulse Mode:} RF\_FRAME pulses with 30\% duty cycle.
 	\end{itemize}
 	The BBP must provide a TX\_FRAME that indicates beginning of a valid data
 transmission with a rising edge. The TX\_FRAME operates similarly as the
@@ -720,7 +725,7 @@ RF\_FRAME, on Level Mode or Pulse Mode.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.65\textwidth]{./figures/ad9361_digital_interface}
+    \includegraphics[width=0.45\textwidth]{./figures/ad9361_digital_interface}
     \caption{ AD9361 Digital Data Interface
     \label{fig:ad9361diginterface}}
 \end{figure}
@@ -771,14 +776,14 @@ for data flow control and is replaced by these pins.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.65\textwidth]{./figures/fdd_ensm}
+    \includegraphics[width=0.25\textwidth]{./figures/fdd_ensm}
     \caption{ FDD Enable State Machine
     \label{fig:pll}}
 \end{figure}
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.65\textwidth]{./figures/tdd_ensm}
+    \includegraphics[width=0.35\textwidth]{./figures/tdd_ensm}
     \caption{ TDD Enable State Machine
     \label{fig:pll}}
 \end{figure}
@@ -820,6 +825,7 @@ of 10mA. The DACs can be directly controlled by the ENSM.
 
 
 \subsection{FMCommS2}
+\label{subsec:fmcomms2}
 
 FMCommS2 is basically evaluation board for the AD9361 that has a FPGA Mezzanine
 Card (FMC) connector for interfacing with the BBP (Usually FPGA). The FMComms2
@@ -865,7 +871,7 @@ integrated into the AD9361.
 		\item \textit{AGC:} quadrature calibration and DC offset calibration.
 		\item \textit{NF:} 2.5 dB at 1Ghz.
 		\item \textit{ADC:} Continuous time sigma-delta ( $\Sigma - \Delta$), 640 MSPS.
-		\item \textit{Digital FIlter:} 128 COmplex taps with decimation between 2 and 48.
+		\item \textit{Digital Filter:} 128 COmplex taps with decimation between 2 and 48.
 		\item \textit{Gain:} 1dB step size, 80 dB analog Range, 30 db digital range (post ADC scaling).
 		\item On-chip sensor for temperature corrected RSSI.
 	\end{itemize}
@@ -875,7 +881,7 @@ integrated into the AD9361.
 		\item Supports up to 2 direct conversion RF transmit channels.
 		\item Fully integrated frequency synthesizers (including loop filter).
 \item Data path consists of digital filters, DAC and modulators.
-		\item \textit{Digital FIlter:} 128 complex taps with interpolation between 2 and 48.
+		\item \textit{Digital Filter:} 128 complex taps with interpolation between 2 and 48.
 		\item \textit{Gain:} 0.5 dB step size, 86 dB range.
 		\item \textit{ADC:} 340 MSPS.
 	\end{itemize}
@@ -887,7 +893,7 @@ input for external clock input.
 	\item[Control/Monitor] \hfill \\
 		The board allows real time control and monitoring via dedicated pins, such pins
 functionality are programmable. The control and monitor programming
-configuration is specified in the ad9361 section \cite{sec:ad9361}.
+configuration is specified in the ad9361 section \ref{subsec:ad9361}.
 
 \end{description}
 
