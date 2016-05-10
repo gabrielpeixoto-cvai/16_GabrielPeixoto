@@ -11,14 +11,14 @@ have a very good infrastructure.
 The first setup thought was using the ML605 FMC LPC connector and the FMComms2,
 this setup was very important because in it was possible to understand how to
 integrate the board design with the need of the project. Then the device was
-moved to the FMC HPC connector and the design with the ML605 was finished.\\
+moved to the FMC HPC connector and the design with the ML605 was finished.
 
 After getting the experience with ML605 and ISE design tools, it was time to use
 a more updated board and design tool, thus the idea of porting the initial
 design from ML605 to the VC707 board came. Since ISE has no support for VC707
 and is a software with its development halted, going to the most updated tool
 from Xilinx is natural, so the second setup is using vivado design tools and
-VC707 with FMC HPC connector and FMComms2.\\
+VC707 with FMC HPC connector and FMComms2.
 
 Another thing to give attention is that with ISE the design flow was more manual
 and if there was the need to rebuild a project almost from the scratch, just
@@ -28,7 +28,7 @@ design flow and the .tcl scripts became more popular, they existed in ISE
 however they were not popular. With the TCL scripts it is possible to create
 project, import files, instantiate and configure both user and default IPs, as
 well as run synthesis, implementation and generate bitstream steps, which saves
-a lot of time in development.\\
+a lot of time in development.
 
 %figura das duas fases do SETUP downlink e Uplink
 
@@ -58,7 +58,7 @@ configure (program) such devices to perform a wide variety of tasks. Depending
 on the way in which they are built, some FPGA boards may only be programmed a
 single time (OTP - One time Programmable), like the EPROM memory, while others
 may be reprogrammed over and over again, which is the case of the FPGA boards
-used in this work.\cite{max2004}\\
+used in this work.\cite{max2004}
 
 The “field programmable” portion of the FPGA’s name refers to the fact that its
 programming takes place “in the field” (as opposed to devices whose internal
@@ -66,11 +66,11 @@ functionality is hard-wired by the manufacturer). This mean that FPGAs
 connections are electrically activated and deactivated, thus the fpga can be
 programmed in the factory or by the developer, when a  FPGA designed is
 implemented in a hardwired circuit it is called ASIC (Application Specific
-Integrated Circuit).\\
+Integrated Circuit).
 
 The FPGAs are so flexible and interesting to work with that there is a field of
 study in the computer engineering/science which studies them, the reconfigurable
-computing field.\\
+computing field.
 
 This work was implemented in two FPGAs the Virtex 6 and Virtex 7, thus
 implemented in two different development boards, the ML605 (Virtex 6) and the
@@ -83,11 +83,11 @@ this work.
 This board was used in the first version of the setup, still it lacked better
 clock sources and dividers, it was also older the the VC707, thus the design was
 ported to VC707, below there is a list of the features of the ML605 development
-board.\\
+board.
 
 In the figure \ref{fig:ml605} there is a picture of the board and in the figure
 \ref{fig:ml605bd} there is also a functional block diagram of the board, this
-information was acquired in the official board manual \cite{xilinx:ml605}.\\
+information was acquired in the official board manual \cite{xilinx:ml605}.
 
 
 \textbf{ML605 Evaluation Module Features:}
@@ -191,15 +191,16 @@ information was acquired in the official board manual \cite{xilinx:ml605}.\\
 %ml605 board
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.65\textwidth]{./figures/ml605}
+    \includegraphics[width=0.85\textwidth]{./figures/ml605}
     \caption{ ML605 Development Board
     \label{fig:ml605}}
 \end{figure}
+\clearpage
 
 %ml605 block diagram
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.35\textwidth]{./figures/ml605_bd}
+    \includegraphics[width=0.55\textwidth]{./figures/ml605_bd}
     \caption{ ML605 Functional Block Diagram
     \label{fig:ml605bd}}
 \end{figure}
@@ -313,11 +314,11 @@ clock generation and treatment options compared to the ML605 board.
 
 The characteristic which make this project be ported to the VC707 board is the
 clock generation options that can be used to synchronize the FMComms2 and the FPGA
-board in a future implementation.\\
+board in a future implementation.
 
 In the figures \ref{fig:vc707} and
 \ref{fig:vc707bd} there are the evaluation board picture and the high-level block
-diagram respectively.\\
+diagram respectively.
 
 %vc707 board
 \begin{figure}[htbp]
@@ -340,7 +341,7 @@ diagram respectively.\\
 Xilinx Design Tools have a methodology of developing by using IP blocks, IP
 stands for intellectual Property, it means that, it is possible to develop some
 functionality or block and sell the right to use it for other developers, fact
-which makes development a lot faster and easier.\\
+which makes development a lot faster and easier.
 
 Xilinx provide IP cores for all the development boards devices and components,
 thus this part aims to briefly describe the blocks used in this work. Other
@@ -358,7 +359,7 @@ implemented entirely in the general-purpose memory and logic fabric of Xilinx
 FPGAs and synthesized inside the FPGA, it has a 32 bit instruction set and runs
 usually at 100 Mhz clock, and has only one interrupt input. The Microblaze function
 in this system is basically to initialize all the software drivers, configure
-such drivers and execute interrupt routines.\\
+such drivers and execute interrupt routines.
 
 Below it is possible to see a block schematic of microblaze core:
 
@@ -449,7 +450,7 @@ C-RAN systems, indeed AD9361 is already being used in some Universal Software
 Radio Peripheral (USRP) from Ettus research (National Instruments)
 \ref{sd:usrp}, this alone is a proof that AD9361 can work in a wide range of
 systems and standards, below there is a functional block diagram od the AD9361
-chip \ref{fig:ad9361func}.\\
+chip \ref{fig:ad9361func}.
 
 \begin{figure}[htbp]
     \centering
@@ -490,6 +491,7 @@ signals and such digitalized signals can be conditioned further by a series of
 decimation filters and a 128-tap FIR filter with additional decimation settings.
 The sampling rate of each digital filter is adjustable through changes in the
 decimation factors to produce the needed data rate.\\
+
 In short, the Receiver chain , in figure \ref{fig:rxchain}, has:
 
 \begin{itemize}
@@ -531,7 +533,7 @@ recombined and modulated in the carrier frequency, which can be adjusted by
 changing the synthesizer frequency. These analog combined signals passes through
 additional analog filters for better band shaping and then it can be transmitted
 to the output amplifier. Each Transmitting channel provides wide attenuation
-adjustment range with fine granularity in order to optimize SNR.\\
+adjustment range with fine granularity in order to optimize SNR.
 
 \begin{figure}[htbp]
     \centering
@@ -547,7 +549,7 @@ transmitting channel providing an automatic real-time adjustment. The
 transmitter also provides a TX monitor block for each channel, this block
 monitors the transmission output and routes it back through an unused receiver
 channel to the BBP for signal monitoring, but these monitoring option is only
-available in TDD mode operation while the receiver is idle.\\
+available in TDD mode operation while the receiver is idle.
 
 In short the transmission chain has:
 
@@ -684,12 +686,13 @@ format (used in this work). Both formats can be configured in multiple
 arrangements to adequate the system requirements for data transfer and
 connections. These arrangements can be of single port data bus, dual port data
 bus, single data rate, double data rate and other various combinations
-compatible with the device.\\ Bus transfers are controlled using hardware
-handshake signalling, these two ports can be operated in TDD (bidirectional) or
-FDD (full duplex) where half of the bits are used for transmitting and the other
-half is used for receiving. The interface can also be configured to use only one
-of the data ports ( usually used in applications that do not require high data
-rates or samples).\\
+compatible with the device.
+
+Bus transfers are controlled using hardware handshake signalling, these two
+ports can be operated in TDD (bidirectional) or FDD (full duplex) where half of
+the bits are used for transmitting and the other half is used for receiving. The
+interface can also be configured to use only one of the data ports ( usually
+used in applications that do not require high data rates or samples).
 
 The communication between the BBP processor and the AD9361
 rely on some signals to properly work, which are DATA\_CLK, FB\_CLK and
@@ -831,7 +834,7 @@ FMCommS2 is basically evaluation board for the AD9361 that has a FPGA Mezzanine
 Card (FMC) connector for interfacing with the BBP (Usually FPGA). The FMComms2
 has 5 SMA connectors, 2 for Rx, 2 for Tx and one for external reference clock
 input. The FMComms2 provides a 2x2 RF configuration, extended from the AD9361,
-and has  a narrow tuning range balun, which is performance optimized for 2.4GHz.\\
+and has  a narrow tuning range balun, which is performance optimized for 2.4GHz.
 
 The FMComms2 is a transceiver intended for use in RF applications such 3G or 4G
 BTS or SDR. Its programmability and wideband capability make it ideal for broad
@@ -1006,14 +1009,14 @@ have a very good infrastructure.
 The first setup thought was using the ML605 FMC LPC connector and the FMComms2,
 this setup was very important because in it I could understand how to integrate
 the board design with the need of the project. Then the device was moved to the
-FMC HPC connector and the design with the ML605 was finished.\\
+FMC HPC connector and the design with the ML605 was finished.
 
 After getting the experience with ML605 and ISE design tools, it was time to use
 a more updated board and design tool, thus the idea of porting the initial
 design from ML605 to the VC707 board came. Since ISE has no support for VC707
 and is a software with its development halted, going to the most updated tool
 from Xilinx is natural, so the second setup is using vivado design tools and
-VC707 with FMC HPC connector and FMComms2.\\
+VC707 with FMC HPC connector and FMComms2.
 
 Another thing to give attention is that with ISE the design flow was more manual
 and if there was the need to rebuild a project almost from the scratch, just
@@ -1023,7 +1026,7 @@ design flow and the .tcl scripts became more popular, they existed in ISE
 however they were not popular. With the TCL scripts it is possible to create
 project, import files, instantiate and configure both user and default IPs, as
 well as run synthesis, implementation and generate bitstream steps, which saves
-a lot of time in development.\\
+a lot of time in development.
 
 %figura do setup com diagrama de blocos
 \begin{figure}[htbp]
@@ -1038,7 +1041,7 @@ a lot of time in development.\\
 The first problem encountered in the development was the integration, since the
 company make a example project available and the IP cores for download it appear
 to be an easy job, however, for study purposes and for a simpler design it is
-better to begin a bottom up approach and so it was did.\\
+better to begin a bottom up approach and so it was did.
 
 This approach was used in both ML605 and VC707 and it consists in basic steps:
 
@@ -1052,7 +1055,7 @@ This approach was used in both ML605 and VC707 and it consists in basic steps:
 This analyze work took around 3 weeks and the the integration became to work
 properly. In the ML605 the version of the IP and driver was one of the first
 ones, then it was needed only the SPI for registers read and write and one
-GPIO pin to reset the device.\\
+GPIO pin to reset the device.
 
 By default the AD9361 driver has a DDS which generates the carrier wave at 2.4Ghz,
 so if the initialization work it is possible to watch in the oscilloscope or
@@ -1065,13 +1068,13 @@ procedures have been done.
 As stated in the previous subsection the FMComms2 control and communication
 interface is implemented through GPIO pins and SPI protocol, basically SPI is
 used to write and read registers in the board while GPIO is used for real-time
-control, like reset or change states in the ENSM.\\
+control, like reset or change states in the ENSM.
 
 While the development was in its beginning the minimum pins for communication
 and reset work were assigned, however when the development wen to Vivado with
 the VC707 there was the need to build something more automated in order to be
 easily rebuild, so the \emph{ad9361\_comm} IP was created to route the respective
-pins from SPI and GPIO interfaces to the ad9361 control and communication interface.\\
+pins from SPI and GPIO interfaces to the ad9361 control and communication interface.
 
 Below it is possible to see in a simple schematic what is the \emph{ad9361\_comm}
 IP and how it routes the respective ports to the ad9361 interface.
@@ -1183,12 +1186,12 @@ DAC-DMA interface and the other is the DAC interface. The DAC-DMA interface cont
 the reading channel of the DMA block, creating a “bottleneck” based on the reading
 clock, thus the DMA reading is limited by the reading clock, which is a way of
 synchronizing the DMA reading by the DAC clock, it does not work in perfectly but
-is a better solution than simply use FIFOs. \\
+is a better solution than simply use FIFOs.
 
 The DAC-DMA is implemented using a commuter controlling a demultiplexer block,
 this means that the data read from the memory by the DMA is loaded one into the
 demultiplexer and it feeds one channel at the time, both channels are enabled
-for use\\
+for use
 
 Below it is possible to see a block diagram of the interface:
 
@@ -1207,7 +1210,7 @@ already limited by the DAC clock from the ad9361 interface, thus the ADC
 interface has just to commute both channels into one, feeding one sample from
 each ADC channel at a time to the DMA, be able to accomplish such, there is a
 state machine to control the fifo output to the DMA as can be seen in figure
-\ref{fig:dataifrx}.\\
+\ref{fig:dataifrx}.
 
 Below it is possible to see a block diagram describing the Receiving interface with
 more details:
@@ -1224,13 +1227,13 @@ more details:
 
 This setup driver has several parts, it not only initiates the FMComms2 hardware
 but also initiates all the systems in the FPGA design, like Interrupt Controller,
- DMA, SPI and GPIO needed to control and read/write data into the FMComms2.\\
+ DMA, SPI and GPIO needed to control and read/write data into the FMComms2.
 
 The hardware drivers itself are not extremely complicated nor needed to be changed
 too much, Xilinx offers all the basic drivers for the boards, for example, DMA Engine,
 Ethernet PHY and Interrupt System, the only thing which must be handled with care is
 the address space and device ID for each block, knowing how the IP is configured,
-or which option he is configured to run is the key to make a driver work.\\
+or which option he is configured to run is the key to make a driver work.
 
 Xilinx also packs the design tools with documented examples, one for each running
 configuration of the device, of course there are always unpredictable things to come,
@@ -1243,30 +1246,23 @@ The ad9361 driver is very complex and carries the job of initializing and
 configuring the FMcomms2 chip, it also initializes the GPIO and SPI drivers,
 which functionality are not worth to explain deeply because they are used for
 control and communication and there was no need to modify or to add any
-functions to those, their role on the ad9361 is explained in the section
-\ref{sec:fmcomms2}.\\
+functions to those, their role on the ad9361 is explained in the subsection
+\ref{subsec:fmcomms2}.
 
 The initialization begins writing in all the ad9361 registers with the
-initialization parameters, in the appendix X there is the explanation of some
-of these parameters  and after this, the driver initializes all the PLLs and begin
+initialization parameters, in the appendix X there is the explanation of some of
+these parameters  and after this, the driver initializes all the PLLs and begin
 to calibrate the analog and digital interfaces. With the ad9361 initialization
 complete it is possible to change parameters, reconfigure filters and  change
-oscillators frequency, if any parameter such as this is changed, the driver
-must be recalibrate, however it is done automatically.\\
-
-In the appendix, there is also a table with of all the
-drivers main functions and parameters explained.\\
-
-
-
-The process of initialization, and configuration for this work is explained in
-the figure \ref{fig:ad9361init}
+oscillators frequency, if any parameter such as this is changed, the driver must
+be recalibrate, however it is done automatically.The process of initialization,
+and configuration for this work is explained in the figure \ref{fig:ad9361init}.
 
 %adicionar diagrama de fluxo da inicialização do ad9361
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.65\textwidth]{./figures/ad9361_driver}
+    \includegraphics[width=0.75\textwidth]{./figures/ad9361_driver}
     \caption{ AD9361 initialization diagram
     \label{fig:ad9361init}}
 \end{figure}
@@ -1276,21 +1272,21 @@ the figure \ref{fig:ad9361init}
 Basically both Ethernet and FMComms2 utilizes the DMA Engine to read and write in
 the DDR3 Memory and thus DMA Engine uses interrupt to inform the processor regarding
 the data read and write. So basically the DMA has to initialize the configuration,
-and then configure the device.\\
+and then configure the device.
 
 After device is configured, since the DMA is configured in scatter gather mode,
 there is the need to allocate the Block Descriptors for Transmitting (reading)
 and Receiving (writing), each block descriptor carries a the beginning address
 of the memory to be read, the size of the reading operation and the address of
 the next block to read, basically this allows for the DMA to read non continuous
-memory spaces.\\
+memory spaces.
 
 After all the blocks are processed by DMA and all the reading is done, the DMA
 generates an interrupt to inform the processor that the reading process is done
 and in such interrupt routine the cyclic process is implemented, it basically
 sends DMA back to the start Block descriptor and the process of reading the
 memory runs again and again until the kill signal is asserted, this is not the
-optimal solution, however it is the one which worked for now.\\
+optimal solution, however it is the one which worked for now.
 
 In the normal mode, the DMA expects and address and a size, and the it begins
 reading or writing in this address until the end of the size and the the DMA
@@ -1301,7 +1297,7 @@ The initialization steps for both DMA and INTC are described in the figure
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.65\textwidth]{./figures/dma_intc_driver}
+    \includegraphics[width=0.85\textwidth]{./figures/dma_intc_driver}
     \caption{ Interrupts and DMA execution diagram
     \label{fig:intcdmainit}}
 \end{figure}
@@ -1318,7 +1314,7 @@ whoever needs to use this work for research or study.
 This setup was meant to be used in such academic environment, the data and control
 interface are ready to be used, for this the student can generate the data in
 matlab and load it as a vector in a .h file, this file shall be read by the DMA
-driver.\\
+driver.
 There is also the possibility to develop a modulation/demodulation block
 and input this block feeding the data interface, thus all the modulated data can
 be transmitted and received, the only limitation of such development would be the
