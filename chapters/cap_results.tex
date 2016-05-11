@@ -11,7 +11,7 @@ the design and how each component is connected.
 %foto setup pronto
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.65\textwidth]{./figures/ad9361_functional_diagram}
+    \includegraphics[width=0.45\textwidth]{./figures/ad9361_functional_diagram}
     \caption{ Image of the Setup Hardware
     \label{fig:setup}}
 \end{figure}
@@ -103,7 +103,7 @@ both analyzers outputs can be seen in the figures below:
 
 An important step in HDL development is the logic simulation of the circuit,
 through this simulation it is possible to watch every port and be able to
-understand the block behavior, thus correcting any problem or misbehavior.\\
+understand the block behavior, thus correcting any problem or misbehavior.
 
 \subsection{Transmit (DAC) Interface Simulation}
 
@@ -112,13 +112,13 @@ made in three steps, since the interface is composed by two blocks, there was
 the need to simulate each block separately and after this simulate both blocks
 connected and working together, in the figures \ref{fig:simdacdma},
 \ref{fig:simdac} and \ref{fig:simtxif} it is possible to see the simulation
-results and wave diagrams of the three steps.\\
+results and wave diagrams of the three steps.
 
 In the figure \ref{fig:simdacdma} it is possible to watch the behavior of the
 \textit{dac-dmaIterface} block where the signal \textit{sig\_dma\_data} is fed to
 the block, and the signals \textit{ sig\_axis\_axc0\_itdata, sig\_axis\_axc0\_qtdata,
 sig\_axis\_axc1\_itdata and sig\_axis\_axc1\_qtdata} are the \textit{IQ data} being
-fed to both to the \textit{dacInterface} block.\\
+fed to both to the \textit{dacInterface} block.
 
 \begin{figure}[htbp]
     \centering
@@ -170,7 +170,7 @@ dac clock $40 MHz$, this difference justifies the use of such interface.
 
 As stated before on chapter \ref{chap:implementation} in the section \ref{impl:setup},
 the DAC interface is simple beacause the data input is already limited by the DAC
-clock, so there is no need to make a bottleneck like in the DAC interface.\\
+clock, so there is no need to make a bottleneck like in the DAC interface.
 
  In the figure \ref{fig:simdac} it is possible to see the output and wave
 diagram in the simulation window. Since the \textit{adcInterface} is much more
@@ -270,14 +270,14 @@ Devices IIO scope application.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.85\textwidth]{./figures/lte_spectrum_iio}
+    \includegraphics[width=0.65\textwidth]{./figures/lte_spectrum_iio}
     \caption{ LTE Spectrum
     \label{fig:ltespectrumiio}}
 \end{figure}
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.85\textwidth]{./figures/lte_constellation_iio}
+    \includegraphics[width=0.65\textwidth]{./figures/lte_constellation_iio}
     \caption{ LTE Constellation
     \label{fig:lteconstellationiio}}
 \end{figure}
