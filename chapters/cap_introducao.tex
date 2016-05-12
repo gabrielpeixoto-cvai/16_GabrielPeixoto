@@ -1,66 +1,77 @@
 \chapter{Introduction}
 \label{chap:intro}
 
-The world is much more interconnected and the economy is growing wilder and
-wilder, a lot of economical issues rise in different countries almost every
-year. The climate changes are also a concern to the modern governments, thus the
-idea of re-utilizing resources and  make these resources be more economically
-and environmentally friendly are a goal for modern research and development.\\
+%The world is much more interconnected and the economy is growing wilder and
+%wilder, a lot of economical issues rise in different countries almost every
+%year. The climate changes are also a concern to the modern governments, thus the
+%idea of re-utilizing resources and  make these resources be more economically
+%and environmentally friendly are a goal for modern research and development.
+
+The scalability and reconfigurability of telecommunication systems is very
+interesting for the companies and operators in the moder days economics,
+re-utilization is the key to decrease deployment and equipment update. This work
+aims to evaluate the feasibility of a Radio-Frontahaul System for
+\textit{Long-Term Evolution} (LTE) transmissions in a reconfigurable and scalabe
+environment of \textit{Cloud Radio Access Netork} (CRAN).
 
 Cloud computing is a paradigm which is growing every year in the companies and
 developers, it is not a magic method to solve all the problems but it solves
-some infrastructure problems of small and big companies, where companies does
+some infrastructure problems of small and big companies, where companies do
 not need to own computers or anything locally to operate, everything can be done
 remotely and a more experienced company and staff can offer such infrastructure
 or application as a service. Such idea of having everything as a service is very
 attractive both economically  and environmentally because there is no waste of
 resource, everything is scalable to the need of the client and upgradeable if
-needed.\\
+needed.
 
 The Radio access technologies have been evolving from audio traffic to intensive
 data traffic over the recent standards, because the mobile devices got a myriad
-of functions which could only be executed by Personal Computers. However the
-implementations of such networks demand a huge amount of resources, there is the
-concern about how to develop and deploy these networks such as backwards
-compatibility of the devices, because an operator would never deploy a network
-which is not compatible with previous standards equipments, this is not
-profitable. Having these ideas in mind the \textit{C-RAN} concept began to be
-developed, such as cloud computing, now there is the technology for the RANs to
-be scalable and configurable to the needs of the clients and operators, where
-the baseband processing is all done on the cloud and the radio front-ends are
-reconfigurable to handle different data and modulation outputs.\\
+of functions which could only be executed by \textit{Personal Computers} (PC).
+Such networks demand a huge amount of resources and there is the concern about
+how to develop and deploy these networks such as backwards compatibility of the
+devices, because an operator would never deploy a network which is not
+compatible with previous standards equipments, this is not profitable. Having
+these ideas in mind the CRAN concept began to be developed, with Cloud Computing
+paradigm technology the baseband processing in thes \textit{Radio access Network}
+(RAN) can be done in the "cloud", with all the resource re-utilization and
+scalability of Cloud Computing,  and the radio front-ends have to be
+reconfigurable to handle different data and modulation outputs.
 
-The reconfigurable fabric of the FPGA is very attractive to implement such radio
-front-ends and other reconfigurable computing tasks, because it is flexible to
-be reconfigured on-the-run and offers a really good processing and I/O
-capabilities. Thus this work aims to evaluate the implementation feasibility of
-a radio front-end LTE transmissions (LTE band) in a Cloud RAN environment
-(adaptability and reconfigurability).\\
+The reconfigurable fabric of the \textit{Field Programmable Gate Array} (FPGA)
+technology is very attractive to implement such radio front-ends and other
+reconfigurable computing tasks, because it is flexible to be reconfigured
+on-the-run, offers a really good parallel processing and I/O capabilities. Thus
+this work aims to evaluate the implementation feasibility of a radio front-end
+LTE transmissions (LTE band) in a Cloud RAN environment (adaptability and
+reconfigurability).
 
 This work is implemented in a Xilinx Virtex 7 FPGA and using the transceiver
-FMComms2 from analog devices, this transceiver can be reconfigured in real time
-and runs up to 6 GHz band, it has been chosen because of such reconfigurability
-properties. This text is composed by 6 chapters divided in 5 parts.\\
+\textit{Fmcomms2} from \textit{Analog Devices}, this transceiver can be
+reconfigured in real time and runs up to 6 GHz band, it has been chosen because
+of such reconfigurability properties.
+
+The remainder of this text is organized as 4 parts as follows:
 
 The second part is a literature review of some theoretical background used in
-this work development, it is composed by two chapters, the second chapter
-[\ref{chap:sdr}] describing Cloud and Software defined radio, because
-reconfigurability and scalability is desired in SDR field. The third chapter
-[\ref{chap:lte}] gives an overview in Digital Communication Systems and LTE,
-describing the basic blocks of Digital Communications Systems and briefly
-talking about LTE standard and how it is implemented.\\
+this work development, divided in two chapters. The chapter \ref{chap:sdr}
+offers an overview of Cloud and Software defined radio, because
+reconfigurability and scalability are features desired in SDR field and in this
+work. The chapter \ref{chap:lte} gives an overview in Digital Communication
+Systems and LTE, since this work shall focus on LTE  frequency band
+transmissions.
 
-The third part is the core of the work, the implementation chapter
-[\ref{chap:implementation}]. In this chapter the functionalities of both FPGA
-and Transceiver Board shall be explained, the development will be described in
-terms of how it was implemented in both FPGA logic and software drivers.\\
+The third part is the core of the work, the chapter \ref{chap:implementation}
+describes the implementation of this work's setup and gives an overview of
+functionalities of both FPGA and Fmcomms2 shall be explained, the
+development will be described in terms of how it was implemented in both FPGA
+logic and software drivers.
 
-The fourth part reports all the results of this work
-[\ref{chap:results}]. The configuration results report how the transceiver
-board communication and configuration were done. The simulation results aim
-to show the VHDL blocks simulation prior to hardware implementation and at last
-the transmission results aim in report how
+The fourth part reports all the results of this work in chapter
+\ref{chap:results}. The configuration results report how the transceiver board
+communication and configuration were done. The simulation results aim to show
+the VHDL blocks simulation prior to hardware implementation and at last the
+transmission results aim in report the integrity of the transmitted signals.
 
-The last part focuses in the conclusions and future works [\ref{chap:conclusion}],
-which aim to report everything learned from this work and what can be done to
-improve the transmission/reception quality.
+The last part focuses in the conclusions and future works in chapter
+\ref{chap:conclusion}, which aim to report everything learned from this work and
+what can be done to improve the transmission/reception quality.
