@@ -8,10 +8,11 @@ standard, so exploring setups and their feasibility is very interesting to
 increase the ways to implement this new standard in countries which does not
 have a very good infrastructure.
 
-The first setup thought was using the ML605 FMC LPC connector and the FMComms2,
-this setup was very important because in it was possible to understand how to
-integrate the board design with the need of the project. Then the device was
-moved to the FMC HPC connector and the design with the ML605 was finished.
+ The first setup thought was using the ML605  FPGA Mezzanine Card (FMC) Low pin
+counter (LPC) connector and the FMComms2, this setup was very important because
+in it was possible to understand how to integrate the board design with the
+need of the project. Then the device was moved to the FMC High pin counter
+(HPC) connector and the design with the ML605 was finished.
 
 After getting the experience with ML605 and ISE design tools, it was time to use
 a more updated board and design tool, thus the idea of porting the initial
@@ -20,15 +21,16 @@ and is a software with its development halted, going to the most updated tool
 from Xilinx is natural, so the second setup is using vivado design tools and
 VC707 with FMC HPC connector and FMComms2.
 
-Another thing to give attention is that with ISE the design flow was more manual
-and if there was the need to rebuild a project almost from the scratch, just
-with the HDL source files, the other necessary ips should be created and
-configured again, which took a lot of time, but with Vivado the block diagram
-design flow and the .tcl scripts became more popular, they existed in ISE
-however they were not popular. With the TCL scripts it is possible to create
-project, import files, instantiate and configure both user and default IPs, as
-well as run synthesis, implementation and generate bitstream steps, which saves
-a lot of time in development.
+ Another thing to give attention is that with ISE the design flow was more
+manual and if there was the need to rebuild a project almost from the scratch,
+just with the Hardware description language (HDL) source files, the other
+necessary ips should be created and configured again, which took a lot of time,
+but with Vivado the block diagram design flow and the \textit{.tcl} scripts
+became more popular, they existed in ISE however they were not popular. With
+the tool command language (TCL) scripts it is possible to create project,
+ import files, instantiate and configure both user and default intellectual
+property (IP) blocks, as well as run synthesis, implementation and generate
+bitstream steps, which saves a lot of time in development.
 
 %figura das duas fases do SETUP downlink e Uplink
 
@@ -51,22 +53,22 @@ a lot of time in development.
 %--------------------------------------------FPGA-----------------------------------------
 \section{FPGA}
 
-FPGA stands for Field Programmable Gate Array, which are digital integrated
+ FPGA stands for Field Programmable Gate Array, which are digital integrated
 circuits (IC) that contain configurable (programmable) blocks of logic along
 with configurable interconnects between these blocks. Design engineers can
 configure (program) such devices to perform a wide variety of tasks. Depending
 on the way in which they are built, some FPGA boards may only be programmed a
-single time (OTP - One time Programmable), like the EPROM memory, while others
-may be reprogrammed over and over again, which is the case of the FPGA boards
-used in this work.\cite{max2004}
+single time (OTP - One time Programmable), like the Electronic programmable
+read-only (EPROM) memory, while others may be reprogrammed over and over again,
+which is the case of the FPGA boards used in this work.\cite{max2004}
 
 The “field programmable” portion of the FPGA’s name refers to the fact that its
 programming takes place “in the field” (as opposed to devices whose internal
 functionality is hard-wired by the manufacturer). This mean that FPGAs
-connections are electrically activated and deactivated, thus the fpga can be
+connections are electrically activated and deactivated, thus the FPGA can be
 programmed in the factory or by the developer, when a  FPGA designed is
-implemented in a hardwired circuit it is called ASIC (Application Specific
-Integrated Circuit).
+implemented in a hardwired circuit it is called Application Specific
+Integrated Circuit (ASIC).
 
 The FPGAs are so flexible and interesting to work with that there is a field of
 study in the computer engineering/science which studies them, the reconfigurable
@@ -80,14 +82,17 @@ this work.
 
 
 \subsection{ML605 - Virtex6}
+
 This board was used in the first version of the setup, still it lacked better
 clock sources and dividers, it was also older the the VC707, thus the design was
 ported to VC707, below there is a list of the features of the ML605 development
 board.
 
-In the figure \ref{fig:ml605} there is a picture of the board and in the figure
+In the Figure \ref{fig:ml605} there is a picture of the board and in the Figure
 \ref{fig:ml605bd} there is also a functional block diagram of the board, this
-information was acquired in the official board manual \cite{xilinx:ml605}.
+information was acquired in the official board manual \cite{xilinx:ml605}. In
+the block diagram it is possible to understand how each component listed below
+is connected to the ML605 board.
 
 
 \textbf{ML605 Evaluation Module Features:}
@@ -207,9 +212,10 @@ information was acquired in the official board manual \cite{xilinx:ml605}.
 
 \subsection{VC707 - Virtex7}
 
-The final results of this setup were generated in the VC707 board
-\cite{xilinx:vc707}, because it has a possibility of expansion and has better
-clock generation and treatment options compared to the ML605 board.
+ The final results of this setup were generated in the VC707 board
+\cite{xilinx:vc707}, because it has a better possibility of expansion and has
+better clock generation and treatment options compared to the ML605 board,
+which can be used to synchronization purposes.
 
 \textbf{VC707 Evaluation Board Features}
 
@@ -316,7 +322,7 @@ The characteristic which make this project be ported to the VC707 board is the
 clock generation options that can be used to synchronize the FMComms2 and the FPGA
 board in a future implementation.
 
-In the figures \ref{fig:vc707} and
+In the Figures \ref{fig:vc707} and
 \ref{fig:vc707bd} there are the evaluation board picture and the high-level block
 diagram respectively.
 
@@ -347,21 +353,20 @@ Xilinx provide IP cores for all the development boards devices and components,
 thus this part aims to briefly describe the blocks used in this work. Other
 companies that develop peripherals to be integrated with Xilinx FPGAs also have
 to develop and provide their own IP cores, like the FMComms2 board which has its
-transceiver IP.
+own IP.
 
 %escrever um pouco sobre os ips usados
 
 \begin{description}
 	\item[Microblaze \cite{xilinx:ublaxe}] \hfill \\
 
-Microblaze is a soft processor core designed for Xilinx FPGAs, MicroBlaze is
-implemented entirely in the general-purpose memory and logic fabric of Xilinx
-FPGAs and synthesized inside the FPGA, it has a 32 bit instruction set and runs
-usually at 100 Mhz clock, and has only one interrupt input. The Microblaze function
-in this system is basically to initialize all the software drivers, configure
-such drivers and execute interrupt routines.
-
-Below it is possible to see a block schematic of microblaze core:
+ Microblaze is a soft processor core designed for Xilinx FPGAs, it is
+implemented entirely in the general-purpose memory and logic fabric of the
+FPGAs and synthesized inside of it. It has a 32 bit instruction set and runs
+usually at 100 Mhz clock, and has only one interrupt input. The Microblaze
+function in this system is basically to initialize all the software drivers,
+configure such drivers and execute interrupt routines. In the Figure
+\ref{fig:mdbd} is possible to see a block schematic of microblaze core.
 
 %ublaze block diagram
 \begin{figure}[htbp]
@@ -373,10 +378,11 @@ Below it is possible to see a block schematic of microblaze core:
 
 	\item[DMA Engine \cite{xilinx:axidma}] \hfill \\
 
-  The DMA is the core which makes possible reading and writing from the memory in
-a very fast rate. There are various modes of operation, but in this project the
-Scatter gather mode is used, in this mode the reading and writing is possible in
-a non-continuous memory addresses by the use of block descriptors.
+   The DMA is the core which makes possible reading and writing from the memory
+  in a very fast rate. There are various modes of operation, but in this
+  project the Scatter gather mode is used, in this mode the reading and writing
+  is possible in a non-continuous memory addresses by the use of block
+  descriptors, which diagram if in Figure \ref{dmabd}.
 
 %dma block diagram
 \begin{figure}[htbp]
@@ -394,7 +400,7 @@ to the DDR3 memory inside the FPGA board.
   \item[SPI \cite{xilinx:axiquadspi}] \hfill \\
 
   The SPI is a communication protocol, thus the SPI core  is used to write/read
-registers in the FMComms2 board. It is hardware initializable and controllable.
+registers in the FMComms2 board. It is initialized and controlled by software.
 
   \item[GPIO \cite{xilinx:axigpio}] \hfill \\
 
@@ -404,12 +410,13 @@ or even both. For this project specifically, GPIO core is used to make real-time
 operations in the AD9361 internal state-machine and for reset.
 
   \item[UART \cite{xilinx:axiuart}] \hfill \\
-  UART is also a communication protocol and stands for universal asynchronous
-receiver/transmitter and in this case it is used for debugging purposes, all the
-standard I/O form the software comes from the UART and it is possible to show
-error messages and status messages from the code in the terminal, like any normal
-print, but such messages are comming from the FPGA elf file being executed in the
-Microblaze soft processor.
+
+   UART is also a communication protocol and stands for universal asynchronous
+  receiver/transmitter and in this case it is used for debugging purposes, all
+  the standard I/O form the software comes from the UART and it is possible to
+  show error messages and status messages from the code in the terminal, like
+  any normal print, the difference is that such messages are coming from the
+  program file being executed in the Microblaze soft processor.
 
 \end{description}
 
@@ -419,38 +426,39 @@ Microblaze soft processor.
 \subsection{AD9361}
 \label{subsec:ad9361}
 
-The AD9361 is a high performance RF transceiver. Its programmability and
+ The AD9361 is a high performance RF transceiver. Its programmability and
 adaptability makes it ideal for a wide range of transceiver applications. This
 device combines a RF front end with a flexible and configurable mixed-signal
 baseband section and frequency synthesizers, simplified configuration digital
 interface to a processor. The AD9361 operates from 70 MHz to 6.0GHz range with
-supported channel bandwidths from 200 KHz to 56 MHz and the AD9361 is a 2 Rx and
-2 Tx device packed in a 10mm x10mm, 144 ball chip package ball grid array
-(CSP\_BGA).
+supported channel bandwidths from 200 KHz to 56 MHz and the AD9361 is a 2
+receiver (Rx) and 2 transmitter (Tx) device packed in a 10mm x10mm, 144 ball
+chip package ball grid array (CSP\_BGA).
 
 \subsubsection{General Description}
 
-AD9361 is a highly integrated RF frequency transceiver capable of being
+ AD9361 is a highly integrated RF frequency transceiver capable of being
 configured for a wide range of applications, including 3G and 4G frequency
-applications. AD9361 and AD9364 almost the same hardware and specifications, the
-difference is that AD9361 is a 2x2 MIMO and AD9364 is a 1x1
-\cite{web:ad9361wiki}. The programmability allows the AD9361 to be operated in
-Frequency Division Duplex (FDD) and Time Division Duplex (TDD) systems, allowing
-this transceiver to operate in a variety of communication standards. Another
-interesting feature is the capability of integration with a wide range of BBPs
-(Baseband Processors) using a single or dual 12-bit parallel data port or a
-12-bit LVDS (Low voltage Differential signaling), which uses the FMC connector
-in the FMCommS2. AD9361 also provides self-calibration and automatic gain
-control (AGC) systems to maintain good performance under variable conditions,
-such as temperature and signal quality. The transceiver has also various modes
-of test mode with the Built-in Self Test (BIST) modes which can be used for the
-designers to debug designs during prototyping. This configurability and
-adaptability is very attractive for Software Defined Radio (SDR) and for C-RAN
-systems, indeed AD9361 is already being used in some Universal Software Radio
-Peripheral (USRP) from Ettus research (National Instruments) \ref{sd:usrp}, this
-alone is a proof that AD9361 can work in a wide range of systems and standards,
-below there is a functional block diagram od the AD9361 chip
-\ref{fig:ad9361func}.
+applications. AD9361 and AD9364 almost the same hardware and specifications,
+the difference is that AD9361 is a 2x2 Multiple Input Multiple Output (MIMO)
+and AD9364 is a 1x1 \cite{web:ad9361wiki}. The programmability allows the
+AD9361 to be operated in Frequency Division Duplex (FDD) and Time Division
+Duplex (TDD) systems, allowing this transceiver to operate in a variety of
+communication standards. Another interesting feature is the capability of
+integration with a wide range of Baseband Processors (BBPs) using a single or
+dual 12-bit parallel data port or a 12-bit Low voltage Differential signaling
+(LVDS), which uses the FMC connector in the FMCommS2.
+
+AD9361 also provides self-calibration and automatic gain control (AGC) systems
+to maintain good performance under variable conditions, such as temperature and
+signal quality. The transceiver has also various modes of test mode with the
+Built-in Self Test (BIST) modes which can be used for the designers to debug
+designs during prototyping. This reconfigurability and adaptability is very
+attractive for Software-defined Radio (SDR) and for C-RAN systems, indeed
+AD9361 is already being used in some Universal Software Radio Peripheral (USRP)
+from Ettus research (National Instruments) \ref{sdr:gnuradio}, this alone is a proof
+that AD9361 can work in a wide range of systems and standards, below there is a
+functional block diagram of the AD9361 chip in Figure \ref{fig:ad9361func}.
 
 \begin{figure}[htbp]
     \centering
@@ -466,33 +474,34 @@ and convert them to digital data which can be used by the BBP. there are two
 independently controlled channels that share same frequency synthesizer. This
 characteristic makes possible to the AD9361 to operate in MIMO systems.
 
-Each channel has 3 inputs which can be multiplexed into the signal chain, making
-possible to use the AD9361 into systems with multiple antenna inputs. The
-Receiver is a direct conversion system that contains a Low noise amplifier (LNA) ,
-followed by a matched in-phase and quadrature amplifier, mixers, and band
-shaping filters that down convert received signals to baseband for digitization.
-External LNAs can also be interfaced to the AD9361 allowing more flexibility in
-the design. The receiver signal path passes down-converted signals (I and Q),
-which are schematically identical to each other,  to the baseband (BB) receiver
-section. The BB section is composed by two programmable low-pass filters, with
-programmable corner frequency for each filter, 12-bit ADC and four stages of
-decimating filters, each of the four decimation filters can be bypassed. The
-gain control is achieved by a preprogrammed gain index map, a lookup table for
-example, this map distributes gain in order to achieve optimal performance at
-each level. This optimal behavior can be achieved by enabling AGC, which can run
-in two modes, fast and slow gain control. This allow for the BBP to make gain
-adjustments as needed. Each channel also contains independent RSSI measurement
+ Each channel has 3 inputs which can be multiplexed into the signal chain,
+making possible to use the AD9361 into systems with multiple antenna inputs.
+The Receiver is a direct conversion system that contains a Low noise amplifier
+(LNA) , followed by a matched in-phase and quadrature amplifier, mixers, and
+band shaping filters that down convert received signals to baseband for
+digitization. External LNAs can also be interfaced to the AD9361 allowing more
+flexibility in the design. The receiver signal path passes down-converted
+signals (I and Q), which are schematically identical to each other,  to the
+baseband (BB) receiver section. The BB section is composed by two programmable
+low-pass filters, with programmable corner frequency for each filter, 12-bit
+ADC and four stages of decimating filters, each of the four decimation filters
+can be bypassed. The gain control is achieved by a preprogrammed gain index
+map, a lookup table for example, this map distributes gain in order to achieve
+optimal performance at each level. This optimal behavior can be achieved by
+enabling AGC, which can run in two modes, fast and slow gain control. This
+allow for the BBP to make gain adjustments as needed. Each channel also
+contains independent Receive Signal Strength Indication (RSSI) measurement
 capability, DC offset tracking and all other circuitry needed for
 self-calibration.
 
-The receiver ADC is a 12-bit sigma-delta ($\Sigma-\Delta$) ADC which allows
-adjustable sample rates. This ADC produces data streams from the received
-signals and such digitalized signals can be conditioned further by a series of
-decimation filters and a 128-tap FIR filter with additional decimation settings.
-The sampling rate of each digital filter is adjustable through changes in the
-decimation factors to produce the needed data rate.\\
-
-In short, the Receiver chain , in figure \ref{fig:rxchain}, has:
+The receiver ADC is a 12-bit sigma-delta ($\Sigma-\Delta$) analog to digital
+converter (ADC) which allows adjustable sample rates. This ADC produces data
+streams from the received signals and such digitalized signals can be
+conditioned further by a series of decimation filters and a 128-tap Finite
+Impulse Response (FIR) filter with additional decimation settings. The sampling
+rate of each digital filter is adjustable through changes in the decimation
+factors to produce the needed data rate. In short, the Receiver chain in Figure
+\ref{fig:rxchain} has:
 
 \begin{itemize}
 	\item LNA - Low noise Amplifier
@@ -500,7 +509,7 @@ In short, the Receiver chain , in figure \ref{fig:rxchain}, has:
 	\item Quadrature Amplifier;
 	\item Band Shaping Filters;
 	\item Analog low pass filters;
-	\item 12-bit DAC;
+	\item 12-bit ADC;
 	\item 4 stages of decimation filters (128-tap FIR filters);
 	\item Automatic gain Control;
 \end{itemize}
@@ -515,8 +524,8 @@ In short, the Receiver chain , in figure \ref{fig:rxchain}, has:
 
 \subsubsection{Transmitter}
 
-Like the receiver section, the transmitter section contains two identical and
-independently controller channels, which share the same frequency synthesizer,
+Like the receiver, the transmitter section contains two identical and
+independently controlled channels, which share the same frequency synthesizer,
 that provide all digital signal processing, mixed signal and RF blocks necessary
 to implement a direct conversion system from digital data to RF. The Tx signal
 path receives from the BBP 12-bit 2s complement I-Q format data in the digital
@@ -543,7 +552,7 @@ adjustment range with fine granularity in order to optimize SNR.
 \end{figure}
 
 
-Identical to the receiver chain, the transmitter chain , in figure
+Identical to the receiver chain, the transmitter chain, in Figure
 \ref{fig:txchain} has also built-in self-calibration circuitry into each
 transmitting channel providing an automatic real-time adjustment. The
 transmitter also provides a TX monitor block for each channel, this block
@@ -564,7 +573,7 @@ In short the transmission chain has:
 	\item Tx signal Monitor.
 \end{itemize}
 
-In the figure \ref{fig:ad9361blk} below there is a full block diagram with both
+In the Figure \ref{fig:ad9361blk} below there is a full block diagram with both
 \textit{receiver Chain}, \textit{Transmitting Chain} and other key components of
 the AD9361 chip.
 
@@ -604,43 +613,46 @@ desired RF bandwidth, which sets the analog filters. the process of loading a
 filter and after changing anything in the system will negatively affect the
 overall baseband performance.
 
-There is a filter too created by analog devices,which designs a low-pass filter
-and sets the FIR coefficients in order to ensure compensation for magnitude and
-phase changes in the analog or half band filters.
+%There is a filter created by analog devices, which designs a low-pass filter
+%and sets the FIR coefficients in order to ensure compensation for magnitude and
+%phase changes in the analog or half band filters.
+
 \subsubsection{Clocking}
 
 %reescrever
-The AD9361 has a series of internal PLL to generate and manipulate clock
-signals. There are fractional-n PLLs that generate the transmitter and receiver
-LO frequencies and there are the baseband PLL (BBPLL) used for the data
-converters, digital filters and I/O ports. All the frequency signals are
-generated using these PLLs clock outputs.
+The AD9361 has a series of internal phase-locked loops (PLL) to generate and
+manipulate clock signals. There are $fractional-n$ PLLs that generate the
+transmitter and receiver LO frequencies and there are the baseband PLL (BBPLL)
+used for the data converters, digital filters and I/O ports. All the frequency
+signals are generated using these PLL clock outputs.
 
-All the PLLs require a reference clock input and for this there is the digitally
+All the PLL require a reference clock input and for this there is the digitally
 controlled oscillator (DCXO) function, which is an in-chip programmable and
 variable capacitor, such capacitor can tune the crystal frequency variance
 before entering the system, having a precision of +/- 6 ppm it results in a more
 accurate reference clock and can be used, if needed, for synchronization
-purposes. this function can also be used together with the on-chip temperature
-sensor to provide temperature compensation depending enviroment in which the
-chip will be used. For the reference clock there are two options:
+purposes, the behavior of the DCXO function can be seen in Figure
+\ref{fig:dcxo}. This function can also be used together with the on-chip
+temperature sensor to provide temperature compensation depending environment in
+which the chip will be used. For the reference clock there are two options:
 
 \begin{description}
+
 	\item[External Oscillator] \hfill \\
 	In this option and external clock signal can be connected in the XTALP pin
-(Leaving the XTALP pin unconnected), this external clock frequency may vary from
-10 MHz to 80 MHz. Such type of setup is needed when a wireless base-station (BTS)
-reference clock is locked to a master clock, and in such systems there is no or
-less need for clock synchronization.
+	(Leaving the XTALP pin unconnected), this external clock frequency may vary
+	from 10 MHz to 80 MHz. Such type of setup is needed when a wireless
+	base-station (BTS) reference clock is locked to a master clock, and in such
+	systems there is no or less need for clock synchronization.
 
 	\item[Dedicated Crystal] \hfill \\
 	In this option a dedicated crystal, with frequency varying from 19 MHz to 50
-MHz, is connected in the XTALP and XTALN pins. This setup is usually used in
-wireless user equipment (UE), which do not need to be locked to a master clock
-but they do need to adjust periodically the LO frequency in order to maintain a
-connection with a BTS. The BTS periodically informs the UE of its frequency
-error relative to the BTS and the BBP can make adjustments to the reference
-clock and thus adjust the LO frequency if needed.
+	MHz, is connected in the XTALP and XTALN pins. This setup is usually used in
+	wireless user equipment (UE), which do not need to be locked to a master clock
+	but they do need to adjust periodically the LO frequency in order to maintain
+	a connection with a base station (BTS). The BTS periodically informs the UE of
+	its frequency error relative to the BTS and the BBP can make adjustments to
+	the reference clock and thus adjust the LO frequency if needed.
 
 \end{description}
 
@@ -648,19 +660,25 @@ clock and thus adjust the LO frequency if needed.
     \centering
     \includegraphics[width=0.45\textwidth]{./figures/dcxo_graph}
     \caption{ DCXO Behavior Graph
-    \label{fig:pll}}
+    \label{fig:dcxo}}
 \end{figure}
 
 \subsubsection{Synthesizers}
 
+ In AD9361 there are two types of frequency synthesizers, one dedicated to the
+BBP and other dedicated to the RF operations, in Figure \ref{fig:pll} there is
+a block diagram of both PLLs and below there is a more detailed description of
+the functions of each PLL type.
+
 \begin{description}
 	\item[RF PLLs] \hfill \\
-	The AD9361 contains two identical synthesizers to generate the required LO
-signals for the RF signal path, one for the receiver and one for the
-transmitter. The PLL synthesizers are fractional-n PLLs with completely
-integrated VCOs and loop filters, requiring no other external components. In TDD
-operation mode, the synthesizers turn ON and OFF appropriate for the TX and RX
-frames, however in FDD TX PLL and RX PLL are activated at the same time.
+	The AD9361 contains two identical synthesizers to generate the required local
+  oscillator (LO) signals for the RF signal path, one for the receiver and one for
+  the transmitter. The PLL synthesizers are fractional-n PLLs with completely
+  integrated voltage controlled oscillators (VCOs) and loop filters, requiring no
+  other external components. In TDD operation mode, the synthesizers turn ON and
+  OFF appropriate for the TX and RX frames, however in FDD TX PLL and RX PLL are
+  activated at the same time.
 
 	\item[BB PLL] \hfill \\
   The AD9361 contains also a baseband PLL synthesizer,
@@ -681,14 +699,15 @@ frames, however in FDD TX PLL and RX PLL are activated at the same time.
 \subsubsection{Digital Data Interface}
 
 The AD9361 uses parallel data ports to transfer data between the device and the
-BBP. These data ports can be configured either single-ended CMOS format or LVDS
-format (used in this work). Both formats can be configured in multiple
-arrangements to adequate the system requirements for data transfer and
-connections. These arrangements can be of single port data bus, dual port data
-bus, single data rate, double data rate and other various combinations
-compatible with the device.
+BBP as seen in Figure \ref{fig:ad9361diginterface}. These data ports can be
+configured either single-ended complementary metal–oxide–semiconductor (CMOS)
+format or low-voltage differential signaling (LVDS) format (used in this work).
+Both formats can be configured in multiple arrangements to adequate the system
+requirements for data transfer and connections. These arrangements can be of
+single port data bus, dual port data bus, single data rate, double data rate and
+other various combinations compatible with the device.
 
-Bus transfers are controlled using hardware handshake signalling, these two
+Bus transfers are controlled using hardware handshake signaling, these two
 ports can be operated in TDD (bidirectional) or FDD (full duplex) where half of
 the bits are used for transmitting and the other half is used for receiving. The
 interface can also be configured to use only one of the data ports ( usually
@@ -708,21 +727,21 @@ RX\_FRAME, its operation is detailed below:
 
 	\item[FB\_CLK Signal] \hfill \\
 	The FB\_CLK signal must have the same frequency and duty cycle as DATA\_CLK and
-like DATA\_CLK it is used as timing reference for the interface. FB\_CLK allows
-source synchronous with rising edge capture for burst control signals and can be
-used like DATA\_CLK for rising edge, single data rate mode or in both edge
-capture, double data rate mode for transmit signal bursts.
+	like DATA\_CLK it is used as timing reference for the interface. FB\_CLK allows
+	source synchronous with rising edge capture for burst control signals and can
+	be used like DATA\_CLK for rising edge, single data rate mode or in both edge
+	capture, double data rate mode for transmit signal bursts.
 
 	\item[RF\_FRAME Signal] \hfill \\
 	The RF\_FRAME signal is generated by the device whenever the receiver outputs
-valid data. RF\_FRAME has two modes:
+	valid data. RF\_FRAME has two modes:
 	\begin{itemize}
 		\item \textbf{Level Mode:} RF\_FRAME stays high as long as the data is valid.
 		\item \textbf{Pulse Mode:} RF\_FRAME pulses with 30\% duty cycle.
 	\end{itemize}
 	The BBP must provide a TX\_FRAME that indicates beginning of a valid data
-transmission with a rising edge. The TX\_FRAME operates similarly as the
-RF\_FRAME, on Level Mode or Pulse Mode.
+	transmission with a rising edge. The TX\_FRAME operates similarly as the
+	RF\_FRAME, on Level Mode or Pulse Mode.
 
 \end{description}
 
@@ -748,54 +767,58 @@ like:
 		\item \textbf{FDD:}TX and RX chains enabled.
 		\item \textbf{Alert:} Synthesizers enabled.
 	\end{itemize}
-	This ENSM can be controlled either by SPI or PIN (GPIO for example), where the
+
+This ENSM can be controlled either by SPI or PIN (GPIO for example), where the
 SPI control mode is for a non real-time operation and the PIN control mode is
-for a much faster and real-time control.
+for a much faster and real-time control, in Figures \ref{fig:fddensm} and
+\ref{fig:tddensm} there is the FDD and TDD ENSM diagrams respectively.
 
 
 \begin{description}
 	\item[SPI Control Mode] \hfill \\
 	In SPI control mode, the BBP writes registers asynchronously by using SPI
-protocol to access the addresses, and by writing these registers the state
-machine advances the current state to the next state. SPI communication is
-considerece asynchronous to the DATA\_CLK because the SPI\_CLK can be derived
-from another clock source, where BBP and the device does not share the same
-clock source. This control method is recommended when there is no need for a
-real-time control.
+	protocol to access the addresses, and by writing these registers the state
+	machine advances the current state to the next state. SPI communication is
+	considered asynchronous to the DATA\_CLK because the SPI\_CLK can be derived
+	from another clock source, where BBP and the device does not share the same
+	clock source. This control method is recommended when there is no need for a
+	real-time control.
+
 	\item[Pin Control Mode] \hfill \\
 	In Pin control mode, there are pins dedicated to activate some states of the
-ENSM, like ENABLE pin and TXNRX pin, this mode allows a real-time control of the
-current state. This method is recommended in a system where the BBIC has extra
-pins to spare with the real-time control outputs, this 2-wire interface can
-control the state of the device. To advance the current state to the next state
-of the ENSM, the enable function of the ENABLE pin can be driven by either pulse
-or level,if the pulse is used the minimum width of the pulse needs to be equal
-as the FB\_CLK cycle. In FDD mode, the ENABLE and TXNRX pins can be remapped to
-be used as real-time control of the TX and RX data transfers. In this mode
-ENABLE enables or disables the receive signal and TXNRX enables or disables the
-transmit signal, using such mode  causes the ENSM to be removed from the system
-for data flow control and is replaced by these pins.
+	ENSM, like ENABLE pin and TXNRX pin, this mode allows a real-time control of
+	the current state. This method is recommended in a system where the BBIC has
+	extra pins to spare with the real-time control outputs, this 2-wire interface
+	can control the state of the device. To advance the current state to the next
+	state of the ENSM, the enable function of the ENABLE pin can be driven by
+	either pulse or level,if the pulse is used the minimum width of the pulse needs
+	to be equal as the FB\_CLK cycle. In FDD mode, the ENABLE and TXNRX pins can be
+	remapped to be used as real-time control of the TX and RX data transfers. In
+	this mode ENABLE enables or disables the receive signal and TXNRX enables or
+	disables the transmit signal, using such mode  causes the ENSM to be removed
+	from the system for data flow control and is replaced by these pins.
+
 \end{description}
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.25\textwidth]{./figures/fdd_ensm}
     \caption{ FDD Enable State Machine
-    \label{fig:pll}}
+    \label{fig:fddensm}}
 \end{figure}
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.35\textwidth]{./figures/tdd_ensm}
     \caption{ TDD Enable State Machine
-    \label{fig:pll}}
+    \label{fig:tddensm}}
 \end{figure}
 
 
 \subsubsection{SPI Interface}
 
-The AD9361 uses a SPI interface for communication with the BBP. Throught SPI is
-possible to access all the device registers. The PSI interface can be configured
+The AD9361 uses a SPI interface for communication with the BBP. Through SPI is
+possible to access all the device registers. The SPI interface can be configured
 as a 4-wire interface with dedicated transmit and receive pins, duplex, or as
 3-wire interface with bidirectional data port. Write commands have a 24-bit
 format where the first six bits are for setting the bus direction and number of
@@ -811,35 +834,34 @@ either using SPI\_DO (4-wire interface) or SPI\_DI (3-wire interface).
 \begin{description}
 
 	\item[AUXADC] \hfill \\
-	The AD(361 contains an auxiliary ADC that can be used to monitor some system
-functions such as temperature or power output, it is a 12-bit converter and has
-an input range of 0V to 1.25V. The SPI can read the last value latched at the
-output of the ADC when it is enabled for use, there is also a multiplexer that
-permits to select between AUXADC and built-in temperature sensor.
+	The AD9361 contains an auxiliary ADC that can be used to monitor some system
+	functions such as temperature or power output, it is a 12-bit converter and has
+	an input range of 0V to 1.25V. The SPI can read the last value latched at the
+	output of the ADC when it is enabled for use, there is also a multiplexer that
+	permits to select between AUXADC and built-in temperature sensor.
 
 	\item[AUXDAC1 and AUXDAC2] \hfill \\
 	The AD9361 also has two identical auxiliary DACs which can be used to provide
-power amplifier (PA) bias or other system functionality. Both the DACs are
-10-bit wide and have an output range of 0.5 V to 0.3V and have a current drive
-of 10mA. The DACs can be directly controlled by the ENSM.
-\end{description}
+	power amplifier (PA) bias or other system functionality. Both the DACs are
+	10-bit wide and have an output range of 0.5 V to 0.3V and have a current drive
+	of 10mA. The DACs can be directly controlled by the ENSM.
 
-\subsubsection{Applications}
+\end{description}
 
 
 \subsection{FMCommS2}
 \label{subsec:fmcomms2}
 
-FMCommS2 is basically evaluation board for the AD9361 that has a FPGA Mezzanine
-Card (FMC) connector for interfacing with the BBP (Usually FPGA). The FMComms2
-has 5 SMA connectors, 2 for Rx, 2 for Tx and one for external reference clock
-input. The FMComms2 provides a 2x2 RF configuration, extended from the AD9361,
-and has  a narrow tuning range balun, which is performance optimized for 2.4GHz.
+FMCommS2 is basically evaluation board for the AD9361 that has a FMC connector
+for interfacing with the BBP (Usually FPGA). The FMComms2 has 5 SMA connectors,
+2 for Rx, 2 for Tx and one for external reference clock input. The FMComms2
+provides a 2x2 RF configuration, extended from the AD9361, and has  a narrow
+tuning range balun, which is performance optimized for 2.4GHz.
 
 The FMComms2 is a transceiver intended for use in RF applications such 3G or 4G
-BTS or SDR. Its programmability and wideband capability make it ideal for broad
+BTS or SDR. Its programmability and wide-band capability make it ideal for broad
 range of transceiver applications and make it very attractive for the new C-RAN
-paradigm.
+paradigm. The board and some components can be seen in Figure \ref{fig:fmcomm}.
 
 \begin{figure}[htbp]
     \centering
@@ -851,10 +873,10 @@ paradigm.
 
 \subsubsection{Functional Overview}
 
-The Block diagram show that there are 4 main functional partitions - receiver
-path, transmit path, clocking and power supply. Since the FMComms2 incorporates
-and extends the basic functionalities of the AD9361, thus the data path is fully
-integrated into the AD9361.
+The block diagram in Figure \ref{fig:fmcommbd} show that there are 4 main
+functional partitions - receiver path, transmit path, clocking and power supply.
+Since the FMComms2 incorporates and extends the basic functionalities of the
+AD9361, thus the data path is fully integrated into the AD9361.
 
 \begin{figure}[htbp]
     \centering
@@ -874,7 +896,7 @@ integrated into the AD9361.
 		\item \textit{AGC:} quadrature calibration and DC offset calibration.
 		\item \textit{NF:} 2.5 dB at 1Ghz.
 		\item \textit{ADC:} Continuous time sigma-delta ( $\Sigma - \Delta$), 640 MSPS.
-		\item \textit{Digital Filter:} 128 COmplex taps with decimation between 2 and 48.
+		\item \textit{Digital Filter:} 128 Complex taps with decimation between 2 and 48.
 		\item \textit{Gain:} 1dB step size, 80 dB analog Range, 30 db digital range (post ADC scaling).
 		\item On-chip sensor for temperature corrected RSSI.
 	\end{itemize}
@@ -896,7 +918,7 @@ input for external clock input.
 	\item[Control/Monitor] \hfill \\
 		The board allows real time control and monitoring via dedicated pins, such pins
 functionality are programmable. The control and monitor programming
-configuration is specified in the ad9361 section \ref{subsec:ad9361}.
+configuration is specified in the AD9361 section \ref{subsec:ad9361}.
 
 \end{description}
 
@@ -920,7 +942,8 @@ then:
 	Q = sin(\frac{\pi}{2} - (\omega \times t))
 \end{eqnarray}
 
-These are the two signals coming out of the DAC, two sine waves, phase offset from each other, wich is called IQ.
+These are the two signals coming out of the DAC, two sine waves, phase offset
+from each other, wich is called IQ.
 
 \subsubsection{Basic Modulation Mathematics}
 
@@ -1003,24 +1026,24 @@ the local oscillator.
 
 As stated before, C-RAN is still in development and it is not already a solid
 standard, so exploring setups and their feasibility is very interesting to
-increase the ways to implement this new standard in countries which does not
-have a very good infrastructure.
+increase the ways to implement this new standard in countries which does have
+some infrastructure limitations like Brazil.
 
-The first setup thought was using the ML605 FMC LPC connector and the FMComms2,
-this setup was very important because in it I could understand how to integrate
-the board design with the need of the project. Then the device was moved to the
-FMC HPC connector and the design with the ML605 was finished.
+The first setup thought was using the ML605 FMC LPC connector and the
+FMComms2, this setup was very important because in itwas possible to understand
+how to integrate the board design with the need of the project. Then the device
+was moved to the FMC HPC connector and the design with the ML605 was finished.
 
 After getting the experience with ML605 and ISE design tools, it was time to use
-a more updated board and design tool, thus the idea of porting the initial
+a more updated board and design tool, then the idea of porting the initial
 design from ML605 to the VC707 board came. Since ISE has no support for VC707
 and is a software with its development halted, going to the most updated tool
-from Xilinx is natural, so the second setup is using vivado design tools and
+from Xilinx is natural, so the second setup is using Vivado design tools and
 VC707 with FMC HPC connector and FMComms2.
 
 Another thing to give attention is that with ISE the design flow was more manual
 and if there was the need to rebuild a project almost from the scratch, just
-with the HDL source files, the other necessary ips should be created and
+with the HDL source files, the other necessary IPs should be created and
 configured again, which took a lot of time, but with Vivado the block diagram
 design flow and the .tcl scripts became more popular, they existed in ISE
 however they were not popular. With the TCL scripts it is possible to create
@@ -1040,10 +1063,9 @@ a lot of time in development.
 
 The first problem encountered in the development was the integration, since the
 company make a example project available and the IP cores for download it appear
-to be an easy job, however, for study purposes and for a simpler design it is
-better to begin a bottom up approach and so it was did.
-
-This approach was used in both ML605 and VC707 and it consists in basic steps:
+to be an easy job, but for study purposes and for a simpler design it is better
+to begin a bottom up approach and so it was did. This approach was used in both
+ML605 and VC707 and it consists in basic steps:
 
 \begin{enumerate}
     \item Analyse which ports have to be connected
@@ -1074,10 +1096,11 @@ While the development was in its beginning the minimum pins for communication
 and reset work were assigned, however when the development wen to Vivado with
 the VC707 there was the need to build something more automated in order to be
 easily rebuild, so the \emph{ad9361\_comm} IP was created to route the respective
-pins from SPI and GPIO interfaces to the ad9361 control and communication interface.
+pins from SPI and GPIO interfaces to the AD9361 control and communication interface.
 
-Below it is possible to see in a simple schematic what is the \emph{ad9361\_comm}
-IP and how it routes the respective ports to the ad9361 interface.
+In Figure \ref{fig:commif} it is possible to see in a simple schematic what is
+the \emph{ad9361\_comm} IP and how it routes the respective ports to the ad9361
+interface.
 
 %diagrama de blocos control interface
 \begin{figure}[htbp]
@@ -1093,13 +1116,15 @@ After having the communication and initialization between FPGA and FMComms2
 board working properly, the next step was to input custom data into the device
 and efficiently transmit modulated information in the carrier wave.
 
-There is two basic ways to input data into the AD9361, to do so it is necessary to understand
-its communication interface, which is similar to the axi-stream interface with
-3 ports, one for data, one for enable and one for valid. The first approach for
-input data into the transceiver was use a FIFO with a DDS IP in the FPGA, which
-is not so fast and reliable, but it was enough for test purposes.
+There is two basic ways to input data into the AD9361, to do so it is necessary
+to understand its communication interface, which is similar to the axi-stream
+interface with 3 ports, one for data, one for enable and one for valid and in
+Figure \ref{txpins} the interface can be illustrated. The first approach for
+input data into the transceiver was use a FIFO with a DDS IP in the FPGA which
+block diagram is in Figure \ref{fig:ad9361txfifo}, this setup was not dynamic
+enough, but it was enough for test purposes.
 
-%inserir figura do IP ad9361 highlight TX interface pins
+%inserir figura do IP AD9361 highlight TX interface pins
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.65\textwidth]{./figures/ad9361tx_pins}
@@ -1112,29 +1137,32 @@ is not so fast and reliable, but it was enough for test purposes.
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.65\textwidth]{./figures/dac_fifo}
-    \caption{ ad9361 DAC interface with FIFO
+    \caption{ AD9361 DAC interface with FIFO
     \label{fig:ad9361txfifo}}
 \end{figure}
 
-After some time, the need for a faster interface rose, then the use of DMA came
-naturally, because it is faster and more reliable than the common FIFO.
+ After some time, the need for a faster interface rose, then the use of DMA
+came naturally, because it is faster and more reliable than the common FIFO,
+whcih can be illustrated in Figure \ref{fig:ad9361txdma}.
 
 %inserir figura da interface DMA>AD9361
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.65\textwidth]{./figures/dac_dma}
-    \caption{ ad9361 DAC interface with DMA
+    \caption{ AD9361 DAC interface with DMA
     \label{fig:ad9361txdma}}
 \end{figure}
 
 \subsection{Receiving Custom data}
 
-Receiving is the exact opposite of transmitting custom data, in the beginning of
-the setup implementation using a DDS IP and a fifo to input IQ data into the
+Receiving is almost the opposite of transmitting custom data, in the beginning
+of the setup implementation using a DDS IP and a FIFO to input IQ data into the
 AD9361 was intuitively the easier way for transmission, and indeed was the same
-thing for receiving.
+thing for receiving. In the Figures \ref{fig:rxpins} and \ref{fig:ad9361rxfifo}
+the receiving interface pins and setup with FIFOs and analyser IP (ILA) are
+illustrated respectively.
 
-%inserir figura do IP ad9361 Highlight RX interface pins
+%inserir figura do IP AD9361 Highlight RX interface pins
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.65\textwidth]{./figures/ad9361rx_pins}
@@ -1146,30 +1174,32 @@ thing for receiving.
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.65\textwidth]{./figures/adc_fifo}
-    \caption{ ad9361 ADC interface with FIFO
+    \caption{ AD9361 ADC interface with FIFO
     \label{fig:ad9361rxfifo}}
 \end{figure}
 
 The same idea used in transmission when the VC707 development began was applied
-to the receiver, use DMA.
+to the receiver, using DMA to write received data to memory, then the diagram in
+Figure \ref{fig:ad9361rxdma} show such setup.
 
 %inserir figura da interface AD9361>DMA
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.65\textwidth]{./figures/adc_dma}
-    \caption{ ad9361 ADC interface with DMA
+    \caption{ AD9361 ADC interface with DMA
     \label{fig:ad9361rxdma}}
 \end{figure}
 
 
 \subsection{Data Interface}
 
-The data interface from the ad9361 to the FPGA logic is implemented as an IP in
+The data interface from the AD9361 to the FPGA logic is implemented as an IP in
 the FPGA design and is composed by two parts, a transmitting interface and a
-receiving interface. The transmitting interface connects the DMA, which is
-reading data from the main memory, with the DAC interface and the receiving
-interface connects the ADC output with the DMA that writes on the main memory,
-in the subsections below the two interface will be more explored.
+receiving interface. A hight level block diagram of the data interface can be
+seen in Figure \ref{fig:databd}. The transmitting interface connects the DMA,
+which is reading data from the main memory, with the DAC interface and the
+receiving interface connects the ADC output with the DMA that writes on the main
+memory, in the subsections below the two interface will be more explored.
 
 %ad9361_data interface image
 \begin{figure}[htbp]
@@ -1191,9 +1221,7 @@ is a better solution than simply use FIFOs.
 The DAC-DMA is implemented using a commuter controlling a demultiplexer block,
 this means that the data read from the memory by the DMA is loaded one into the
 demultiplexer and it feeds one channel at the time, both channels are enabled
-for use
-
-Below it is possible to see a block diagram of the interface:
+for use. In Figure \ref{fig:dataiftx} there is a block diagram of the interface:
 
 \begin{figure}[htbp]
     \centering
@@ -1204,16 +1232,14 @@ Below it is possible to see a block diagram of the interface:
 
 \subsubsection{Receiving Interface (Rx)}
 
-The receiving interface itself is rather simple in comparison with the
-transmitting interface because the speed in which the data is read by the DMA is
-already limited by the DAC clock from the ad9361 interface, thus the ADC
+ The receiving interface itself is rather simple in comparison with the
+transmitting interface because the speed in which the data is read by the DMA
+is already limited by the DAC clock from the AD9361 interface, thus the ADC
 interface has just to commute both channels into one, feeding one sample from
 each ADC channel at a time to the DMA, be able to accomplish such, there is a
-state machine to control the fifo output to the DMA as can be seen in figure
-\ref{fig:dataifrx}.
-
-Below it is possible to see a block diagram describing the Receiving interface with
-more details:
+state machine to control the FIFO output to the DMA. In Figure
+\ref{fig:dataifrx} it is possible to see a block diagram describing the
+Receiving interface with more details.
 
 \begin{figure}[htbp]
     \centering
@@ -1230,33 +1256,33 @@ but also initiates all the systems in the FPGA design, like Interrupt Controller
  DMA, SPI and GPIO needed to control and read/write data into the FMComms2.
 
 The hardware drivers itself are not extremely complicated nor needed to be changed
-too much, Xilinx offers all the basic drivers for the boards, for example, DMA Engine,
+too much, Xilinx offers all the basic drivers for the boards, for example DMA Engine,
 Ethernet PHY and Interrupt System, the only thing which must be handled with care is
 the address space and device ID for each block, knowing how the IP is configured,
 or which option he is configured to run is the key to make a driver work.
 
 Xilinx also packs the design tools with documented examples, one for each running
 configuration of the device, of course there are always unpredictable things to come,
-however there is full support for debugging the program inside the soft processor
+but there is full support for debugging the program inside the soft processor
 Microblaze.
 
 \subsection{AD9361 Driver}
 
-The ad9361 driver is very complex and carries the job of initializing and
-configuring the FMcomms2 chip, it also initializes the GPIO and SPI drivers,
-which functionality are not worth to explain deeply because they are used for
-control and communication and there was no need to modify or to add any
-functions to those, their role on the ad9361 is explained in the subsection
-\ref{subsec:fmcomms2}.
+The AD9361 driver is very complex and carries the job of initializing and
+configuring the AD9361 chi inside the FMcomms2 board, it also initializes the
+GPIO and SPI drivers, which functionality are not worth to explain deeply
+because they are used for control and communication and there was no need to
+modify or to add any functions to those, their role on the AD9361 is explained
+in the subsection \ref{subsec:fmcomms2}.
 
-The initialization begins writing in all the ad9361 registers with the
-initialization parameters, in the appendix X there is the explanation of some of
-these parameters  and after this, the driver initializes all the PLLs and begin
-to calibrate the analog and digital interfaces. With the ad9361 initialization
-complete it is possible to change parameters, reconfigure filters and  change
-oscillators frequency, if any parameter such as this is changed, the driver must
-be recalibrate, however it is done automatically.The process of initialization,
-and configuration for this work is explained in the figure \ref{fig:ad9361init}.
+The initialization begins writing in all the AD9361 registers with the
+initialization parameters and after this, the driver initializes all the PLLs
+and begin to calibrate the analog and digital interfaces. With the AD9361
+initialization complete it is possible to change parameters, reconfigure filters
+and  change oscillators frequency, if any parameter such as this is changed, the
+driver must be recalibrate, however it is done automatically.The process of
+initialization, and configuration for this work is explained in the Figure
+\ref{fig:ad9361init}.
 
 %adicionar diagrama de fluxo da inicialização do ad9361
 
@@ -1269,10 +1295,10 @@ and configuration for this work is explained in the figure \ref{fig:ad9361init}.
 
 \subsection{Interrupts and DMA}
 
-Basically both Ethernet and FMComms2 utilizes the DMA Engine to read and write in
-the DDR3 Memory and thus DMA Engine uses interrupt to inform the processor regarding
-the data read and write. So basically the DMA has to initialize the configuration,
-and then configure the device.
+Basically FMComms2 utilizes the DMA Engine to read and write in the DDR3 Memory
+and thus DMA Engine uses interrupt to inform the processor regarding the data
+read and write. The DMA has to initialize the configuration, and then configure
+the device.
 
 After device is configured, since the DMA is configured in scatter gather mode,
 there is the need to allocate the Block Descriptors for Transmitting (reading)
@@ -1288,11 +1314,10 @@ sends DMA back to the start Block descriptor and the process of reading the
 memory runs again and again until the kill signal is asserted, this is not the
 optimal solution, however it is the one which worked for now.
 
-In the normal mode, the DMA expects and address and a size, and the it begins
+ In the normal mode, the DMA expects and address and a size, and the it begins
 reading or writing in this address until the end of the size and the the DMA
-asserts interrupt and stops which is not convenient for this work.
-
-The initialization steps for both DMA and INTC are described in the figure
+asserts interrupt and stops which is not convenient for this work. The
+initialization steps for both DMA and INTC are described in the figure
 \ref{fig:intcdmainit}.
 
 \begin{figure}[htbp]
