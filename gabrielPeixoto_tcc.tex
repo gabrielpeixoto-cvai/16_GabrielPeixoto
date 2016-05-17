@@ -48,7 +48,7 @@ Gabriel Peixoto de Carvalho
 \end{ufpaAgradecimentos}
 
 %%%%%%%%%%%%%%%%%%%%
-%      Ep�grafe     %
+%      Epigrafe     %
 %%%%%%%%%%%%%%%%%%%%
 
 \begin{ufpaEpigrafe}
@@ -84,57 +84,51 @@ Viva como se voce fosse morrer amanha. Aprenda como se voce fosse viver para sem
 
 \begin{ufpaResumo}
 
-A evolu\c{c}\~{a}o dos servi\c{c}os m\'{o}veis em termos de tecnologias de acesso e as camadas
-de aplica\c{c}\~{a}o est\'{a} impulsionando uma enorme mudan\c{c}a nos sistemas de comunica\c{c}ões
-m\'{o}veis. Um tema que t\^{o}m estado em alta recentemente no campo \'{e} a ascens\~{a}o do
-paradigma da computa\c{c}\~{a}o em nuvem, assim, a ideia conhecida como redes de acesso
-de r\'{a}dio em nuvem (Cloud-RAN) est\'{a} crescendo na ind\'{u}stria. Este comportamento
-vem do potencial de cloudifica\c{c}\~{a}o, ou seja transferir os servi\c{c}os locais para
-aplica\c{c}ões me nuvem, fato que impulsionaria uma de melhoria na efici\^{o}ncia da
-aloca\c{c}\~{a}o de recursos, gest\~{a}o e consumo de energia, aspectos inerentes da RANs
-tradicionais.
+A evolu\c{c}\~{a}o do trafego nos servi\c{c}oes m\'{o}veis de voz para dados
+modificou e vem modificando a forma como as tecnologias de acesso a r\'{a}dio e
+suas camadas de aplica\c{c}\~{a}o s\~{a}o pensadas e implementadas. Atualmente o
+t\'{o}pico de computa\c{c}\~{a}o em nuvem ou Cloud computing, vem sendo cada vez
+mais recorrente, por causa de sua grande capacidade de escalar e criar um
+sistema que seja perfeito para o tipo de aplica\c{c}\~{a}o do usu\'{a}rio.
+Partindo dos dois conceitos citados anteriormente um paradigma no ramo das
+tecnologias de acesso a r\'{a}dio vem gerando interesse nas operadoras, as redes
+de acesso a radio centralizadas, ou em nuvem (C-RAN), com esse tipo de
+tecnologia seria poss\'{i}vel escalar e alocar recursos dinâmicamente como todo
+o poder que a computa\c{c}\~{a}o em nuvem proporciona e redirecionar esses
+recursos para melhorar a qualidade das comunica\c{c}\~{o}es m\'{o}veis.
 
-Assim, com o surgimento de C-RAN, v\'{a}rios questionamentos sobre como implementar
-e quais ferramentas usar surgem naturalmente. Este trabalho tem como objetivo
-avaliar o potencial de uma interface de r\'{a}dio fronthaul program\'{a}vel, como \'{e}
-conhecido, os equipamentos em uso nas atuais redes n\~{a}o t\^{o}m a capacidade
-adaptativa necess\'{a}rio para o C-RAN. Para este trabalho uma configura\c{c}\~{a}o de uma
-unidade de r\'{a}dio, composto por uma FPGA (um atuando como o "front-end digital"
-da unidade de r\'{a}dio), um transceiver (front-end anal\'{o}gico). Dentro desta
-configura\c{c}\~{a}o v\'{a}rios algoritmos podem ser testados e podem ser avaliados em
-cen\'{a}rios LTE porque o emissor-receptor funciona em LTE e \'{e} configur\'{a}vel,
-permitindo seu uso em C-RAN.
+Como o conceito C-RAN \'{e} novo, logicamente surgem diversos questionamentos
+acerca de como implementar e de que dispositivos ou tecnologias usar. Este
+trabalho tem como objetivo avaliar um poss\'{i}vel setup de um fronthaul em LTE
+que possa trabalhar de acordo com a demanda de reconfigurabilidade e
+escalabilidade que o paradigma C-RAn necessita. Sendo este setup de um fronthaul
+composto por dois dispositivos, uma FPGA (fronthaul digital) e um transceiver
+(fronthaul anal\'{o}gico), ambos em combina\c{c}\~{a}o forma uma plataforma com
+uma forte capacidade de reconfigura\c{c}\~{a}o em tempo-real.
 
-Este trabalho deve concentrar-se na avalia\c{c}\~{a}o da interface de r\'{a}dio e realizar
-os testes a ela inerentes, explorando adaptabilidade FPGA e paralelismo com os
-protocolos de comunica\c{c}\~{a}o interna e externa, e assim explorar as vantagens do
-transceptor utilizado, a placa de desenvolvimento fmcomms2 (chip AD9361) a
-partir de dispositivos anal\'{o}gicos, que \'{e} um dispositivo usado amplamente em
-r\'{a}dios definidos por software, tal como \'{e} conhecido como USRPs (Universal
-Software Radio perif\'{e}rica).
+O foco deste trabalho \'{e} a implementa\c{c}\~{a}o e a avalia\c{c}\~{a}o de sua
+viabilidade, para tal o desenvolvimento come\c{c}ou com simples estudos das
+plataformas em termos de controle e comunica\c{c}\~{a}o e vai at\'{e}
+avalia\c{c}\~{a}o da comunica\c{c}\~{a}o. Este trabalho foi implementado usando
+duas placas FPGA, primeiramente testado na placa ML605 com o chip FPGA Virtex-6
+e ap\'{o}s o design foi portado para a placa VC707 com o chip FPGA Virtex-7 que
+possu\'{i}a mais op\c{c}\~{o}es e perif\'{e}ricos interessantes para este
+trabalho. O transceiver usado foi a placa FmcommS2 que possui capacidade de
+múltiplas transmiss\~{o}es e recep\~{o}es (MIMO) e se conecta com a placa FPGA
+atrav\'{e}s do conector FMC.
 
-Um aspecto do transceptor que \'{e} muito atraente para o paradigma C-RAN \'{e} a sua
-configura\c{c}\~{a}o e escalabilidade, capaz de ajustes em tempo real na frequ\^{o}ncia de
-amostragem ou o modo de opera\c{c}\~{a}o a partir de 2x2 para 4x4 MIMO (m\'{u}ltiplas
-entradas e sa\'{i}das m\'{u}ltiplas), este real tempo caracter\'{i}stica adaptativa \'{e} ideal
-para ambiente de C-RAN.
-
-Os resultados s\~{a}o gerados visando essencialmente uma fidelidade nos sinais
-transmitidos e do receptor, depois de estes resultados s\~{a}o conclusivos \'{e}
-poss\'{i}vel proceder a ensaios e m\'{e}todos da presente configura\c{c}\~{a}o mais complexa.
-Outro teste feito foi a an\'{a}lise da sincroniza\c{c}\~{a}o entre o receptor e
-emissor-receptor utilizando um emulador cipri implementadas na l\'{o}gica do FPGA,
-que \'{e} a interface fronthaul padr\~{a}o, neste ensaio, \'{e} poss\'{i}vel observar as
-vantagens do front-end r\'{a}dio program\'{a}vel no sistema.
-
-Este trabalho \'{e} composto de dois cap\'{i}tulos de revis\~{a}o bibliogr\'{a}fica, um falando
-sobre r\'{a}dios definidos por software, e outro falando sobre o padr\~{a}o LTE. H\'{a} um
-cap\'{i}tulo reservado para descrever as caracter\'{i}sticas dos componentes e do
-desenvolvimento do prot\'{o}tipo em si e ap\'{o}s uma cap\'{i}tulo reservado aos resultados
-obtidos no trabalho. Pro fim h\'{a} um cap\'{i}tulo de conclus\~{a}o e trabalhos futuros,
-explicando como esse trabalho pode ser expandido.
-
-
+Neste trabalho foram estudados a integra\c{c}\~{a}o e controle do transceiver
+pela FPGA, e ap\'{o}s isso o desenvolvimento de interfaces para transmiss\~{a}o
+e recep\c{c}\~{a}o de dados, assim como os respectivos drivers e softwares
+necess\'{a}rios para tal. O texto est\'{a} dividido em 5 partes totalizando 6
+cap\'{i}tulos, a primeira parte \'{e} uma introdu\c{c}\~{a}o do trabalho, a
+segunda parte trata de toda base te\'{o}rica utilizada no desenvolvimento, a
+terceira parte \'{e} o núcleo do projeto onde v\~{a}o ser explicados as
+funcionalidades dos dispositivos usados assim como todo o processo de
+desenvolvimento estar\'{a} documentado nela. A quarta parte documenta os
+resultados tanto de execu\c{c}\~{a}o quanto de simula\c{c}\~{a}o e os compara a
+resultados esperados. A quinta e última parte trata das conclus\~{o}es e
+poss\'{i}veis trabalhos futuros.
 
 \end{ufpaResumo}
 
@@ -142,44 +136,46 @@ explicando como esse trabalho pode ser expandido.
 
 The evolution of mobile services in terms of access technologies and application
 layers is driving a huge change in mobile communication systems. A recent hot
-topic in the field is the rise of the cloud computing paradigm, thus the idea
-known as cloud radio access networks (Cloud-RAN) is growing in the industry.
-This behavior comes from the potential of cloudfication for improvement in the
-efficiency of resource allocation, manageability and power consumption, aspects
-inherent of traditional RANs.\\
+topic in the field is the rise of the cloud computing paradigm and in
+telecommunications industry the idea known as cloud radio access networks
+(Cloud-RAN) is getting attention. This behavior comes from the potential of
+cloudfication for improvement in the efficiency of resource allocation,
+manageability and power consumption, characteristics of traditional RANs.
 
 Thus, with the emerging of C-RAN, several questions about how to implement and
 which tools to use come naturally. This work aims to evaluate the potential of a
-programmable fronthaul radio interface, as known, actual network does not have
+programmable fronthaul radio interface, as known, current networks do not have
 the adaptative capability needed for the C-RAN. For this work a setup of a radio
-unit, composed by two fpgas (one acting as the Baseband unit and other as the
-(digital front-end) of the radio unity) connected through ethernet and two
-transceivers (analog front-end), one in each FPGA. Within this setup various
-algorithms can be tested and can be evaluated in LTE scenarios because the
-transceiver works in LTE and C-RAN .\\
+unit, composed by one FPGA (digital front-end of the radio unity) and one
+transceiver (analog front-end) connected in the FPGA board. Within this setup
+various algorithms can be tested and can be evaluated in LTE scenarios because
+the transceiver works in LTE and C-RAN.
 
-This work shall focus on the evaluation of the radio interface and perform the
-tests inherent to it, exploring FPGA adaptability and parallelism with the
-internal and external communication protocols, and so exploring the advantages
-of the transceiver used, the fmcomms2  development board (AD9361 chip) from
-Analog devices, which is a device broadly used in software defined radio
-hardwares, as known as USRPs (Universal Software Radio Peripheral). \\
+This work shall focus on the evaluation of the radio interface, exploring FPGA
+adaptability and parallelism with the internal and external communication
+protocols, and so exploring the advantages of the transceiver used, the Fmcomms2
+development board (AD9361 chip) from Analog Devices, which is a device broadly
+used in software defined radio hardwares, as known as USRPs (Universal Software
+Radio Peripheral).
 
 An aspect of the transceiver that is very attractive to the C-RAN paradigm is
-its configurability and scalability, capable of real-time adjustments in the
+its configurability and scalability capable of real-time adjustments in the
 sampling frequency or operation mode from 2x2 to 4x4 MIMO (Multiple Inputs and
-Multiple Outputs), this real-time adaptive characteristic is ideal to C-RAN
-environment.\\
+Multiple Outputs), this adaptive characteristic is attractive to C-RAN
+environment.
 
-The results are generated primarily aiming a fidelity in the transmitted and
-receiver signals, after these results are conclusive it is possible to proceed
-to more complex tests and approaches of this setup. Another test made was the
-analysis of the synchronization between  receiver and transceiver using a CIPRI
-emulator implemented in FPGA logic, which is the standard fronthaul interface,
-in this test it is possible to observe the advantages of the programmable radio
-front-end in the system.\\
+The goals of this work is evaluate the platform as a suitable device to be used
+in such dinamic environment and document every step fo the integration and
+hardware/software development. The communication between FPGA and tranceiver as
+long as Downlink transmission shall be evaluated.
 
-
+%The results are generated primarily aiming a fidelity in the transmitted and
+%receiver signals, after these results are conclusive it is possible to proceed
+%to more complex tests and approaches of this setup. %Another test made was the
+%analysis of the synchronization between  receiver and transceiver using a CIPRI
+%emulator implemented in FPGA logic, which is the standard fronthaul interface,
+%in this test it is possible to observe the advantages of the programmable radio
+%front-end in the system.\\
 
 \end{abstract}
 
@@ -223,7 +219,7 @@ front-end in the system.\\
 \clearpage
 
 %%%%%%%%%%%%%%%%%%%%%
-%   Ap\^{o}ndices    %
+%   Appendix        %
 %%%%%%%%%%%%%%%%%%%%%
 
 %\appendix
@@ -232,7 +228,7 @@ front-end in the system.\\
 %\input{appendix/append_ad9361_driver}
 
 %%%%%%%%%%%%%%%%%%%%%
-%   P\'{a}gina em branco    %
+%   blank page      %
 %%%%%%%%%%%%%%%%%%%%%
 
 \newpage

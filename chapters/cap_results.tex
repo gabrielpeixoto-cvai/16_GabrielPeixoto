@@ -1,12 +1,14 @@
 \chapter{Results}
 \label{chap:results}
 
-This works goals were divided in basically three steps, configuration, transmission
-and reception, having these three steps barely working it is possible to make a
-transmission and analyze data. It is possible to see in figure \ref{fig:setup}
-how the hardware is arranged and in figure \ref{fig:setupbd} it is possible to
-behold the setup's block diagram, which gives the idea of the complexity behind
-the design and how each component is connected.
+This works goals were divided in basically two steps, configuration and
+transmission (downlink) having these two steps barely working it is possible to
+make a transmission and analyze data. It is possible to see in Figure
+\ref{fig:setup} how the hardware is arranged. In Figure \ref{fig:setupbd} it is
+possible to see the setup's block diagram, which gives the idea of the
+complexity behind the design and how each component is connected and in Figure
+\ref{fig:fpgaarea} there is how much FPGA area this setup occupies, which is a
+metric of complexity.
 
 %foto setup pronto
 \begin{figure}[htbp]
@@ -37,16 +39,17 @@ the design and how each component is connected.
 \section{Preliminary Tests}
 \label{result:conf}
 
-The preliminary tests were focusing on initializing and communication between FPGA
-and the FMComms2 board, in the previous chapter the steps of setting up communication
-and control interface were described, and it describes also how this interface works
-and how a block was made to implement such, in short it was needed to set up SPI and GPIO
-modules and make the right input and output ports specified in \ref{subs:controlif} and
-after the initialization and callibration is finished, it is possible to observ the
-carrier wave centralized at the frequency 2.4 Ghz.
+The preliminary tests were focusing on initializing and communication between
+FPGA and the FMComms2 board, in the previous chapter the steps of setting up
+communication and control interface were described, and it describes also how
+this interface works and how a block was made to implement such, in short it was
+needed to set up SPI and GPIO modules and make the right input and output ports
+specified in \ref{subs:controlif} and after the initialization and calibration
+is finished, it is possible to observe the carrier wave centralized at the
+frequency 2.4 Ghz.
 
-To generate the outputs two analyzers were used, one oscilloscope and one spectrum analyzer,
-both analyzers outputs can be seen in the figures below:
+To generate the outputs two analyzers were used, one oscilloscope and one
+spectrum analyzer, both analyzers outputs can be seen in the figures below:
 
 %spectrum analyser image
 \begin{figure}[htbp]
@@ -128,14 +131,14 @@ fed to both to the \textit{dacInterface} block.
 \end{figure}
 
  In the figure \ref{fig:simdac} the \textit{dacInterface} is simulated and again
- it is possible to watch teh signals \textit{sig\_axis\_axc0\_itdata,
+ it is possible to watch the signals \textit{sig\_axis\_axc0\_itdata,
  sig\_axis\_axc0\_qtdata, sig\_axis\_axc1\_itdata and sig\_axis\_axc1\_qtdata} being fed
  to the block and the outputs \textit{sig\_dac\_i0data, sig\_dac\_q0data,
- sig\_dac\_i1data and sig\_dac\_q1data}, teh point in both \textit{dac-dmaIterface}
- and \textit{dacInterface} is to watch ghanges in outputs accompanying
- \textit{ready and valid} signals whcih are used as a way of controlling reading
+ sig\_dac\_i1data and sig\_dac\_q1data}, the point in both \textit{dac-dmaIterface}
+ and \textit{dacInterface} is to watch changes in outputs accompanying
+ \textit{ready and valid} signals which are used as a way of controlling reading
  speed from the \textit{DMA}, in such scheme, the \textit{DMA} assets
- \textit{valid} whenever is can send data, however it only send teh data when
+ \textit{valid} whenever is can send data, however it only send the data when
  fed by a ready signal, meaning that the reading block can read the \textit{DMA}
  data.
 
@@ -147,16 +150,16 @@ fed to both to the \textit{dacInterface} block.
 \end{figure}
 
 In the final simulation of the transmitting interface the whole transmit chain
-blocks were simulated toghether and then is is possible to understand the
+blocks were simulated together and then is is possible to understand the
 behavior of the whole transmit interface block. In the figure \ref{fig:simtxif}
 it is possible to watch the \textit{DMA} data in the signal in
-\textit{dac-dmaIterface} and the outputs which woul fedd the \textit{AD9361}
+\textit{dac-dmaIterface} and the outputs which would feed the \textit{AD9361}
 two \textit{DACs} in the signals \textit{sig\_dac\_i0data, sig\_dac\_q0data,
 sig\_dac\_i1data and sig\_dac\_q1data}, again the important thing in the simulation
 is to watch for the data change and the  \textit{ready and valid} changes.
-Another interesting thing to observ is the two clock variables \textit{axi\_clk}
-and \textit{dac\_clk} which represent both axi system clock $ 100 MHz$ and the
-dac clock $40 MHz$, this difference justifies the use of such interface.
+Another interesting thing to observe is the two clock variables \textit{axi\_clk}
+and \textit{dac\_clk} which represent both AXI system clock $ 100 MHz$ and the
+DAC clock $40 MHz$, this difference justifies the use of such interface.
 
 
 \begin{figure}[htbp]
@@ -169,7 +172,7 @@ dac clock $40 MHz$, this difference justifies the use of such interface.
 \subsection{Receive (ADC) Interface Simulation}
 
 As stated before on chapter \ref{chap:implementation} in the section \ref{impl:setup},
-the DAC interface is simple beacause the data input is already limited by the DAC
+the DAC interface is simple because the data input is already limited by the DAC
 clock, so there is no need to make a bottleneck like in the DAC interface.
 
  In the figure \ref{fig:simdac} it is possible to see the output and wave
@@ -190,12 +193,12 @@ sig\_rx\_i1\_data, sig\_rx\_q1\_data} there is the outputs from both
 \vfill
 \clearpage
 
-\section{Transmission Tests (DAC)}
+\section{Transmission Tests (Downlink)}
 \label{result:dac}
 
- The transmission tests aim to evaluate a Donwlink LTE transmission, it means
-that the data is being transmitted from the BTS to the UE. In this trnasmission
-test there were generated LTE samples in matlab, and these samples were loaded
+ The transmission tests aim to evaluate a downlink LTE transmission, it means
+that the data is being transmitted from the BTS to the UE. In this transmission
+test there were generated LTE samples in Matlab, and these samples were loaded
 in the memory by putting them in a header file, the as explained before, DMA
 shall read them and the DAC shall make an analog output. In the figure
 \ref{fig:dacsignals} there are the DAC control signals sent to the data
@@ -205,7 +208,7 @@ memory, thus the DMA Engine reading output can be seen in the figures
 \ref{fig:dataflowdig} and \ref{fig:dataflowana}, digital and analog waveforms
 respectively.\\
 
- It is possible to configure in the driver if the AD9361 ouputs or not a clock
+ It is possible to configure in the driver if the AD9361 outputs or not a clock
 in a special clock\_output pin, so in order to evaluate frequency and clock
 quality, the figure \ref{fig:dacclk} shows the clock output from the AD9361 and
 last but not least the figure \ref{fig:lte5m} show the output spectrum of the
@@ -249,23 +252,23 @@ LTE analog wave outputted from the FMComms2 board.
 \vfill
 \clearpage
 
-\section{Reception Tests (ADC)}
-\label{result:adc}
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.85\textwidth]{./figures/dac_signals}
-    \caption{ DAC signals controlling data writing
-    \label{fig:adcsignals}}
-\end{figure}
-
-\vfill
-\clearpage
+%\section{Reception Tests (ADC)}
+%\label{result:adc}
+%
+%\begin{figure}[htbp]
+%    \centering
+%    \includegraphics[width=0.85\textwidth]{./figures/dac_signals}
+%    \caption{ DAC signals controlling data writing
+%    \label{fig:adcsignals}}
+%\end{figure}
+%
+%\vfill
+%\clearpage
 
 \section{Optimum Results}
 \label{result:optimum}
 
-The expected transmission of lTE signals are below demonstrated by the Analog
+The expected transmission of LTE signals are below demonstrated by the Analog
 Devices IIO scope application.
 
 \begin{figure}[htbp]
