@@ -9,7 +9,7 @@
 The purpose of a digital communication system is to transport an information
 bearing signal from a source to a user destination via a communication channel.
 Being transmitter, receiver and channel the three basic elements of a digital
-communication system illustrated by Figure \ref{fig:digicomsimple}. The message
+communication system as shown in Figure \ref{fig:digicomsimple}. The message
 produced by a source is a digital message, binary and not electrical. An input
 transducer is used for converting the message to a time-varying electrical
 quantity called message. Similarly, at the destination point, another transducer
@@ -33,14 +33,13 @@ converts the electrical waveform to the appropriate message.
 
 The transmitter is located at one point in space, the receiver is located at
 some other point separate from the transmitter, and the channel is the medium
-that provides the electrical connection between them. The purpose of the
-transmitter is to transform the message produced by the source of information
-into a form suitable for transmission over the channel, a waveform. In the
-receiver the signal is normally corrupted version of the transmitted signal,
-which is due to channel imperfections, noise and interference from other
-sources. The receiver has the task of manipulate the received signal so as to
-reconstruct a recognizable form of the original message signal and to deliver it
-to a destination.
+that provides the electrical connection between them. The former (transmitter),
+in particular, is designed aiming to produce waveforms suitable for transmission
+over the channel, a waveform. In the receiver the signal is normally corrupted
+version of the transmitted signal, which is due to channel imperfections, noise
+and interference from other sources. The receiver is designed to reconstruct a
+recognizable form of the original message signal and to deliver it to a
+destination.
 
 %Communication Systems are divided into 3 main categories categories:
 %
@@ -69,21 +68,23 @@ to a destination.
 
 \subsubsection{Source of information}
 
-The sources of information can be of two main kinds, \emph{Analog Information
-sources} and \emph{Digital Information Sources}. The Analog information sources
+The sources of information can be of two main kinds, \emph{analog information
+sources} and \emph{digital information sources}. The Analog information sources
 are, for example, microphones and cathodic ray tube televisions, usually any
 device that have to reproduce or record anything in the real-world is analog.
 
 In the other side there are the digital information sources which are composed
 by a discrete sequence of symbols. The sources of digital information can be any
-electronic circuit, such as an ADC wich converts analog waveforms to discrete
-ditial signals.
+electronic circuit, such as an ADC which converts analog waveforms to discrete
+digital signals.
 
 \subsubsection{Source Encoder / Decoder}
 
-The \emph{Source encoder}  and \emph{Source coder} converts the input symbol
-sequence into a binary sequence (0 and 1) by assigning code words to the symbols
-in the input sequence.
+The \emph{source encoder}  and \emph{source coder} converts the input symbol
+sequence into a binary sequence (0 and 1) by assigning codewords to the symbols
+in the input sequence. Basically the source encoder input is a analog waveform
+and it samples, quantize and compress this analog waveform to a binary message
+\cite{ocw:digicomm}.
 
 %If a source set is having hundred symbols, then the number of bits used to
 %represent each symbol will be 7 because $2^7=128$ unique combinations are
@@ -91,22 +92,23 @@ in the input sequence.
 %word lengths, average data rate and the efficiency of the coder, which is the
 %actual output data rate compared to the minimum achievable rate.
 
-At the receiver, the source decoder converts the binary output of the channel
-decoder into a symbol sequence. The decoder for a system using fixed length code
-words is quite simple, but the decoder for a system using variable length code
-words will be very complex.
+At the receiver, the \emph{source decoder} converts the binary output of the
+channel decoder into a analog waveform, doing the opposite perations of the
+\emph{source encoder}. The decoder for a system using fixed length code words is
+quite simple, but the decoder for a system using variable length code words will
+be very complex \cite{ocw:digicomm}.
 
 Aim of the source coding is to remove the redundancy in the transmitting
-information, so that bandwidth required for transmission is minimized. Based on
-the probability of the symbol codeword is assigned. Higher the probability,
-shorter is the codeword.
+information, so that bandwidth required for transmission is minimized. This
+approach is based on the probability of the symbol codeword is assigned. The
+higher the probability, the shorter the codeword.
 
 \subsubsection{Channel Encoder / Decoder}
 
 Error control is accomplished by the channel coding operation that consists of
-systematically adding extra bits to the output of the source coder. These extra
-bits do not convey any information but helps the receiver to detect and / or
-correct some of the errors in the information bearing bits. There are two
+systematical addition of extra bits to the output of the source coder. These
+extra bits do not convey any information but helps the receiver to detect and /
+or correct some of the errors in the information bearing bits. There are two
 methods of channel coding, the \textit{Block Coding} and \textit{Convolution
 Coding}.
 
@@ -114,8 +116,8 @@ In the block coding method the encoder takes a block of ‘k’ information bits
 from the source encoder and adds ‘r’ error control bits, where ‘r’ is dependent
 on ‘k’ and error control capabilities desired, this process is accomplished by a
 matrix multiplication and that is the origin of the "block" in block coding. In
-the convolution coding process the message goes through a sequance of
-tapped-delay line operations which works in the same way as convoluting the
+the convolution coding process the message goes through a sequence of
+tapped-delay line operations which works in the same way as convolving the
 message with the impulse response of the code, with modulo-2 operations.
 
 %\begin{enumerate}
@@ -137,9 +139,10 @@ decoder.
 
 \subsubsection{Modulator}
 
-The Modulation converts the input bit stream into an analog waveform suitable
-for transmission over the communication channel. Modulation can be effectively
-used to minimize the effects of channel noise to match the frequency spectrum of
+The modulator converts the input bit stream into a waveform suitable for
+transmission over the communication channel. Advanced modulation schemes such as
+Orthogonal Frequency Division Multiplexing (OFDM) can be effectively used to
+minimize the effects of channel noise to match the frequency spectrum of
 transmitted signal with channel characteristics.
 
 \subsubsection{Demodulator}
@@ -153,18 +156,18 @@ message.
 
 The Channel is the medium of wave propagation (wireless in this work) then
 creating a "connection" between transmitter and receiver. The different channels
-are: Pair of wires, Coaxial cable, Optical fibre, Radio channel, Satellite
+are: pair of wires, coaxial cable, optical fiber, radio channel, satellite
 channel or combination of any of these.
 
-The communication channels have only finite Bandwidth and non-ideal frequency
-response. The signal often suffers amplitude and phase distortion as it travels
-over the channel. Also, the signal power decreases due to the attenuation of the
-channel. The signal is corrupted by unwanted, unpredictable signals referred to
-as noise. The important parameters of the channel are power delay profile, delay
-spread, doppler spread, usable bandwidth, amplitude and phase response and the
-statistical properties.
+The communication channels have only finite \emph{bandwidth} and non-ideal
+frequency responses, namely the signal often suffers amplitude and phase
+distortion as it travels over the channel. Also, the signal power decreases due
+to the attenuation of the channel. The signal is corrupted by unwanted,
+unpredictable signals referred to as noise. The important parameters of the
+channel are power delay profile, delay spread, Doppler spread, usable bandwidth,
+amplitude and phase response and the statistical properties.
 
-\subsection{Additional Blocks}
+\subsection{Additional Modules}
 
 %augmented block diagram
 \begin{figure}[htbp]
@@ -223,9 +226,9 @@ straight-forward method, it includes filtering and usually feedback systems
 
 \begin{enumerate}
 
-  \item Theere is less effect of distortion, noise and interference in a digital
+  \item There is less disturbance of noise and interference in a digital
   communication system. This is because the disturbance must be large enough to
-  change the state of the bit.
+  change the transmit symbols from one discrete possibility to another.
 
   \item Regenerative repeaters can be used at fixed distance along the link, to
   identify and regenerate a pulse before it is degraded to an ambiguous state.
@@ -255,7 +258,7 @@ straight-forward method, it includes filtering and usually feedback systems
 
 \begin{enumerate}
 
-  \item \textbf{Large System Bandwidth:} Digital transmission requires a large system
+  \item \textbf{Large System Bandwidth:} Digital transmission requires a large channel
   bandwidth to communicate the same information in a digital format as compared to
   analog format.
 
@@ -282,7 +285,7 @@ Evolution (SAE) effort specifying the Evolved Packet Core (EPC) network. The
 LTE-SAE architecture and concepts have been designed for efficient support of
 mass-market usage of any IP-based service. The architecture is based on an
 evolution of the existing GSM/WCDMA core network.%, with simplified operations
-and smooth, cost-efficient deployment.
+%and smooth, cost-efficient deployment.
 
 Moreover, work has also been done by 3GPP in cooperation with 3GPP2 (the CDMA
 standardization body) to optimize interworking between CDMA and LTE-SAE. This means
@@ -364,8 +367,8 @@ open interfaces are simplified.
 LTE uses OFDM for the downlink (from the base station to the terminal or UE).
 OFDM meets the LTE requirement for spectrum flexibility and enables
 cost-efficient solutions for very wide carriers with high peak rates. It is a
-well-established modulation scheme: for example IEEE 802.11a/b/g, 802.16,
-HIPERLAN-2, DVB and DAB.
+well-established modulation scheme: for example, adopted in standards IEEE
+802.11a/b/g, 802.16, HIPERLAN-2, DVB and DAB.
 
 A representation of an OFDM signal can be seen in Figure \ref{fig:ofdmfreq}. In
 this figure, a signal with 5 MHz bandwidth is shown, but the principle is of
@@ -381,12 +384,13 @@ number of closely spaced orthogonal subcarriers.
     \label{fig:ofdmfreq}}
 \end{figure}
 
-OFDM uses a large number of small sub-carriers for multi-carrier transmission.
-The basic LTE downlink physical resource can be seen as a time-frequency grid.
-In the frequency domain, the spacing between the sub-carriers, $\Delta f$, is 15
-kHz. In addition, the OFDM symbol duration time is $\frac{1}{\Delta f} +$ cyclic prefix.
-The cyclic prefix is used to maintain orthogonality between the sub-carriers even
-for a time-dispersive radio channel.
+OFDM uses a large number of sub-carriers for multi-carrier transmission. The
+basic LTE downlink physical resource can be seen as a time-frequency grid. In
+the frequency domain, the spacing between the sub-carriers, $\Delta f +
+\text{cyclic prefix duration}$, is 15 kHz. In addition, the OFDM symbol duration
+time is $\frac{1}{\Delta f} +$ cyclic prefix. The cyclic prefix is used to
+maintain orthogonality between the sub-carriers even for a time-dispersive radio
+channel.
 
 The OFDM symbols are grouped into resource blocks. The resource blocks have a
 total size of 180 kHz in the frequency domain and 0.5ms in the time domain. Each
@@ -402,18 +406,19 @@ and time dimensions. One resource element carries QPSK, 16QAM or 64QAM. With
 %scheduling mechanisms in LTE are similar to those used in HSPA, and enable
 %optimal performance for different services in different radio environments.
 
-In the uplink, LTE uses a pre-coded version of OFDM called Single Carrier Frequency
-Division Multiple Access (SC-FDMA). This is to compensate for a drawback with normal
-OFDM, which has a very high Peak to Average Power Ratio (PAPR). High PAPR requires
-expensive and inefficient power amplifiers with high linearity requirements, which
-increases the cost of the terminal and drains the battery faster.
+In the uplink, LTE uses a pre-coded version of OFDM called single carrier
+frequency division multiple access (SC-FDMA). This is to compensate for a
+drawback with normal OFDM, which has a very high peak to average power ratio
+(PAPR). High PAPR requires expensive and inefficient power amplifiers with high
+linearity requirements, which increases the cost of the terminal and drains the
+battery faster \cite{introlte} \cite{umtslte}.
 
 SC-FDMA solves this problem by grouping together the resource blocks in such a
-way that it reduces the need for linearity and so power consumption in the
-power amplifier. A low PAPR also improves coverage and cell-edge performance
-\cite{introlte}.
+way that it reduces the PAPR. Thus, it avoids the need for wider linear
+operation bands of the power amplifier and also power consumption. A low PAPR
+also improves coverage and cell-edge performance \cite{introlte}.
 
-Since this work shall focus on the radio front-end part of the system, implementing
+Since this work shall focus on the radio frontend part of the system, implementing
 a downlink scheme, it is interesting to dwell more in the LTE downlink and uplink
 schemes.
 
@@ -422,7 +427,9 @@ schemes.
 The downlink transmission scheme for E-UTRA FDD and TDD modes is based on
 conventional OFDM. In an OFDM system, the available spectrum is divided into
 multiple carriers, called subcarriers as explained in the previous subsection.
-Each of these subcarriers is independently modulated by a low rate data stream.
+Each of these subcarriers is independently modulated by a a low rate data
+stream, which allows robustness against multipath fading and efficient
+equalization schemes.
 
 The user data is carried on the Physical Downlink Shared Channel (PDSCH). The
 PDSCH(s) is the only channel that can be QPSK, 16QAM or 64QAM modulated. The
@@ -436,8 +443,8 @@ cyclic prefix which is inserted prior to each OFDM symbol.
 
 In practice, the OFDM signal can be generated using \textit{IFFT} (Inverse Fast
 Fourier Transform) operation. The \textit{IFFT} converts a number N of complex
-data symbols used as frequency domain bins into the time domain signal. Such an
-N-point \textit{IFFT} is illustrated in Figure \ref{fig:ofdmsymbol} where
+data symbols used in the frequency domain bins into the time domain signal. Such
+an N-point \textit{IFFT} is illustrated in Figure \ref{fig:ofdmsymbol} where
 $a(mN+n)$ refers to the nth subcarrier modulated data symbol, during the time
 period $mT_u < t \le (m+1)T_u$.
 
@@ -449,10 +456,10 @@ period $mT_u < t \le (m+1)T_u$.
     \label{fig:ofdmsymbol}}
 \end{figure}
 
-The vector $sm$ is defined as the useful \textit{OFDM} symbol. It is the time
-superposition of the $N$ narrowband modulated subcarriers. Therefore, from a
+The vector $sm$ is defined as the \emph{time-domain OFDM symbol}. It is the time
+superposition of the $N$ narrowband modulated sub-carriers. Therefore, from a
 parallel stream of $N$ sources of data, each one independently modulated, a
-waveform composed of N orthogonal subcarriers is obtained. Figure
+waveform composed of N orthogonal sub-carriers is obtained. Figure
 \ref{fig:ofdmchain} illustrates the mapping from a serial stream of QAM symbols
 to N parallel streams, used as frequency domain bins for the \textit{IFFT}. The
 N-point time domain blocks obtained from the \textit{IFFT} are then serialized
@@ -473,7 +480,7 @@ in terms of resource blocks, this means that one UE can be allocated integer
 multiples of one resource block, which representation can be seen in Figure
 \ref{fig:ofdmresblk}. These resource blocks do not have to be adjacent to each
 other. In the time domain, the scheduling decision can be modified every
-transmission time interval of 1 ms corresponding to LTE subframe. All scheduling
+transmission time interval of 1 ms corresponding to LTE sub-frame. All scheduling
 decisions for downlink and uplink are done in the base station (enhanced NodeB,
 eNodeB or eNB). The scheduling algorithm has to take into account the radio link
 quality situation of different users, the overall interference situation,
@@ -506,10 +513,10 @@ vendor-specific implementation.
  During the study item phase of LTE, alternatives for the optimum uplink
 transmission scheme were investigated. While \textit{OFDMA} is seen optimum to fulfill
 the LTE requirements in downlink, \textit{OFDMA} properties are less favorable for the
-uplink. This is mainly due to lower peak-to-average power ratio (PAPR)
+uplink. This is mainly due to unfavorable peak-to-average power ratio (PAPR)
 properties of an \textit{OFDMA} signal, resulting in worse uplink coverage and
 challenges in power amplifier design for battery operated handset, as it
-requires linear power amplifiers.
+requires expensive power amplifiers.
 
 Thus, the LTE uplink transmission scheme for FDD and TDD mode is based on SC-
 FDMA with cyclic prefix. as mentined before  SCFDMA signals have better PAPR
@@ -518,7 +525,7 @@ of the main reasons for selecting SC-FDMA as LTE uplink access scheme. Still,
 SC-FDMA signal processing has some similarities with \textit{OFDMA} signal
 processing, so parameterization of downlink and uplink can be harmonized.
 
-There are different possibilities to generate an SC-FDMA signal. DFT-spread-
+There are different possibilities for generate an SC-FDMA signal. DFT-spread-
 \textit{OFDM} \textit{(DFT-s-OFDM)} has been selected for E-UTRA. For
 DFT-s-OFDM, a size-M DFT is first applied to a block of M modulation symbols,
 prior to the IFFT. Then, QPSK, 16QAM and 64QAM are used as uplink E-UTRA
