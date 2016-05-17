@@ -140,12 +140,12 @@ topic in the field is the rise of the cloud computing paradigm and in
 telecommunications industry the idea known as cloud radio access networks
 (Cloud-RAN) is getting attention. This behavior comes from the potential of
 cloudfication for improvement in the efficiency of resource allocation,
-manageability and power consumption, characteristics of traditional RANs.
+manageability and power consumption, challenges of traditional RANs.
 
 Thus, with the emerging of C-RAN, several questions about how to implement and
 which tools to use come naturally. This work aims to evaluate the potential of a
 programmable fronthaul radio interface, as known, current networks do not have
-the adaptative capability needed for the C-RAN. For this work a setup of a radio
+the adaptive capability needed for the C-RAN. For this work a setup of a radio
 unit, composed by one FPGA (digital front-end of the radio unity) and one
 transceiver (analog front-end) connected in the FPGA board. Within this setup
 various algorithms can be tested and can be evaluated in LTE scenarios because
@@ -153,21 +153,21 @@ the transceiver works in LTE and C-RAN.
 
 This work shall focus on the evaluation of the radio interface, exploring FPGA
 adaptability and parallelism with the internal and external communication
-protocols, and so exploring the advantages of the transceiver used, the Fmcomms2
-development board (AD9361 chip) from Analog Devices, which is a device broadly
-used in software defined radio hardwares, as known as USRPs (Universal Software
-Radio Peripheral).
+protocols, and so exploring the advantages of the transceiver used, the FMCOMMS2
+development board from Analog Devices featured with the AD9361 chip,, which is a
+device broadly used in software defined radio hardwares, as known as USRPs
+(Universal Software Radio Peripheral).
 
 An aspect of the transceiver that is very attractive to the C-RAN paradigm is
-its configurability and scalability capable of real-time adjustments in the
-sampling frequency or operation mode from 2x2 to 4x4 MIMO (Multiple Inputs and
-Multiple Outputs), this adaptive characteristic is attractive to C-RAN
+its reconfigurability and scalability. The hardware is capable of real-time
+adjustments in the sampling frequency or operation mode from 2x2 to 4x4 MIMO
+(Multiple Inputs and Multiple Outputs), which is attractive to C-RAN
 environment.
 
 The goals of this work is evaluate the platform as a suitable device to be used
-in such dinamic environment and document every step fo the integration and
-hardware/software development. The communication between FPGA and tranceiver as
-long as Downlink transmission shall be evaluated.
+in such dynamic environment and document every step of the integration and
+hardware/software development. The communication between FPGA and transceiver as
+long as downlink transmission shall be evaluated.
 
 %The results are generated primarily aiming a fidelity in the transmitted and
 %receiver signals, after these results are conclusive it is possible to proceed
