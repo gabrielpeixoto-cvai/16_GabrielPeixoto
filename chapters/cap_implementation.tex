@@ -4,33 +4,44 @@
 \section{Overview}
 
 As stated before, C-RAN is still in development and it is not already a solid
-standard, so exploring setups and their feasibility is very interesting to
-increase the ways to implement this new standard in countries which does not
-have a very good infrastructure.
+standard, so exploring setups and their feasibility is very interesting. For
+example, regarding the ways to implement the technology in countries that do
+not have widely available modern infrastructure such as fiber optics.
 
- The first setup thought was using the ML605  FPGA Mezzanine Card (FMC) Low pin
-counter (LPC) connector and the FMComms2, this setup was very important because
-in it was possible to understand how to integrate the board design with the
-need of the project. Then the device was moved to the FMC High pin counter
-(HPC) connector and the design with the ML605 was finished.
+%The first setup thought was using the ML605  FPGA Mezzanine Card (FMC) Low pin
+%counter (LPC) connector and the FMComms2, this setup was very important because
+%in it was possible to understand how to integrate the board design with the need
+%of the project. Then the device was moved to the FMC High pin counter (HPC)
+%connector and the design with the ML605 was finished.
+%
+%After getting the experience with ML605 and ISE design tools, it was time to use
+%a more updated board and design tool, thus the idea of porting the initial
+%design from ML605 to the VC707 board came. Since ISE has no support for VC707
+%and is a software with its development halted, going to the most updated tool
+%from Xilinx is natural, so the second setup is using vivado design tools and
+%VC707 with FMC HPC connector and FMComms2.
+%
+%Another thing to give attention is that with ISE the design flow was more
+%manual and if there was the need to rebuild a project almost from the scratch,
+%just with the Hardware description language (HDL) source files, the other
+%necessary ips should be created and configured again, which took a lot of time,
+%but with Vivado the block diagram design flow and the \textit{.tcl} scripts
+%became more popular, they existed in ISE however they were not popular. With
+%the tool command language (TCL) scripts it is possible to create project,
+%import files, instantiate and configure both user and default intellectual
+%property (IP) blocks, as well as run synthesis, implementation and generate
+%bitstream steps, which saves a lot of time in development.
 
-After getting the experience with ML605 and ISE design tools, it was time to use
-a more updated board and design tool, thus the idea of porting the initial
-design from ML605 to the VC707 board came. Since ISE has no support for VC707
-and is a software with its development halted, going to the most updated tool
-from Xilinx is natural, so the second setup is using vivado design tools and
-VC707 with FMC HPC connector and FMComms2.
+In this work, the Xilinx Vivado Suite was used to develop the FPGA design.
+Intellectual properties were used through the IP integrator and specific VHDL
+modules were developed to implement the integration between transceiver and
+FPGA in terms of data flow, control and communication. Some IPs which implement
+basic functions or control peripherals of the FPGA board were also used to
+complement the setup.
 
- Another thing to give attention is that with ISE the design flow was more
-manual and if there was the need to rebuild a project almost from the scratch,
-just with the Hardware description language (HDL) source files, the other
-necessary ips should be created and configured again, which took a lot of time,
-but with Vivado the block diagram design flow and the \textit{.tcl} scripts
-became more popular, they existed in ISE however they were not popular. With
-the tool command language (TCL) scripts it is possible to create project,
- import files, instantiate and configure both user and default intellectual
-property (IP) blocks, as well as run synthesis, implementation and generate
-bitstream steps, which saves a lot of time in development.
+To better understand the setup, both receiver and transmitter setups can be
+illustrated in the Figures \ref{fig:txsetup} and \ref{fig:rxsetup}. In this
+setup work both transmitter and receiver are integrated.
 
 %figura das duas fases do SETUP downlink e Uplink
 
@@ -53,7 +64,7 @@ bitstream steps, which saves a lot of time in development.
 %--------------------------------------------FPGA-----------------------------------------
 \section{FPGA}
 
- FPGA stands for Field Programmable Gate Array, which are digital integrated
+FPGA stands for Field Programmable Gate Array, which are digital integrated
 circuits (IC) that contain configurable (programmable) blocks of logic along
 with configurable interconnects between these blocks. Design engineers can
 configure (program) such devices to perform a wide variety of tasks. Depending
@@ -66,286 +77,290 @@ The “field programmable” portion of the FPGA’s name refers to the fact tha
 programming takes place “in the field” (as opposed to devices whose internal
 functionality is hard-wired by the manufacturer). This mean that FPGAs
 connections are electrically activated and deactivated, thus the FPGA can be
-programmed in the factory or by the developer, when a  FPGA designed is
+programmed in the factory or by the developer. When a  FPGA designed is
 implemented in a hardwired circuit it is called Application Specific
 Integrated Circuit (ASIC).
 
-The FPGAs are so flexible and interesting to work with that there is a field of
-study in the computer engineering/science which studies them, the reconfigurable
-computing field.
+%The FPGAs are so flexible and interesting to work with that there is a field of
+%study in the computer engineering/science which studies them, the reconfigurable
+%computing field.
 
 This work was implemented in two FPGAs the Virtex 6 and Virtex 7, thus
 implemented in two different development boards, the ML605 (Virtex 6) and the
 VC707 (Virtex 7), there is also support for the VC709 board. However not fully
 functional.This section aims to describe briefly the boards and Tools used in
-this work.
+this work. The VC707 board was the one used to generate the results because it
+has a very good clocking generation and treatment options, characteristic which
+is very attractive in future expansions and better synchronization. In Figures
+\ref{fig:ml605} and \ref{fig:vc707} it is possible to observe both Virtex 6 and
+Virtex 7 development boards.
 
 
-\subsection{ML605 - Virtex6}
+%\subsection{ML605 - Virtex6}
 
-This board was used in the first version of the setup, still it lacked better
-clock sources and dividers, it was also older the the VC707, thus the design was
-ported to VC707, below there is a list of the features of the ML605 development
-board.
+%This board was used in the first version of the setup, still it lacked better
+%clock sources and dividers, it was also older the the VC707, thus the design was
+%ported to VC707, below there is a list of the features of the ML605 development
+%board.
+%
+%In the Figure \ref{fig:ml605} there is a picture of the board and in the Figure
+%\ref{fig:ml605bd} there is also a functional block diagram of the board, this
+%information was acquired in the official board manual \cite{xilinx:ml605}. In
+%the block diagram it is possible to understand how each component listed below
+%is connected to the ML605 board.
 
-In the Figure \ref{fig:ml605} there is a picture of the board and in the Figure
-\ref{fig:ml605bd} there is also a functional block diagram of the board, this
-information was acquired in the official board manual \cite{xilinx:ml605}. In
-the block diagram it is possible to understand how each component listed below
-is connected to the ML605 board.
 
-
-\textbf{ML605 Evaluation Module Features:}
-\begin{enumerate}
-  \item Virtex-6 XC6VLX240T-1FFG1156 FPGA
-  \item 512 MB DDR3 Memory SODIMM
-  \item 128 Mb Platform Flash XL
-  \item 32 MB Linear BPI Flash
-  \item System ACE CF and CompactFlash Connector
-  \item USB JTAG
-  \item Clock Generation
-  \begin{itemize}
-    \item Fixed 200 MHz oscillator (differential)
-    \item Socketed 2.5V oscillator (single-ended)
-    \item SMA connectors (differential)
-    \item SMA connectors for MGT clocking
-  \end{itemize}
-
-  \item Multi-Gigabit Transceivers (GTX MGTs)
-
-  \begin{itemize}
-    \item FMC - HPC connector
-    \item FMC - LPC connector
-    \item SMA
-    \item PCIe
-    \item SFP Module connector
-    \item Ethernet PHY SGMII interface
-  \end{itemize}
-
-  \item PCI Express Endpoint Connectivity
-
-  \begin{itemize}
-    \item Gen1 8-lane (x8)
-    \item Gen2 4-lane (x4)
-  \end{itemize}
-
-  \item SFP Module Connector
-  \item 10/100/1000 Tri-Speed Ethernet PHY
-  \item USB-to-UART Bridge
-  \item USB Controller
-  \item DVI Codec
-  \item IIC Bus
-
-  \begin{itemize}
-    \item IIC EEPROM - 1 KB
-    \item DDR3 SODIMM socket
-    \item DVI CODEC
-    \item DVI connector
-    \item FMC HPC connector
-    \item FMC LPC connector
-    \item SFP module connector
-  \end{itemize}
-
-  \item Status LEDs
-
-  \begin{itemize}
-    \item Ethernet status
-    \item FPGA INIT
-    \item FPGA DONE
-    \item System ACE CF Status
-  \end{itemize}
-  \item User I/O
-
-  \begin{itemize}
-    \item USER LED Group 1 - GPIO (8)
-    \item USER LED Group 2 - directional (5)
-    \item User pushbuttons - directional (5)
-    \item CPU reset pushbutton
-    \item User DIP switch - GPIO (8-pole)
-    \item User SMA GPIO connectors (2)
-    \item LCD character display (16 characters x 2 lines)
-  \end{itemize}
-
-  \item Switches
-  \begin{itemize}
-    \item Power on/off slide switch
-    \item System ACE CF reset pushbutton
-    \item System ACE CF bitstream image select DIP switch
-    \item Configuration MODE DIP switch
-  \end{itemize}
-
-  \item VITA 57.1 FMC HPC Connector
-  \item VITA 57.1 FMC LPC Connector
-  \item Power Management
-
-  \begin{itemize}
-    \item PMBus voltage and current monitoring via TI power controller
-  \end{itemize}
-
-  \item System Monitor
-  \item Configuration Options
-  \begin{enumerate}
-    \item 128 Mb Platform Flash XL
-    \item 32 MB Linear BPI Flash
-    \item System ACE CF and CompactFlash Connector
-    \item USB JTAG
-  \end{enumerate}
-
-\end{enumerate}
+%\textbf{ML605 Evaluation Module Features:}
+%\begin{enumerate}
+%  \item Virtex-6 XC6VLX240T-1FFG1156 FPGA
+%  \item 512 MB DDR3 Memory SODIMM
+%  \item 128 Mb Platform Flash XL
+%  \item 32 MB Linear BPI Flash
+%  \item System ACE CF and CompactFlash Connector
+%  \item USB JTAG
+%  \item Clock Generation
+%  \begin{itemize}
+%    \item Fixed 200 MHz oscillator (differential)
+%    \item Socketed 2.5V oscillator (single-ended)
+%    \item SMA connectors (differential)
+%    \item SMA connectors for MGT clocking
+%  \end{itemize}
+%
+%  \item Multi-Gigabit Transceivers (GTX MGTs)
+%
+%  \begin{itemize}
+%    \item FMC - HPC connector
+%    \item FMC - LPC connector
+%    \item SMA
+%    \item PCIe
+%    \item SFP Module connector
+%    \item Ethernet PHY SGMII interface
+%  \end{itemize}
+%
+%  \item PCI Express Endpoint Connectivity
+%
+%  \begin{itemize}
+%    \item Gen1 8-lane (x8)
+%    \item Gen2 4-lane (x4)
+%  \end{itemize}
+%
+%  \item SFP Module Connector
+%  \item 10/100/1000 Tri-Speed Ethernet PHY
+%  \item USB-to-UART Bridge
+%  \item USB Controller
+%  \item DVI Codec
+%  \item IIC Bus
+%
+%  \begin{itemize}
+%    \item IIC EEPROM - 1 KB
+%    \item DDR3 SODIMM socket
+%    \item DVI CODEC
+%    \item DVI connector
+%    \item FMC HPC connector
+%    \item FMC LPC connector
+%    \item SFP module connector
+%  \end{itemize}
+%
+%  \item Status LEDs
+%
+%  \begin{itemize}
+%    \item Ethernet status
+%    \item FPGA INIT
+%    \item FPGA DONE
+%    \item System ACE CF Status
+%  \end{itemize}
+%  \item User I/O
+%
+%  \begin{itemize}
+%    \item USER LED Group 1 - GPIO (8)
+%    \item USER LED Group 2 - directional (5)
+%    \item User pushbuttons - directional (5)
+%    \item CPU reset pushbutton
+%    \item User DIP switch - GPIO (8-pole)
+%    \item User SMA GPIO connectors (2)
+%    \item LCD character display (16 characters x 2 lines)
+%  \end{itemize}
+%
+%  \item Switches
+%  \begin{itemize}
+%    \item Power on/off slide switch
+%    \item System ACE CF reset pushbutton
+%    \item System ACE CF bitstream image select DIP switch
+%    \item Configuration MODE DIP switch
+%  \end{itemize}
+%
+%  \item VITA 57.1 FMC HPC Connector
+%  \item VITA 57.1 FMC LPC Connector
+%  \item Power Management
+%
+%  \begin{itemize}
+%    \item PMBus voltage and current monitoring via TI power controller
+%  \end{itemize}
+%
+%  \item System Monitor
+%  \item Configuration Options
+%  \begin{enumerate}
+%    \item 128 Mb Platform Flash XL
+%    \item 32 MB Linear BPI Flash
+%    \item System ACE CF and CompactFlash Connector
+%    \item USB JTAG
+%  \end{enumerate}
+%
+%\end{enumerate}
 
 %ml605 board
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.85\textwidth]{./figures/ml605}
-    \caption{ ML605 Development Board
+    \caption{ ML605 Development Board from \cite{xilinx:ml605}
     \label{fig:ml605}}
 \end{figure}
 \clearpage
 
-%ml605 block diagram
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.55\textwidth]{./figures/ml605_bd}
-    \caption{ ML605 Functional Block Diagram
-    \label{fig:ml605bd}}
-\end{figure}
+%%ml605 block diagram
+%\begin{figure}[htbp]
+%    \centering
+%    \includegraphics[width=0.55\textwidth]{./figures/ml605_bd}
+%    \caption{ ML605 Functional Block Diagram
+%    \label{fig:ml605bd}}
+%\end{figure}
 
-\subsection{VC707 - Virtex7}
+%\subsection{VC707 - Virtex7}
+%
+% The final results of this setup were generated in the VC707 board
+%\cite{xilinx:vc707}, because it has a better possibility of expansion and has
+%better clock generation and treatment options compared to the ML605 board,
+%which can be used to synchronization purposes.
+%
+%\textbf{VC707 Evaluation Board Features}
+%
+%\begin{enumerate}
+%
+%  \item Virtex-7 XC7VX485T-2FFG1761C FPGA
+%  \item 1 GB DDR3 memory SODIMM
+%  \item 128 MB Linear byte peripheral interface (BPI) Flash memory
+%  \item USB 2.0 ULPI Transceiver
+%  \item Secure Digital (SD) connector
+%  \item USB JTAG through Digilent module
+%  \item Clock Generation
+%
+%  \begin{itemize}
+%    \item Fixed 200 MHz LVDS oscillator (differential)
+%    \item IIC programmable LVDS oscillator (differential)
+%    \item SMA connectors (differential)
+%    \item SMA connectors for GTX transceiver clocking
+%  \end{itemize}
+%
+%  \item GTX transceivers
+%
+%  \begin{itemize}
+%    \item FMC1 HPC connector (eight GTX transceivers)
+%    \item FMC2 HPC connector (eight GTX transceiver)
+%    \item SMA connectors (one pair each for TX, RX, and REFCLK)
+%    \item PCI Express (eight lanes)
+%    \item Small form-factor pluggable plus (SFP+) connector
+%    \item Ethernet PHY SGMII interface (RJ-45 connector)
+%  \end{itemize}
+%
+%  \item PCI Express endpoint connectivity
+%
+%  \begin{itemize}
+%    \item Gen1 8-lane (x8)
+%    \item Gen2 8-lane (x8)
+%  \end{itemize}
+%
+%  \item SFP+ Connector
+%  \item 10/100/1000 tri-speed Ethernet PHY
+%  \item USB-to-UART bridge
+%  \item HDMI codec
+%  \item I2C bus
+%
+%  \begin{itemize}
+%    \item IIC MUX
+%    \item IIC EEPROM (1 KB)
+%    \item USER I2C programmable LVDS oscillator
+%    \item DDR3 SODIMM socket
+%    \item HDMI codec
+%    \item FMC1 HPC connector
+%    \item FMC2 HPC connector
+%    \item SFP+ connector
+%    \item IIC programmable jitter-attenuating precision clock multiplier
+%  \end{itemize}
+%
+%  \item Status LEDs
+%
+%  \begin{itemize}
+%    \item Ethernet status
+%    \item Power good
+%    \item FPGA INIT
+%    \item FPGA DONE
+%  \end{itemize}
+%
+%  \item User I/O
+%  \begin{itemize}
+%    \item User LEDs (eight GPIO)
+%    \item User pushbuttons (five directional)
+%    \item CPU reset pushbutton
+%    \item User DIP switch (8-pole GPIO)
+%    \item User SMA GPIO connectors (one pair)
+%    \item LCD character display (16 characters x 2 lines)
+%  \end{itemize}
+%
+%  \item Switches
+%
+%  \begin{itemize}
+%    \item Power on/off slide switch
+%    \item FPGA\_PROB\_B pushbutton
+%    \item Configuration mode DIP switch
+%  \end{itemize}
+%
+%  \item VITA 57.1 FMC1 HPC Connector
+%  \item VITA 57.1 FMC2 HPC Connector
+%  \item Power management
+%
+%  \begin{itemize}
+%    \item PMBus voltage and current monitoring through TI power controller
+%  \end{itemize}
+%
+%  \item XADC header
+%  \item Configuration options
+%
+%  \begin{itemize}
+%    \item Linear BPI Flash memory
+%    \item USB JTAG configuration port
+%    \item Platform cable header JTAG configuration port
+%  \end{itemize}
+%
+%\end{enumerate}
 
- The final results of this setup were generated in the VC707 board
-\cite{xilinx:vc707}, because it has a better possibility of expansion and has
-better clock generation and treatment options compared to the ML605 board,
-which can be used to synchronization purposes.
+%The characteristic which make this project be ported to the VC707 board is the
+%clock generation options that can be used to synchronize the FMComms2 and the FPGA
+%board in a future implementation.
 
-\textbf{VC707 Evaluation Board Features}
-
-\begin{enumerate}
-
-  \item Virtex-7 XC7VX485T-2FFG1761C FPGA
-  \item 1 GB DDR3 memory SODIMM
-  \item 128 MB Linear byte peripheral interface (BPI) Flash memory
-  \item USB 2.0 ULPI Transceiver
-  \item Secure Digital (SD) connector
-  \item USB JTAG through Digilent module
-  \item Clock Generation
-
-  \begin{itemize}
-    \item Fixed 200 MHz LVDS oscillator (differential)
-    \item IIC programmable LVDS oscillator (differential)
-    \item SMA connectors (differential)
-    \item SMA connectors for GTX transceiver clocking
-  \end{itemize}
-
-  \item GTX transceivers
-
-  \begin{itemize}
-    \item FMC1 HPC connector (eight GTX transceivers)
-    \item FMC2 HPC connector (eight GTX transceiver)
-    \item SMA connectors (one pair each for TX, RX, and REFCLK)
-    \item PCI Express (eight lanes)
-    \item Small form-factor pluggable plus (SFP+) connector
-    \item Ethernet PHY SGMII interface (RJ-45 connector)
-  \end{itemize}
-
-  \item PCI Express endpoint connectivity
-
-  \begin{itemize}
-    \item Gen1 8-lane (x8)
-    \item Gen2 8-lane (x8)
-  \end{itemize}
-
-  \item SFP+ Connector
-  \item 10/100/1000 tri-speed Ethernet PHY
-  \item USB-to-UART bridge
-  \item HDMI codec
-  \item I2C bus
-
-  \begin{itemize}
-    \item IIC MUX
-    \item IIC EEPROM (1 KB)
-    \item USER I2C programmable LVDS oscillator
-    \item DDR3 SODIMM socket
-    \item HDMI codec
-    \item FMC1 HPC connector
-    \item FMC2 HPC connector
-    \item SFP+ connector
-    \item IIC programmable jitter-attenuating precision clock multiplier
-  \end{itemize}
-
-  \item Status LEDs
-
-  \begin{itemize}
-    \item Ethernet status
-    \item Power good
-    \item FPGA INIT
-    \item FPGA DONE
-  \end{itemize}
-
-  \item User I/O
-  \begin{itemize}
-    \item User LEDs (eight GPIO)
-    \item User pushbuttons (five directional)
-    \item CPU reset pushbutton
-    \item User DIP switch (8-pole GPIO)
-    \item User SMA GPIO connectors (one pair)
-    \item LCD character display (16 characters x 2 lines)
-  \end{itemize}
-
-  \item Switches
-
-  \begin{itemize}
-    \item Power on/off slide switch
-    \item FPGA\_PROB\_B pushbutton
-    \item Configuration mode DIP switch
-  \end{itemize}
-
-  \item VITA 57.1 FMC1 HPC Connector
-  \item VITA 57.1 FMC2 HPC Connector
-  \item Power management
-
-  \begin{itemize}
-    \item PMBus voltage and current monitoring through TI power controller
-  \end{itemize}
-
-  \item XADC header
-  \item Configuration options
-
-  \begin{itemize}
-    \item Linear BPI Flash memory
-    \item USB JTAG configuration port
-    \item Platform cable header JTAG configuration port
-  \end{itemize}
-
-\end{enumerate}
-
-The characteristic which make this project be ported to the VC707 board is the
-clock generation options that can be used to synchronize the FMComms2 and the FPGA
-board in a future implementation.
-
-In the Figures \ref{fig:vc707} and
-\ref{fig:vc707bd} there are the evaluation board picture and the high-level block
-diagram respectively.
+%In the Figures \ref{fig:vc707} and
+%\ref{fig:vc707bd} there are the evaluation board picture and the high-level block
+%diagram respectively.
 
 %vc707 board
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.65\textwidth]{./figures/vc707}
-    \caption{ VC707 Development Board
+    \caption{ VC707 Development Board from \cite{xilinx:vc707}
     \label{fig:vc707}}
 \end{figure}
 
 %vc707 block diagram
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.65\textwidth]{./figures/vc707_bd}
-    \caption{ VC707 Functional Block Diagram
-    \label{fig:vc707bd}}
-\end{figure}
+%\begin{figure}[htbp]
+%    \centering
+%    \includegraphics[width=0.65\textwidth]{./figures/vc707_bd}
+%    \caption{ VC707 Functional Block Diagram
+%    \label{fig:vc707bd}}
+%\end{figure}
 
 \subsection{IP Cores}
 
-Xilinx Design Tools have a methodology of developing by using IP blocks, IP
-stands for intellectual Property, it means that, it is possible to develop some
+Xilinx Design Tools have a methodology of developing by using IP blocks, where IP
+stands for intellectual Property.In this workflow, it is possible to develop some
 functionality or block and sell the right to use it for other developers, fact
 which makes development a lot faster and easier.
 
@@ -358,108 +373,118 @@ own IP.
 %escrever um pouco sobre os ips usados
 
 \begin{description}
-	\item[Microblaze \cite{xilinx:ublaxe}] \hfill \\
 
- Microblaze is a soft processor core designed for Xilinx FPGAs, it is
-implemented entirely in the general-purpose memory and logic fabric of the
-FPGAs and synthesized inside of it. It has a 32 bit instruction set and runs
-usually at 100 Mhz clock, and has only one interrupt input. The Microblaze
-function in this system is basically to initialize all the software drivers,
-configure such drivers and execute interrupt routines. In the Figure
-\ref{fig:mdbd} is possible to see a block schematic of microblaze core.
+	\item[Microblaze] \hfill \\
 
-%ublaze block diagram
-\begin{figure}[htbp]
+  According to \cite{xilinx:ublaze}, microblaze is a soft processor core
+  designed for Xilinx FPGAs, it is implemented entirely in the general-purpose
+  memory and logic fabric of the FPGAs and synthesized inside of it. It has a 32
+  bit instruction set and runs usually at 100 Mhz clock, and has only one
+  interrupt input. The Microblaze role in the system developed in this work is
+  basically to initialize all the software drivers, configure such drivers and
+  execute interrupt routines. In Figure \ref{fig:mbbd} it is possible to see a
+  block schematic of microblaze core.
+
+  %ublaze block diagram
+  \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.65\textwidth]{./figures/mb_bd}
-    \caption{ Microblaze core Block Diagram
+    \caption{ Microblaze core Block Diagram from \cite{xilinx:ublaze}
     \label{fig:mbbd}}
-\end{figure}
+  \end{figure}
 
-	\item[DMA Engine \cite{xilinx:axidma}] \hfill \\
+	\item[DMA Engine] \hfill \\
 
-   The DMA is the core which makes possible reading and writing from the memory
-  in a very fast rate. There are various modes of operation, but in this
-  project the Scatter gather mode is used, in this mode the reading and writing
-  is possible in a non-continuous memory addresses by the use of block
-  descriptors, which diagram if in Figure \ref{dmabd}.
+  The DMA is the core which makes possible reading and writing from the memory
+  in a very fast rate \cite{xilinx:axidma}. There are various modes of
+  operation, but in this project the Scatter gather mode is used. In this mode
+  the reading and writing is possible in a non-continuous memory addresses by
+  the use of block descriptors, which diagram can be seen in Figure
+  \ref{fig:dmabd}.
 
-%dma block diagram
-\begin{figure}[htbp]
+  %dma block diagram
+  \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.65\textwidth]{./figures/dma_bd}
-    \caption{ AXI DMA Block Diagram
+    \caption{ AXI DMA Block Diagram from \cite{xilinx:axidma}
     \label{fig:dmabd}}
-\end{figure}
+  \end{figure}
 
-  \item[Memory Interface Generator \cite{xilinx:mig7}] \hfill \\
+  \item[Memory Interface Generator] \hfill \\
 
   The MIG (Memory interface generator) creates a software and hardware interface
-to the DDR3 memory inside the FPGA board.
+  to the DDR3 memory inside the FPGA board \cite{xilinx:mig7}. In this work the
+  MIG is also use to generate some reference clocks for other peripherals like
+  microblaze and AD9361 IP core.
 
-  \item[SPI \cite{xilinx:axiquadspi}] \hfill \\
+  \item[SPI] \hfill \\
 
-  The SPI is a communication protocol, thus the SPI core  is used to write/read
-registers in the FMComms2 board. It is initialized and controlled by software.
+  The SPI is a communication protocol and this core implements this protocol
+  inside the FPGA fabric, \cite{xilinx:axiquadspi}. In this work the SPI core
+  is used to write/read registers in the \emph{FMCOMMS2} board. It is
+  initialized and controlled by software.
 
-  \item[GPIO \cite{xilinx:axigpio}] \hfill \\
+  \item[GPIO] \hfill \\
 
   GPIO stands for General Purpose Input and Output, this core implements general
-purpose pins which can be configured via software to act as an input or output pin,
-or even both. For this project specifically, GPIO core is used to make real-time
-operations in the AD9361 internal state-machine and for reset.
+  purpose pins which can be configured via software to act as an input or output
+  pin, or even both according to \cite{xilinx:axigpio}. For this project
+  specifically, the GPIO core is used to make real-time operations in the AD9361
+  internal state-machine and for reset.
 
-  \item[UART \cite{xilinx:axiuart}] \hfill \\
+  \item[UART] \hfill \\
 
-   UART is also a communication protocol and stands for universal asynchronous
-  receiver/transmitter and in this case it is used for debugging purposes, all
-  the standard I/O form the software comes from the UART and it is possible to
-  show error messages and status messages from the code in the terminal, like
-  any normal print, the difference is that such messages are coming from the
-  program file being executed in the Microblaze soft processor.
+  UART is also a communication protocol and stands for universal asynchronous
+  receiver/transmitter and the UART core implements such protocol in the FPGA
+  USB or serial communication, according to \cite{xilinx:axiuart}. In this work
+  it is used for debugging purposes, all the standard I/O form the software
+  comes from the UART. It is possible to show error messages and status
+  messages from the code in the terminal, like any normal print, the difference
+  is that such messages are coming from the program file being executed in the
+  Microblaze soft processor.
 
 \end{description}
 
 
 %--------------------------------FMCOMMS2---------------------------------------
-\section{Transceiver - FMComms2}
-\subsection{AD9361}
-\label{subsec:ad9361}
+\section{Transceiver - FMCOMMS2}
 
- The AD9361 is a high performance RF transceiver. Its programmability and
+\subsection{AD9361}
+\label{trans:ad9361}
+
+The AD9361 is a high performance RF transceiver. Its programmability and
 adaptability makes it ideal for a wide range of transceiver applications. This
 device combines a RF front end with a flexible and configurable mixed-signal
-baseband section and frequency synthesizers, simplified configuration digital
-interface to a processor. The AD9361 operates from 70 MHz to 6.0GHz range with
-supported channel bandwidths from 200 KHz to 56 MHz and the AD9361 is a 2
-receiver (Rx) and 2 transmitter (Tx) device packed in a 10mm x10mm, 144 ball
-chip package ball grid array (CSP\_BGA).
+baseband section and frequency synthesizers. The AD9361 operates from 70 MHz to
+6.0GHz range with supported channel bandwidths from 200 KHz to 56 MHz and the
+AD9361 is a 2 receiver (Rx) and 2 transmitter (Tx) device. There is a functional
+block diagram of the AD9361 chip in Figure \ref{fig:ad9361func}.
 
-\subsubsection{General Description}
-
- AD9361 is a highly integrated RF frequency transceiver capable of being
-configured for a wide range of applications, including 3G and 4G frequency
-applications. AD9361 and AD9364 almost the same hardware and specifications,
-the difference is that AD9361 is a 2x2 Multiple Input Multiple Output (MIMO)
-and AD9364 is a 1x1 \cite{web:ad9361wiki}. The programmability allows the
-AD9361 to be operated in Frequency Division Duplex (FDD) and Time Division
-Duplex (TDD) systems, allowing this transceiver to operate in a variety of
-communication standards. Another interesting feature is the capability of
-integration with a wide range of Baseband Processors (BBPs) using a single or
-dual 12-bit parallel data port or a 12-bit Low voltage Differential signaling
-(LVDS), which uses the FMC connector in the FMCommS2.
-
-AD9361 also provides self-calibration and automatic gain control (AGC) systems
-to maintain good performance under variable conditions, such as temperature and
-signal quality. The transceiver has also various modes of test mode with the
-Built-in Self Test (BIST) modes which can be used for the designers to debug
-designs during prototyping. This reconfigurability and adaptability is very
-attractive for Software-defined Radio (SDR) and for C-RAN systems, indeed
-AD9361 is already being used in some Universal Software Radio Peripheral (USRP)
-from Ettus research (National Instruments) \ref{sdr:gnuradio}, this alone is a proof
-that AD9361 can work in a wide range of systems and standards, below there is a
-functional block diagram of the AD9361 chip in Figure \ref{fig:ad9361func}.
-
+%\subsubsection{General Description}
+%
+% AD9361 is a highly integrated RF frequency transceiver capable of being
+%configured for a wide range of applications, including 3G and 4G frequency
+%applications. AD9361 and AD9364 almost the same hardware and specifications,
+%the difference is that AD9361 is a 2x2 Multiple Input Multiple Output (MIMO)
+%and AD9364 is a 1x1 \cite{web:ad9361wiki}. The programmability allows the
+%AD9361 to be operated in Frequency Division Duplex (FDD) and Time Division
+%Duplex (TDD) systems, allowing this transceiver to operate in a variety of
+%communication standards. Another interesting feature is the capability of
+%integration with a wide range of Baseband Processors (BBPs) using a single or
+%dual 12-bit parallel data port or a 12-bit Low voltage Differential signaling
+%(LVDS), which uses the FMC connector in the FMCommS2.
+%
+%AD9361 also provides self-calibration and automatic gain control (AGC) systems
+%to maintain good performance under variable conditions, such as temperature and
+%signal quality. The transceiver has also various modes of test mode with the
+%Built-in Self Test (BIST) modes which can be used for the designers to debug
+%designs during prototyping. This reconfigurability and adaptability is very
+%attractive for Software-defined Radio (SDR) and for C-RAN systems, indeed
+%AD9361 is already being used in some Universal Software Radio Peripheral (USRP)
+%from Ettus research (National Instruments) \ref{sdr:gnuradio}, this alone is a proof
+%that AD9361 can work in a wide range of systems and standards, below there is a
+%functional block diagram of the AD9361 chip in Figure \ref{fig:ad9361func}.
+%
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.45\textwidth]{./figures/ad9361_functional_diagram}
@@ -474,7 +499,7 @@ and convert them to digital data which can be used by the BBP. there are two
 independently controlled channels that share same frequency synthesizer. This
 characteristic makes possible to the AD9361 to operate in MIMO systems.
 
- Each channel has 3 inputs which can be multiplexed into the signal chain,
+Each channel has 3 inputs which can be multiplexed into the signal chain,
 making possible to use the AD9361 into systems with multiple antenna inputs.
 The Receiver is a direct conversion system that contains a Low noise amplifier
 (LNA) , followed by a matched in-phase and quadrature amplifier, mixers, and
@@ -483,36 +508,38 @@ digitization. External LNAs can also be interfaced to the AD9361 allowing more
 flexibility in the design. The receiver signal path passes down-converted
 signals (I and Q), which are schematically identical to each other,  to the
 baseband (BB) receiver section. The BB section is composed by two programmable
-low-pass filters, with programmable corner frequency for each filter, 12-bit
-ADC and four stages of decimating filters, each of the four decimation filters
-can be bypassed. The gain control is achieved by a preprogrammed gain index
-map, a lookup table for example, this map distributes gain in order to achieve
-optimal performance at each level. This optimal behavior can be achieved by
-enabling AGC, which can run in two modes, fast and slow gain control. This
-allow for the BBP to make gain adjustments as needed. Each channel also
-contains independent Receive Signal Strength Indication (RSSI) measurement
-capability, DC offset tracking and all other circuitry needed for
-self-calibration.
+low-pass filters 12-bit ADC and four stages of decimating filters.
 
-The receiver ADC is a 12-bit sigma-delta ($\Sigma-\Delta$) analog to digital
-converter (ADC) which allows adjustable sample rates. This ADC produces data
-streams from the received signals and such digitalized signals can be
-conditioned further by a series of decimation filters and a 128-tap Finite
-Impulse Response (FIR) filter with additional decimation settings. The sampling
-rate of each digital filter is adjustable through changes in the decimation
-factors to produce the needed data rate. In short, the Receiver chain in Figure
-\ref{fig:rxchain} has:
+The gain control is achieved by a preprogrammed gain index map, a lookup table
+for example, this map distributes gain in order to achieve optimal performance
+at each level. This optimal behavior can be achieved by enabling AGC, which can
+run in two modes, fast and slow gain control. This allow for the BBP to make
+gain adjustments as needed. Each channel also contains independent Receive
+Signal Strength Indication (RSSI) measurement capability, DC offset tracking and
+all other circuitry needed for self-calibration.The sampling rate of each
+digital filter is adjustable through changes in the decimation factors to
+produce the needed data rate. The receiver signal chain is represented in Figure
+\ref{fig:rxchain}.
 
-\begin{itemize}
-	\item LNA - Low noise Amplifier
-	\item Matched in-phase amplifier;
-	\item Quadrature Amplifier;
-	\item Band Shaping Filters;
-	\item Analog low pass filters;
-	\item 12-bit ADC;
-	\item 4 stages of decimation filters (128-tap FIR filters);
-	\item Automatic gain Control;
-\end{itemize}
+%The receiver ADC is a 12-bit sigma-delta ($\Sigma-\Delta$) analog to digital
+%converter (ADC) which allows adjustable sample rates. This ADC produces data
+%streams from the received signals and such digitalized signals can be
+%conditioned further by a series of decimation filters and a 128-tap Finite
+%Impulse Response (FIR) filter with additional decimation settings. The sampling
+%rate of each digital filter is adjustable through changes in the decimation
+%factors to produce the needed data rate. In short, the Receiver chain in Figure
+%\ref{fig:rxchain} has:
+
+%\begin{itemize}
+%	\item LNA - Low noise Amplifier
+%	\item Matched in-phase amplifier;
+%	\item Quadrature Amplifier;
+%	\item Band Shaping Filters;
+%	\item Analog low pass filters;
+%	\item 12-bit ADC;
+%	\item 4 stages of decimation filters (128-tap FIR filters);
+%	\item Automatic gain Control;
+%\end{itemize}
 
 \begin{figure}[htbp]
     \centering
@@ -524,33 +551,39 @@ factors to produce the needed data rate. In short, the Receiver chain in Figure
 
 \subsubsection{Transmitter}
 
+
+%paragrafo anterior
+%Like the receiver, the transmitter section contains two identical and
+%independently controlled channels, which share the same frequency synthesizer,
+%that provide all digital signal processing, mixed signal and RF blocks necessary
+%to implement a direct conversion system from digital data to RF. The Tx signal
+%path receives from the BBP 12-bit 2s complement I-Q format data in the digital
+%interface and each channel goes through a 128-tap FIR filter with interpolation
+%options, which is fully programmable. Then the signal goes through a series of
+%additional interpolation filters that manipulates the signal with additional
+%filtering and data rate interpolation before reaching the 12-bit DAC, note that
+%all these filtering and interpolation steps can be bypassed if desired. Each
+%12-bit DAC has an adjustable sampling rate and its analog output passes through
+%to low pass filters to remove any sampling artifacts before going to the RF
+%mixer, these low pass filters corner frequencies can be programmable too. After
+%all these filtering and analog conversion steps, the I and Q signals are
+%recombined and modulated in the carrier frequency, which can be adjusted by
+%changing the synthesizer frequency. These analog combined signals passes through
+%additional analog filters for better band shaping and then it can be transmitted
+%to the output amplifier. Each Transmitting channel provides wide attenuation
+%adjustment range with fine granularity in order to optimize SNR.
+
+%paragrafo revisado
 Like the receiver, the transmitter section contains two identical and
 independently controlled channels, which share the same frequency synthesizer,
-that provide all digital signal processing, mixed signal and RF blocks necessary
-to implement a direct conversion system from digital data to RF. The Tx signal
-path receives from the BBP 12-bit 2s complement I-Q format data in the digital
-interface and each channel goes through a 128-tap FIR filter with interpolation
-options, which is fully programmable. Then the signal goes through a series of
-additional interpolation filters that manipulates the signal with additional
-filtering and data rate interpolation before reaching the 12-bit DAC, note that
-all these filtering and interpolation steps can be bypassed if desired. Each
-12-bit DAC has an adjustable sampling rate and its analog output passes through
-to low pass filters to remove any sampling artifacts before going to the RF
-mixer, these low pass filters corner frequencies can be programmable too. After
-all these filtering and analog conversion steps, the I and Q signals are
-recombined and modulated in the carrier frequency, which can be adjusted by
-changing the synthesizer frequency. These analog combined signals passes through
-additional analog filters for better band shaping and then it can be transmitted
-to the output amplifier. Each Transmitting channel provides wide attenuation
-adjustment range with fine granularity in order to optimize SNR.
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.65\textwidth]{./figures/tx_chain}
-    \caption{ Transmitter Signal Path
-    \label{fig:txchain}}
-\end{figure}
-
+that provides The Tx signal path receives from the BBP 12-bit I-Q format data in
+the digital interface and each channel goes through a series of additional
+interpolation filters that manipulates the signal with additional filtering and
+data rate interpolation before reaching the 12-bit DAC. After all these
+filtering and analog conversion steps, the I and Q signals are recombined and
+modulated in the carrier frequency, which can be adjusted by changing the
+synthesizer frequency. the transmitter signal chain is illustrated in Figure
+\ref{fig:txchain}.
 
 Identical to the receiver chain, the transmitter chain, in Figure
 \ref{fig:txchain} has also built-in self-calibration circuitry into each
@@ -560,20 +593,28 @@ monitors the transmission output and routes it back through an unused receiver
 channel to the BBP for signal monitoring, but these monitoring option is only
 available in TDD mode operation while the receiver is idle.
 
-In short the transmission chain has:
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.65\textwidth]{./figures/tx_chain}
+    \caption{ Transmitter Signal Path
+    \label{fig:txchain}}
+\end{figure}
 
-\begin{itemize}
-	\item 128-tap FIR filters;
-	\item Interpolation Filters;
-	\item 12-bit DAC;
-	\item Analog Low-pass Filters;
-	\item Additional band shaping analog filters;
-	\item Attenuation adjustment;
-	\item self-calibration circuits;
-	\item Tx signal Monitor.
-\end{itemize}
 
-In the Figure \ref{fig:ad9361blk} below there is a full block diagram with both
+%In short the transmission chain has:
+%
+%\begin{itemize}
+%	\item 128-tap FIR filters;
+%	\item Interpolation Filters;
+%	\item 12-bit DAC;
+%	\item Analog Low-pass Filters;
+%	\item Additional band shaping analog filters;
+%	\item Attenuation adjustment;
+%	\item self-calibration circuits;
+%	\item Tx signal Monitor.
+%\end{itemize}
+
+In Figure \ref{fig:ad9361blk} there is a full block diagram with both
 \textit{receiver Chain}, \textit{Transmitting Chain} and other key components of
 the AD9361 chip.
 
@@ -586,19 +627,27 @@ the AD9361 chip.
 
 \subsubsection{Filtering}
 
-In both receiver and transmitter there are:
-\begin{description}
-	\item[Receiver] \hfill \\
-	\begin{itemize}
-		\item Low pass filter : band shape to reduce adjacent-channel interference.
-		\item Decimation Filter: up convert from the digital baseband rate (64.11MSPS max) to the actual ADC (640MSPS) rate.
-	\end{itemize}
-	\item[Transmitter] \hfill \\
-\begin{itemize}
-		\item Low pass filter : remove sampling artifacts
-		\item Interpolation Filter : down convert from the digital baseband rate (64.11MSPS max) to the actual DAC (320MSPS) rate.
-	\end{itemize}
-\end{description}
+%In both receiver and transmitter there are:
+%\begin{description}
+%	\item[Receiver] \hfill \\
+%	\begin{itemize}
+%		\item Low pass filter : band shape to reduce adjacent-channel interference.
+%		\item Decimation Filter: up convert from the digital baseband rate (64.11MSPS max) to the actual ADC (640MSPS) rate.
+%	\end{itemize}
+%	\item[Transmitter] \hfill \\
+%\begin{itemize}
+%		\item Low pass filter : remove sampling artifacts
+%		\item Interpolation Filter : down convert from the digital baseband rate (64.11MSPS max) to the actual DAC (320MSPS) rate.
+%	\end{itemize}
+%\end{description}
+
+In both receiver and transmitter there are low pass filters and
+decimation/interpolation filters. In the receiver the low pass filter acts in
+band shaping to reduce adjacent-channel interference and the decimation filter
+up convert from the digital baseband rate (64.11MSPS max) to the actual ADC
+(640MSPS) rate. The transmitter low-pass filter is responsible for remove
+sampling artifacts and the interpolating filter down converts from the digital
+baseband rate (64.11MSPS max) to the actual DAC (320MSPS) rate.
 
 In both digital and analog implementations these filters have impact the
 magnitude and the phase in passband, such behavior must be compensated in the
@@ -849,8 +898,8 @@ either using SPI\_DO (4-wire interface) or SPI\_DI (3-wire interface).
 \end{description}
 
 
-\subsection{FMCommS2}
-\label{subsec:fmcomms2}
+\subsection{FMCOMMS2}
+\label{trans:fmcomms2}
 
 FMCommS2 is basically evaluation board for the AD9361 that has a FMC connector
 for interfacing with the BBP (Usually FPGA). The FMComms2 has 5 SMA connectors,
@@ -927,97 +976,97 @@ configuration is specified in the AD9361 section \ref{subsec:ad9361}.
 \subsubsection{Complex Modulation}
 
 \begin{eqnarray}
-	I = sin(\omega \times t)\\
-	Q = cos(\omega \times t)
+	I = sin(\omega t)\\
+	Q = cos(\omega t)
 \end{eqnarray}
 
 \begin{equation}
-	cos(\omega \times t) = sin(\frac{\pi}{2} - (\omega \times t))
+	cos(\omega t) = sin(\frac{\pi}{2} - (\omega t))
 \end{equation}
 
 then:
 
 \begin{eqnarray}
-	I = sin(\omega \times t)\\
-	Q = sin(\frac{\pi}{2} - (\omega \times t))
+	I = sin(\omega t)\\
+	Q = sin(\frac{\pi}{2} - (\omega t))
 \end{eqnarray}
 
-These are the two signals coming out of the DAC, two sine waves, phase offset
-from each other, wich is called IQ.
+These are the two signals coming out of the DAC, two sine waves, in quadrature
+phase offset from each other, which is called IQ.
 
-\subsubsection{Basic Modulation Mathematics}
-
-Start to modulating signal from a amplitude perspective:
-
-\begin{eqnarray}
-LO_I = A_x cos(k)\\
-LO_Q = B_x sin(k)
-\end{eqnarray}
-
-We still have the carrier:
-
-\begin{equation}
-LO_I = cos(\omega) ; LO_Q = sin(\omega)
-\end{equation}
-
-Will result:
-
-\begin{eqnarray}
-LO_I \times I = A_x cos(k) \times sin(\omega)\\
-LO_Q \times I = B_x sin(k) \times cos(\omega)
-\end{eqnarray}
-
-
-That gives the output:
-
-\begin{equation}
-x(t)=A_x cos(k)\times sin(\omega)+ B_x sin(k)\times cos(\omega)
-\end{equation}
-
-This does not match with any trigonometrical identities and it is easier to use Euler\'s formula:
-
-\begin{eqnarray}
-sin(x)=(\frac{1}{2}e^{-jx} - \frac{1}{2}e^{jx})\\
-cos(x)=(\frac{1}{2}e^{-jx} + \frac{1}{2}e^{jx})
-\end{eqnarray}
-
-Therefore:
-
-\begin{equation}
-x(t)=A_x (\frac{1}{2}e^{-jk} + \frac{1}{2}e^{jk})\times (\frac{1}{2}e^{-j\omega} - \frac{1}{2}e^{j\omega})+ B_x (\frac{1}{2}e^{-jk} - \frac{1}{2}e^{jk})\times (\frac{1}{2}e^{-j\omega} + \frac{1}{2}e^{j\omega})
-\end{equation}
-
-\begin{equation}
-x(t)=\frac{A}{2} (e^{-jk} + e^{jk})\times (e^{-j\omega} - e^{j\omega})+ \frac{B}{2} (e^{-jk} - e^{jk})\times (e^{-j\omega} + e^{j\omega})
-\end{equation}
-
-If we expand we get:
-
-\begin{equation}
-x(t)=\frac{1}{2} ((Ae^{-jk-j\omega} + Ae^{jk-j\omega} - Ae^{-jk+j\omega} - Ae^{jk+j\omega}) + (Be^{-jk-j\omega} - Be^{jk-j\omega} - Be^{-jk+j\omega} + Be^{jk+j\omega}))
-\end{equation}
-
-
-And then:
-
-\begin{equation}
-x(t)=\frac{1}{2} ((A+B)e^{-jk-j\omega} + (A-B)e^{jk-j\omega} - (A-B)e^{-jk+j\omega} - (A+B)e^{jk+j\omega})
-\end{equation}
-
-It is possible to rearrange as:
-
-\begin{equation}
-x(t)=\frac{1}{2} \times ((A+B)(e^{-jk-j\omega} - e^{jk+j\omega}) + (A-B)(e^{jk-j\omega} - e^{-jk+j\omega}))
-\end{equation}
-
-And then:
-
-\begin{equation}
-x(t)=(\frac{A+B}{2} )(sin(k+\omega)) + (\frac{A-B}{2} )(sin(k-\omega))
-\end{equation}
-
-If this due to amplitude mismatch, this creates an image on the other side of
-the local oscillator.
+%\subsubsection{Basic Modulation Mathematics}
+%
+%Start to modulating signal from a amplitude perspective:
+%
+%\begin{eqnarray}
+%LO_I = A_x cos(k)\\
+%LO_Q = B_x sin(k)
+%\end{eqnarray}
+%
+%We have the carrier:
+%
+%\begin{equation}
+%LO_I = cos(\omega) ; LO_Q = sin(\omega)
+%\end{equation}
+%
+%Will result:
+%
+%\begin{eqnarray}
+%LO_I \times I = A_x cos(k) \times sin(\omega)\\
+%LO_Q \times I = B_x sin(k) \times cos(\omega)
+%\end{eqnarray}
+%
+%
+%That gives the output:
+%
+%\begin{equation}
+%x(t)=A_x cos(k)\times sin(\omega)+ B_x sin(k)\times cos(\omega)
+%\end{equation}
+%
+%This does not match with any trigonometrical identities and it is easier to use Euler\'s formula:
+%
+%\begin{eqnarray}
+%sin(x)=(\frac{1}{2}e^{-jx} - \frac{1}{2}e^{jx})\\
+%cos(x)=(\frac{1}{2}e^{-jx} + \frac{1}{2}e^{jx})
+%\end{eqnarray}
+%
+%Therefore:
+%
+%\begin{equation}
+%x(t)=A_x (\frac{1}{2}e^{-jk} + \frac{1}{2}e^{jk})\times (\frac{1}{2}e^{-j\omega} - \frac{1}{2}e^{j\omega})+ B_x (\frac{1}{2}e^{-jk} - \frac{1}{2}e^{jk})\times (\frac{1}{2}e^{-j\omega} + \frac{1}{2}e^{j\omega})
+%\end{equation}
+%
+%\begin{equation}
+%x(t)=\frac{A}{2} (e^{-jk} + e^{jk})\times (e^{-j\omega} - e^{j\omega})+ \frac{B}{2} (e^{-jk} - e^{jk})\times (e^{-j\omega} + e^{j\omega})
+%\end{equation}
+%
+%If we expand we get:
+%
+%\begin{equation}
+%x(t)=\frac{1}{2} ((Ae^{-jk-j\omega} + Ae^{jk-j\omega} - Ae^{-jk+j\omega} - Ae^{jk+j\omega}) + (Be^{-jk-j\omega} - Be^{jk-j\omega} - Be^{-jk+j\omega} + Be^{jk+j\omega}))
+%\end{equation}
+%
+%
+%And then:
+%
+%\begin{equation}
+%x(t)=\frac{1}{2} ((A+B)e^{-jk-j\omega} + (A-B)e^{jk-j\omega} - (A-B)e^{-jk+j\omega} - (A+B)e^{jk+j\omega})
+%\end{equation}
+%
+%It is possible to rearrange as:
+%
+%\begin{equation}
+%x(t)=\frac{1}{2} \times ((A+B)(e^{-jk-j\omega} - e^{jk+j\omega}) + (A-B)(e^{jk-j\omega} - e^{-jk+j\omega}))
+%\end{equation}
+%
+%And then:
+%
+%\begin{equation}
+%x(t)=(\frac{A+B}{2} )(sin(k+\omega)) + (\frac{A-B}{2} )(sin(k-\omega))
+%\end{equation}
+%
+%If this due to amplitude mismatch, this creates an image on the other side of
+%the local oscillator.
 
 \section{Setup}
 \label{impl:setup}
