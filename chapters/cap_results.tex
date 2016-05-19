@@ -125,8 +125,10 @@ fed to both to the \textit{dacInterface} block.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.95\textwidth]{./figures/dac_dmaInterface}
-    \caption{ Step 1: DAC-DMA Interface Block Simulation
+    \includegraphics[height=.3\textwidth, width=.85\textwidth,
+    trim={{.13\textwidth} {.90\textwidth} {.05\textwidth} {.15\textwidth}},
+    clip]{./figures/dac_dmaInterface}
+    \caption{ Step 1: DAC-DMA interface block simulation.
     \label{fig:simdacdma}}
 \end{figure}
 
@@ -144,8 +146,10 @@ fed to both to the \textit{dacInterface} block.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.95\textwidth]{./figures/dacInterface}
-    \caption{ Step 2: DAC Interface Block Simulation
+    \includegraphics[height=.4\textwidth, width=1\textwidth,
+    trim={{.13\textwidth} {.8\textwidth} {.05\textwidth} {.15\textwidth}},
+    clip]{./figures/dacInterface}
+    \caption{ Step 2: DAC interface block simulation.
     \label{fig:simdac}}
 \end{figure}
 
@@ -164,7 +168,9 @@ DAC clock $40 MHz$, this difference justifies the use of such interface.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.95\textwidth]{./figures/txInterface}
+    \includegraphics[width=1\textwidth,
+    trim={{.67\textwidth} {.7\textwidth} {.05\textwidth} {.3\textwidth}},
+    clip]{./figures/txInterface}
     \caption{ Step 3: Transmitting Interface Block Simulation
     \label{fig:simtxif}}
 \end{figure}
@@ -185,13 +191,14 @@ sig\_rx\_i1\_data, sig\_rx\_q1\_data} there is the outputs from both
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.95\textwidth]{./figures/adcInterface}
+    \includegraphics[width=0.95\textwidth,
+    trim={{.13\textwidth} {.95\textwidth} {.05\textwidth} {.15\textwidth}},
+    clip]{./figures/adcInterface}
     \caption{ ADC Interface Block Simulation
     \label{fig:simadc}}
 \end{figure}
 
-\vfill
-\clearpage
+
 
 \section{Transmission Tests (Downlink)}
 \label{result:dac}
@@ -216,21 +223,27 @@ LTE analog wave outputted from the FMComms2 board.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.85\textwidth]{./figures/dac_signals}
+    \includegraphics[width=1\textwidth,
+    trim={{.15\textwidth} {1.2\textwidth} {.7\textwidth} {.16\textwidth}},
+    clip]{./figures/dac_signals}
     \caption{ DAC signals controlling data reading
     \label{fig:dacsignals}}
 \end{figure}
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.85\textwidth]{./figures/ila_dataflow}
+    \includegraphics[width=1\textwidth,
+    trim={{.15\textwidth} {1.3\textwidth} {.05\textwidth} {.16\textwidth}},
+    clip]{./figures/ila_dataflow}
     \caption{ Digital Data read from memory by DMA.
     \label{fig:dataflowdig}}
 \end{figure}
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.85\textwidth]{./figures/ltedac_ila}
+    \includegraphics[width=1\textwidth,
+    trim={{.11\textwidth} {.95\textwidth} {.04\textwidth} {.15\textwidth}},
+    clip]{./figures/ltedac_ila}
     \caption{ Analog form Data read form memory by DMA.
     \label{fig:dataflowana}}
 \end{figure}
@@ -280,7 +293,7 @@ Devices IIO scope application.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.65\textwidth]{./figures/lte_constellation_iio}
+    \includegraphics[width=0.55\textwidth]{./figures/lte_constellation_iio}
     \caption{ LTE Constellation
     \label{fig:lteconstellationiio}}
 \end{figure}
