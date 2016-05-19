@@ -1147,7 +1147,9 @@ To illustrate the idea of this setup and to facilitate its explanation the
 transmitter and receiver chains were separated in 2 figures, Figure
 \ref{fig:txsetup} and Figure \ref{fig:rxsetup}. These figures show a high level
 block diagram of the signal flow until it becomes a waveform (transmitter) or a
-binary stream (receiver).
+binary stream (receiver). The functionalities of the  DAC-DMA interface and DAC
+Interface blocks in Figure \ref{fig:txsetup} and the ADC interface block in
+Figure \ref{fig:rxsetup} shall be explained in Subsection \ref{subs:dataif}.
 
 %tx block diagram
 \begin{figure}[htbp]
@@ -1169,46 +1171,66 @@ binary stream (receiver).
 
 \subsection{Integration between FPGA and FMComms2}
 
-The first problem encountered in the development was the integration, since the
-company make a example project available and the IP cores for download it appear
-to be an easy job, but for study purposes and for a simpler design it is better
-to begin a bottom up approach and so it was did. This approach was used in both
-ML605 and VC707 and it consists in basic steps:
+%The first problem encountered in the development was the integration, since the
+%company make a example project available and the IP cores for download it appear
+%to be an easy job, but for study purposes and for a simpler design it is better
+%to begin a bottom up approach and so it was did. This approach was used in both
+%ML605 and VC707 and it consists in basic steps:
 
-\begin{enumerate}
-    \item Analyse which ports have to be connected
-    \item Analyse which Communications protocols are needed to communicate with the device;
-    \item Analyse the clock inputs and give the device the clocks it need to properly work;
-    \item Study both the HDL sources and the Driver to understand how the device works.
-\end{enumerate}
+%\begin{enumerate}
+%    \item Analyse which ports have to be connected
+%    \item Analyse which Communications protocols are needed to communicate with the device;
+%    \item Analyse the clock inputs and give the device the clocks it need to properly work;
+%    \item Study both the HDL sources and the Driver to understand how the device works.
+%\end{enumerate}
 
-This analyze work took around 3 weeks and the the integration became to work
-properly. In the ML605 the version of the IP and driver was one of the first
-ones, then it was needed only the SPI for registers read and write and one
-GPIO pin to reset the device.
+The integration process was realized both in ML605 and VC707 because the latter
+had a different development flow. For the development of the SDR prototype
+presented in this work is to properly design the integration between the
+FMComms2 and the FPGA. In order to accomplish this, the first steps involve the
+analysis of the ports through which both communicate to each other and the
+protocols in such communications. Additionally, it requires understanding about
+the clocking supply that the AD9361 module in the FPGA requires. Finally, the
+integration requires the designer to sufficiently understand the HDL sources of
+the AD9361 IP core included in the FPGA and the corresponding drivers to be
+included in the processor program.
 
-By default the AD9361 driver has a DDS which generates the carrier wave at 2.4Ghz,
-so if the initialization work it is possible to watch in the oscilloscope or
-spectrum analyzer a sinusoidal (Carrier) wave at 2.4 Ghz after all initialization
-procedures have been done.
+%This analyze work took around 3 weeks and the the integration became to work
+%properly. In the ML605 the version of the IP and driver was one of the first
+%ones, then it was needed only the SPI for registers read and write and one
+%GPIO pin to reset the device.
+
+By default the AD9361 driver has a waveform generator which feeds the DAC with a
+carrier wave at 2.4GHz, so if the initialization works, it is possible to watch
+in the oscilloscope or spectrum analyzer a sinusoidal (carrier) wave at 2.4 GHz
+after all initialization procedures have been concluded.
 
 \subsection{Control Interface}
 \label{subs:controlif}
 
-As stated in the previous subsection the FMComms2 control and communication
-interface is implemented through GPIO pins and SPI protocol, basically SPI is
-used to write and read registers in the board while GPIO is used for real-time
-control, like reset or change states in the ENSM.
+As stated in the previous subsection, the FMCOMMS2 control and communication
+interface is implemented through GPIO pins and an SPI communication between FPGA
+and AD9361. SPI is used to write and read registers in the board while GPIO is
+used for real-time control, like reset or change of states in the state machine
+that governs AD9361 operation, the enable state machine (ENSM).
 
-While the development was in its beginning the minimum pins for communication
-and reset work were assigned, however when the development wen to Vivado with
-the VC707 there was the need to build something more automated in order to be
-easily rebuild, so the \emph{ad9361\_comm} IP was created to route the respective
-pins from SPI and GPIO interfaces to the AD9361 control and communication interface.
+%While the development was in its beginning the minimum pins for communication
+%and reset work were assigned, however when the development wen to Vivado with
+%the VC707 there was the need to build something more automated in order to be
+%easily rebuild, so the \emph{ad9361\_comm} IP was created to route the respective
+%pins from SPI and GPIO interfaces to the AD9361 control and communication interface.
+
+In order to facilitate and better organize the development through the IP
+integrator in Vivado (were many IP cores are connected to each other), an IP
+core was developed uniquely to handle the routing between the AD9361 IP
+(supplied by Analog Devices) and the external GPIO and SPI ports. The IP was
+named \emph{ad9361\_comm}.
 
 In Figure \ref{fig:commif} it is possible to see in a simple schematic what is
-the \emph{ad9361\_comm} IP and how it routes the respective ports to the ad9361
-interface.
+the \emph{ad9361\_comm} IP and how it routes the respective ports to the AD9361
+interface. Where in teh FPGA we have the SPI and GPIO IP cores and they are
+routed by the \emph{ad9361\_comm} IP and assigned to respective pins in the FMC
+cnnector.
 
 %diagrama de blocos control interface
 \begin{figure}[htbp]
@@ -1220,25 +1242,46 @@ interface.
 
 \subsection{Transmitting custom data}
 
-After having the communication and initialization between FPGA and FMComms2
-board working properly, the next step was to input custom data into the device
-and efficiently transmit modulated information in the carrier wave.
-
-There is two basic ways to input data into the AD9361, to do so it is necessary
-to understand its communication interface, which is similar to the axi-stream
-interface with 3 ports, one for data, one for enable and one for valid and in
-Figure \ref{txpins} the interface can be illustrated. The first approach for
-input data into the transceiver was use a FIFO with a DDS IP in the FPGA which
-block diagram is in Figure \ref{fig:ad9361txfifo}, this setup was not dynamic
-enough, but it was enough for test purposes.
+Once communication and initialization between FPGA and FMComms2 board works
+properly, the next step is to input custom data into the device and efficiently
+transmit modulated information in the carrier wave. The Figure \ref{fig:txpin}
+illustrates the transmitting data interface and shows that AD9361 has flow
+control with the \emph{valid} and \emph{enable} pins in each channel. Through
+this flow control the blocks which are feeding the DAC with data know the right
+time to stop data flow.
 
 %inserir figura do IP AD9361 highlight TX interface pins
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.65\textwidth]{./figures/ad9361tx_pins}
-    \caption{ AD9361 Transmitter (DAC) interface pins
+    \caption{ AD9361 transmitter (DAC) interface pins.
     \label{fig:txpins}}
 \end{figure}
+
+%There are two basic ways to input data into the AD9361, to do so it is necessary
+%to understand its communication interface, which is similar to the axi-stream
+%interface with 3 ports, one for data, one for enable and one for valid and in
+%Figure \ref{txpins} the interface can be illustrated. The first approach for
+%input data into the transceiver was use a FIFO with a DDS IP in the FPGA which
+%block diagram is in Figure \ref{fig:ad9361txfifo}, this setup was not dynamic
+%enough, but it was enough for test purposes.
+
+There are two ways to input data into the AD9361, the first one requires a
+static data source (signal generator) feeding a FIFO connected directly to the
+AD9361 data ports and the second solution aims to replace such "static data
+source" for a dynamic and software controlled data source, accomplished by the
+use of DMA. Figure \ref{fig:ad9361txfifo} shows a scheme that illustrates the
+first method. Note that are no proper flow control implemented. However, this
+method is slow and can lose data easily because the DAC clock is inferior to the
+FPGA signal generation clock, which implies that DAC cannot read as fast as the
+FPGA can generate. In contrast, the DMA method allows faster reading speed and
+better flow control. Figure \ref{fig:ad9361txdma} illustrates this second
+alternative. Note that in this figure there is the need of a data interface in
+order to distribute the memory reading data (DDR3 - DMA) through the AD9361 data
+interface properly using only one DMA IP core. With this block the 32 bits read
+at each cycle by the DMA are simultaneous connected to the 32 bits IQ data
+interface ( 16 I and 16 Q bits), that is, the 32 read bits go through the ADC 0
+and ADC 1 simultaneously.
 
 %inserir diagrama de blocos de entrada DDS>FIFO>AD9361
 
@@ -1249,9 +1292,9 @@ enough, but it was enough for test purposes.
     \label{fig:ad9361txfifo}}
 \end{figure}
 
- After some time, the need for a faster interface rose, then the use of DMA
-came naturally, because it is faster and more reliable than the common FIFO,
-whcih can be illustrated in Figure \ref{fig:ad9361txdma}.
+% After some time, the need for a faster interface rose, then the use of DMA
+%came naturally, because it is faster and more reliable than the common FIFO,
+%whcih can be illustrated in Figure \ref{fig:ad9361txdma}.
 
 %inserir figura da interface DMA>AD9361
 \begin{figure}[htbp]
@@ -1263,12 +1306,12 @@ whcih can be illustrated in Figure \ref{fig:ad9361txdma}.
 
 \subsection{Receiving Custom data}
 
-Receiving is almost the opposite of transmitting custom data, in the beginning
-of the setup implementation using a DDS IP and a FIFO to input IQ data into the
-AD9361 was intuitively the easier way for transmission, and indeed was the same
-thing for receiving. In the Figures \ref{fig:rxpins} and \ref{fig:ad9361rxfifo}
-the receiving interface pins and setup with FIFOs and analyser IP (ILA) are
-illustrated respectively.
+Receiving is pratically the opposite of transmitting custom data. In Figure
+\ref{fig:rxpins} illustrates the receiving data interface, with the respective
+\emph{valid} and \emph{enable} pins for flow control. However, this interface
+has no memory, meaning that it can only send a continuous flow of data, which is
+no problem because the FPGA clock is at least 2 times faster than the AD9361
+clock.
 
 %inserir figura do IP AD9361 Highlight RX interface pins
 \begin{figure}[htbp]
@@ -1278,6 +1321,19 @@ illustrated respectively.
     \label{fig:rxpins}}
 \end{figure}
 
+The same idea of the transmission is implemented in the reception with some
+changes. Having two possible solutions, the first one being a simpler FIFO
+interface that receives data from the ADC and sends it to an signal analyzer
+embedded in the FPGA and the second solution involves a more dynamic approach,
+using the DMA to write the ADC output data to the memory allows such data to be
+processed after like comparing to the transmitted data for example. The Figure
+\ref{fig:ad9361rxfifo} illustrates the first solution. Note that this approach
+is straight forward and simple. The second approach is illustrated in Figure
+\ref{fig:ad9361rxdma} where like the transmitting interface, it needs a data
+interface to divide the 64 bits received by both channels in 32 bits segments
+that DMA can write in memory.
+
+
 %inserir diagrama de blocos de entrada AD9361>FIFO>ILA
 \begin{figure}[htbp]
     \centering
@@ -1285,10 +1341,6 @@ illustrated respectively.
     \caption{ AD9361 ADC interface with FIFO
     \label{fig:ad9361rxfifo}}
 \end{figure}
-
-The same idea used in transmission when the VC707 development began was applied
-to the receiver, using DMA to write received data to memory, then the diagram in
-Figure \ref{fig:ad9361rxdma} show such setup.
 
 %inserir figura da interface AD9361>DMA
 \begin{figure}[htbp]
@@ -1300,36 +1352,57 @@ Figure \ref{fig:ad9361rxdma} show such setup.
 
 
 \subsection{Data Interface}
+\label{subs:dataif}
 
 The data interface from the AD9361 to the FPGA logic is implemented as an IP in
-the FPGA design and is composed by two parts, a transmitting interface and a
-receiving interface. A hight level block diagram of the data interface can be
-seen in Figure \ref{fig:databd}. The transmitting interface connects the DMA,
-which is reading data from the main memory, with the DAC interface and the
-receiving interface connects the ADC output with the DMA that writes on the main
-memory, in the subsections below the two interface will be more explored.
+the FPGA design (\emph{ad9361\_data}) and is composed by two parts, a
+transmitting interface and a receiving interface. A high level block diagram of
+the data interface can be seen in Figure \ref{fig:databd}. The transmitting
+interface connects the DMA, which is reading data from the main memory, with the
+DAC interface and the receiving interface connects the ADC output with the DMA
+that writes on the main memory, in the subsections below the two interface will
+be more explored.
 
 %ad9361_data interface image
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.65\textwidth]{./figures/data_if}
-    \caption{ AD9361 Data Interface Block Diagram
+    \caption{ AD9361 data interface block diagram.
     \label{fig:databd}}
 \end{figure}
 
 \subsubsection{Transmitting Interface (Tx)}
 
-The receiving interface itself is divided in two main blocks, one block being the
-DAC-DMA interface and the other is the DAC interface. The DAC-DMA interface controls
-the reading channel of the DMA block, creating a “bottleneck” based on the reading
-clock, thus the DMA reading is limited by the reading clock, which is a way of
-synchronizing the DMA reading by the DAC clock, it does not work in perfectly but
-is a better solution than simply use FIFOs.
+The receiving interface itself is divided in two main blocks, one block being
+the \emph{DAC-DMA interface} and the other is the DAC interface. The two blocks are
+illustrated in Figure \ref{fig:dataiftx}. The DAC-DMA interface controls the
+memory reading channel of the DMA, which is accomplished by a de-multiplexer
+and two channels of cascaded FIFOs, this scheme allows for the 32 bit wide
+data, that DMA block outputs, to be fed "simultaneous" to both transmitting
+(DAC) interfaces, DAC 0 and DAC 1, as can be seen in Figure \ref{fig:dataiftx}.
+The behavior of the de-multiplexer block is controlled by a commuter function
+that basically makes the de-multiplexer block to send the same signal in both
+channels. Another thing worth to mention about the \emph{DAC-DMA interface} is that
+all the flow control signals that DAC outputs go through all the blocks and end
+up in DMA, thus controlling all the data flow.
 
-The DAC-DMA is implemented using a commuter controlling a demultiplexer block,
-this means that the data read from the memory by the DMA is loaded one into the
-demultiplexer and it feeds one channel at the time, both channels are enabled
-for use. In Figure \ref{fig:dataiftx} there is a block diagram of the interface:
+The \emph{DAC interface} block is another measure of flow control, since the DMA
+works in a higher frequency than the DAC block. The FIFOs in the \emph{DAC
+interface} acts as a temporary "memory" to keep the flow continuous and they
+also have the role to change the clock domain, such as their writing clock
+(DAC-DMA interface) is the master clock of the FPGA AXI clock (100 MHz) and the
+read clock (DAC) is the actual DAC sampling clock (30.72 MHz), this role is
+illustrated by the dashed line in Figure \ref{fig:dataiftx}.
+%The DAC-DMA interface controls the reading channel of the DMA block, creating a
+%“bottleneck” based on the reading clock, thus the DMA reading is limited by the
+%reading clock, which is a way of synchronizing the DMA reading by the DAC
+%clock, it does not work in perfectly but is a better solution than simply use
+%FIFOs.
+%
+%The DAC-DMA is implemented using a commuter controlling a demultiplexer block,
+%this means that the data read from the memory by the DMA is loaded one into the
+%demultiplexer and it feeds one channel at the time, both channels are enabled
+%for use. In Figure \ref{fig:dataiftx} there is a block diagram of the interface:
 
 \begin{figure}[htbp]
     \centering
@@ -1340,14 +1413,19 @@ for use. In Figure \ref{fig:dataiftx} there is a block diagram of the interface:
 
 \subsubsection{Receiving Interface (Rx)}
 
- The receiving interface itself is rather simple in comparison with the
-transmitting interface because the speed in which the data is read by the DMA
-is already limited by the DAC clock from the AD9361 interface, thus the ADC
-interface has just to commute both channels into one, feeding one sample from
+The receiving interface itself is rather simple in comparison with the
+transmitting interface because the speed in which the data is written into the
+memory by the DMA is already limited by the DAC clock from the AD9361 interface.
+For example, if the ADC is operating at 30.72 MHz, bit rate is x (assuming 32
+bits per IQ sample). However, the DMA can operate up to y mbps, so it is capable
+of much faster inflow of data. In this case, since the DMA receives data via AXI
+and the protocol only passes data when data is available, over flow does not
+occur. Thus the ADC interface has just to commute both channels into one
+(Represented by the "+" in Figure \ref{fig:dataifrx}), feeding one sample from
 each ADC channel at a time to the DMA, be able to accomplish such, there is a
-state machine to control the FIFO output to the DMA. In Figure
-\ref{fig:dataifrx} it is possible to see a block diagram describing the
-Receiving interface with more details.
+state machine to control the FIFO output to the DMA. This state machine is
+controlled by the flow control signals outputted by the ADC, \emph{enables} and
+\emph{valids} as can be seen in Figure \ref{fig:dataifrx}.
 
 \begin{figure}[htbp]
     \centering
@@ -1359,38 +1437,50 @@ Receiving interface with more details.
 \section{Driver}
 \label{impl:driver}
 
-This setup driver has several parts, it not only initiates the FMComms2 hardware
-but also initiates all the systems in the FPGA design, like Interrupt Controller,
- DMA, SPI and GPIO needed to control and read/write data into the FMComms2.
+This setup driver has several parts. It not only initiates the FMComms2 hardware
+but also initiates all the systems in the FPGA design, like the interrupt
+controller, DMA, SPI and GPIO needed to control and read/write data into the
+FMCOMMS2.
 
-The hardware drivers itself are not extremely complicated nor needed to be changed
-too much, Xilinx offers all the basic drivers for the boards, for example DMA Engine,
-Ethernet PHY and Interrupt System, the only thing which must be handled with care is
-the address space and device ID for each block, knowing how the IP is configured,
-or which option he is configured to run is the key to make a driver work.
+The hardware drivers themselves are not extremely complicated nor needed to be
+changed too much. Xilinx offers all the basic drivers for the boards, for
+example DMA engine, ethernet PHY and interrupt system. The only thing which must
+be handled with care is the address space and device ID for each block, knowing
+how the IP is configured, or which option he is configured to run is the key to
+make a driver work.
 
-Xilinx also packs the design tools with documented examples, one for each running
-configuration of the device, of course there are always unpredictable things to come,
-but there is full support for debugging the program inside the soft processor
-Microblaze.
+Xilinx also packs the design tools with documented examples, one for each
+running configuration of the device. There is full support for debugging the
+program inside the soft processor Microblaze.
 
 \subsection{AD9361 Driver}
 
 The AD9361 driver is very complex and carries the job of initializing and
-configuring the AD9361 chi inside the FMcomms2 board, it also initializes the
-GPIO and SPI drivers, which functionality are not worth to explain deeply
-because they are used for control and communication and there was no need to
-modify or to add any functions to those, their role on the AD9361 is explained
-in the subsection \ref{subsec:fmcomms2}.
+configuring the AD9361 chip inside the FMCOMMS2 board. It also initializes the
+GPIO and SPI drivers (it can be seen in Figure \ref{fig:ad9361init}), which
+functionality are not worth to explain deeply because they are just used for
+control and communication and there was no need to modify or to add any
+functions to those. The Figure \ref{fig:ad9361init} illustrates all the process
+of initiating and configure the AD9361 driver.
+The initialization begins in block "AD9361 Initialization" writing in all the
+AD9361 registers with the initialization parameters and after this, the driver
+initializes all the PLLs and begin to calibrate the analog and digital
+interfaces, which is illustrated by the blue part of the Figure
+\ref{fig:ad9361init}. With the AD9361 initialization complete it is possible to
+change parameters, reconfigure filters and  change oscillators frequency, if any
+parameter such as this is changed, the driver must be recalibrate, however it is
+done automatically.
 
-The initialization begins writing in all the AD9361 registers with the
-initialization parameters and after this, the driver initializes all the PLLs
-and begin to calibrate the analog and digital interfaces. With the AD9361
-initialization complete it is possible to change parameters, reconfigure filters
-and  change oscillators frequency, if any parameter such as this is changed, the
-driver must be recalibrate, however it is done automatically.The process of
-initialization, and configuration for this work is explained in the Figure
+In this work there were the need to craft specific filters, set sampling
+frequencies and set AGC in order to be able to transmit the waveform stored in
+the memory. The order of this process can be seen in the blue part of the Figure
 \ref{fig:ad9361init}.
+
+Having every key aspect properly configured the last 2 blocks of the diagram in
+Figure \ref{fig:ad9361init} shows that the \emph{DAC initialization} in
+\textit{DMA mode} is needed for transmission and \emph{ADC capture} is needed
+for reception. The ADC capture function needs to receive also a size (in Kb) of
+the capture.
 
 %adicionar diagrama de fluxo da inicialização do ad9361
 
@@ -1403,30 +1493,39 @@ initialization, and configuration for this work is explained in the Figure
 
 \subsection{Interrupts and DMA}
 
-Basically FMComms2 utilizes the DMA Engine to read and write in the DDR3 Memory
-and thus DMA Engine uses interrupt to inform the processor regarding the data
-read and write. The DMA has to initialize the configuration, and then configure
-the device.
+Basically FMCOMMS2 utilizes the DMA Engine to read and write in the DDR3 Memory
+and the DMA Engine uses interrupts to inform the processor when read and write
+data transfers are completed. The DMA has to initialize the configuration, and
+then configure the device, which is represented by the block \emph{Interrupt
+Controller Initialization} in Figure \ref{fig:intcdmainit}.
 
-After device is configured, since the DMA is configured in scatter gather mode,
-there is the need to allocate the Block Descriptors for Transmitting (reading)
-and Receiving (writing), each block descriptor carries a the beginning address
-of the memory to be read, the size of the reading operation and the address of
-the next block to read, basically this allows for the DMA to read non continuous
-memory spaces.
+After the device is configured, since the DMA is configured in scatter gather
+mode, there is the need to allocate the block descriptors (BD) for transmitting
+(reading) and receiving (writing), this process is illustrated in the orange
+part of the Figure \ref{fig:intcdmainit}. Each block descriptor carries the
+initial address of the memory address range to be read, the size of the reading
+operation and the address of the next block to read. This allows for the DMA to
+read non continuous memory spaces since each descriptor defines an independent
+memory region and calls the sequential descriptor (a linked list). After
+settting up the BDs the DMA driver has also to setup an interrupt handler for
+these blocks, that is a function executed every time an interrupt is asserted.
 
-After all the blocks are processed by DMA and all the reading is done, the DMA
-generates an interrupt to inform the processor that the reading process is done
-and in such interrupt routine the cyclic process is implemented, it basically
-sends DMA back to the start Block descriptor and the process of reading the
-memory runs again and again until the kill signal is asserted, this is not the
-optimal solution, however it is the one which worked for now.
+After all the blocks are processed by the DMA and all the reading is done, the
+DMA generates an interrupt to inform the processor that the reading process is
+done and in such interrupt routine the cyclic process is implemented,
+represented in the blue part of the Figure \ref{fig:intcdmainit}. The process
+consists of a loop in the block descriptors, it basically sends DMA back to the
+start Block descriptor by the interrupt handler initialized by the DMA driver
+and the process of reading the memory runs again and again until the kill signal
+is asserted.
 
- In the normal mode, the DMA expects and address and a size, and the it begins
+In the normal mode, the DMA expects and address an a size, and then it begins
 reading or writing in this address until the end of the size and the the DMA
-asserts interrupt and stops which is not convenient for this work. The
-initialization steps for both DMA and INTC are described in the figure
-\ref{fig:intcdmainit}.
+asserts an interrupt and stops. This is not convenient in the prototype
+developed in this work, because it was impossible to make measurements in an
+oscilloscope or spectrum analyser, the signal would last less than one second,
+and doing in cyclic way allows a small number of samples (16 KSamples) to be
+transmitted continuously.
 
 \begin{figure}[htbp]
     \centering
@@ -1436,26 +1535,44 @@ initialization steps for both DMA and INTC are described in the figure
 \end{figure}
 
 \section{Applications}
-
+%
 This setup was meant to be used in the academic and research and development
 environments for such it is extensively documented in this document and in the
 source codes in the repository, thus this section aims to be a guideline for
-whoever needs to use this work for research or study.
+whoever needs to use this work for research or study. Having such role in mind,
+all the development was done using \emph{GIT} platform and in this repository
+there are all the scripts and instructions to build and replicate this work
+\cite{web:gitproject}.
 
-\subsection{Academic Environment}
+ This project was build in \emph{Vivado Design Tool} version 2015.2.1
+\cite{xilinx:vivado} and that is the only software needed to build and
+replicate this work. All the development is comprised in \emph{.tcl} scripts,
+these scripts are read by \emph{Vivado} and the hardware is built from these
+instructions. These is also a section in the project \emph{.tcl} script to copy
+the needed files from the directory tree and generate the program with all the
+driver initiations.
 
-This setup was meant to be used in such academic environment, the data and control
-interface are ready to be used, for this the student can generate the data in
-matlab and load it as a vector in a .h file, this file shall be read by the DMA
-driver.
-There is also the possibility to develop a modulation/demodulation block
-and input this block feeding the data interface, thus all the modulated data can
-be transmitted and received, the only limitation of such development would be the
-FPGA board own DSP capability.
-
-\subsection{Research environment}
-
-In the research and development environment, this work can be used as a testbed
-for any algorithm in LTE frequency range like compression, synchronization and
-transmission tests. This setup saves time in the development where the developer
-does not need to worry about any hardware issues and focus on the algorithm.
+This setup cannot generate it own waveforms, it has a waveform loaded in a
+\emph{.h} file that is loaded by the DMA in cyclic transmission. This waveform
+need to be generated in a software like \emph{MATLAB} and the loaded as a
+source. The Analog Devices company has already generated some LTE signal samples
+which are on their \emph{GIT} repository \cite{web:gitanalogdevlte} and the
+instructions are on how to use these tools to generate signals are in
+\cite{web:analogmatlabwiki}.
+%\subsection{Academic Environment}
+%
+%This setup was meant to be used in such academic environment, the data and control
+%interface are ready to be used, for this the student can generate the data in
+%matlab and load it as a vector in a .h file, this file shall be read by the DMA
+%driver.
+%There is also the possibility to develop a modulation/demodulation block
+%and input this block feeding the data interface, thus all the modulated data can
+%be transmitted and received, the only limitation of such development would be the
+%FPGA board own DSP capability.
+%
+%\subsection{Research environment}
+%
+%In the research and development environment, this work can be used as a testbed
+%for any algorithm in LTE frequency range like compression, synchronization and
+%transmission tests. This setup saves time in the development where the developer
+%does not need to worry about any hardware issues and focus on the algorithm.
