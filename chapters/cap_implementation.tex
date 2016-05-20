@@ -1411,22 +1411,21 @@ illustrated by the dashed line in Figure \ref{fig:dataiftx}.
     \label{fig:dataiftx}}
 \end{figure}
 
-\subsubsection{Receiving Interface (Rx)}
+\subsubsection{Receiving Interface (Rx)} %aqui
 
 The receiving interface itself is rather simple in comparison with the
 transmitting interface because the speed in which the data is written into the
 memory by the DMA is already limited by the DAC clock from the AD9361 interface.
-For example, if the ADC is operating at 30.72 MHz, bit rate is x (assuming 32
-bits per IQ sample). However, the DMA can operate up to y mbps, so it is capable
-of much faster inflow of data. In this case, since the DMA receives data via AXI
-and the protocol only passes data when data is available, over flow does not
-occur. Thus the ADC interface has just to commute both channels into one
-(Represented by the "+" in Figure \ref{fig:dataifrx}), feeding one sample from
-each ADC channel at a time to the DMA, be able to accomplish such, there is a
-state machine to control the FIFO output to the DMA. This state machine is
-controlled by the flow control signals outputted by the ADC, \emph{enables} and
-\emph{valids} as can be seen in Figure \ref{fig:dataifrx}.
-
+For example, if the ADC is operating at 30.72 MHz, bit rate is 983 mbps
+(assuming 32 bits per IQ sample). However, the DMA can operate up to 3.2 Gbps,
+so it is capable of much faster inflow of data. In this case, since the DMA
+receives data via AXI and the protocol only passes data when data is available,
+over flow does not occur. Thus the ADC interface has just to commute both
+channels into one (Represented by the "+" in Figure \ref{fig:dataifrx}), feeding
+one sample from each ADC channel at a time to the DMA, be able to accomplish
+such, there is a state machine to control the FIFO output to the DMA. This state
+machine is controlled by the flow control signals outputted by the ADC,
+\emph{enables} and \emph{valids} as can be seen in Figure \ref{fig:dataifrx}.
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.85\textwidth]{./figures/rxdata_if}
