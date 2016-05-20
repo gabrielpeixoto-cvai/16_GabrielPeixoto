@@ -13,7 +13,7 @@ the complexity involved in the design.
 %foto setup pronto
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.45\textwidth]{./figures/ad9361_functional_diagram}
+    \includegraphics[width=0.85\textwidth]{./figures/setup_pic}
     \caption{ Image of the setup hardware.
     \label{fig:setup}}
 \end{figure}
@@ -78,7 +78,9 @@ measurements in the bottom of the picture.
 %freq
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.85\textwidth]{./figures/oscill_freq}
+    \includegraphics[width=0.85\textwidth,
+    trim={{.17\textwidth} 0 {.02\textwidth} {.24\textwidth}},
+    clip]{./figures/oscill_freq}
     \caption{ Carrier waveform with frequency Measurement.
     \label{fig:oscillfreq}}
 \end{figure}
@@ -267,14 +269,18 @@ left and the constellation in the right.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.85\textwidth]{./figures/oscill_ad9361_dac_clk}
+    \includegraphics[width=0.85\textwidth,
+    trim={{.17\textwidth} 0 {.02\textwidth} {.24\textwidth}},
+    clip]{./figures/oscill_ad9361_dac_clk}
     \caption{ DAC clock output.
     \label{fig:dacclk}}
 \end{figure}
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.85\textwidth]{./figures/lte_5m}
+    \includegraphics[width=0.8\textwidth,
+    trim={0 0 {.27\textwidth} {.1\textwidth}},
+    clip]{./figures/lte_5m}
     \caption{ LTE signal output from FMCOMMS2 spectrum.
     \label{fig:lte5m}}
 \end{figure}
@@ -284,7 +290,7 @@ left and the constellation in the right.
 %
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.85\textwidth]{./figures/evm}
+    \includegraphics[width=0.95\textwidth]{./figures/evm}
     \caption{ Downlink LTE EVM.
     \label{fig:evm}}
 \end{figure}
