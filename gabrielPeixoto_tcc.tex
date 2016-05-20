@@ -92,43 +92,35 @@ mais recorrente, por causa de sua grande capacidade de escalar e criar um
 sistema que seja perfeito para o tipo de aplica\c{c}\~{a}o do usu\'{a}rio.
 Partindo dos dois conceitos citados anteriormente um paradigma no ramo das
 tecnologias de acesso a r\'{a}dio vem gerando interesse nas operadoras, as redes
-de acesso a radio centralizadas, ou em nuvem (C-RAN), com esse tipo de
-tecnologia seria poss\'{i}vel escalar e alocar recursos dinâmicamente como todo
-o poder que a computa\c{c}\~{a}o em nuvem proporciona e redirecionar esses
+de acesso a radio centralizadas, ou em nuvem (C-RAN). Com esse tipo de
+tecnologia torna-se poss\'{i}vel escalar e alocar recursos dinâmicamente como
+todo o poder que a computa\c{c}\~{a}o em nuvem proporciona e redirecionar esses
 recursos para melhorar a qualidade das comunica\c{c}\~{o}es m\'{o}veis.
 
-Como o conceito C-RAN \'{e} novo, logicamente surgem diversos questionamentos
-acerca de como implementar e de que dispositivos ou tecnologias usar. Este
-trabalho tem como objetivo avaliar um poss\'{i}vel setup de um fronthaul em LTE
-que possa trabalhar de acordo com a demanda de reconfigurabilidade e
-escalabilidade que o paradigma C-RAn necessita. Sendo este setup de um fronthaul
-composto por dois dispositivos, uma FPGA (fronthaul digital) e um transceiver
-(fronthaul anal\'{o}gico), ambos em combina\c{c}\~{a}o forma uma plataforma com
-uma forte capacidade de reconfigura\c{c}\~{a}o em tempo-real.
+Como o conceito C-RAN \'{e} relativamente novo, naturalmente surgem diversos
+questionamentos acerca de como implementar e de que dispositivos ou tecnologias
+usar. Este trabalho tem como objetivo avaliar um poss\'{i}vel setup de um
+fronthaul em sistemas m\'{o}veis de quarta gera\c{c}\~{a}o que possa trabalhar
+de acordo com a demanda de reconfigurabilidade e escalabilidade que o paradigma
+C-RAN necessita. Sendo este setup de um fronthaul composto por dois
+dispositivos, uma FPGA (fronthaul digital) e um transceiver (fronthaul
+anal\'{o}gico), a combina\c{c}\~{a}o de ambos forma uma plataforma com uma forte
+capacidade de reconfigura\c{c}\~{a}o em tempo-real.
 
-O foco deste trabalho \'{e} a implementa\c{c}\~{a}o e a avalia\c{c}\~{a}o de sua
-viabilidade, para tal o desenvolvimento come\c{c}ou com simples estudos das
-plataformas em termos de controle e comunica\c{c}\~{a}o e vai at\'{e}
-avalia\c{c}\~{a}o da comunica\c{c}\~{a}o. Este trabalho foi implementado usando
-duas placas FPGA, primeiramente testado na placa ML605 com o chip FPGA Virtex-6
-e ap\'{o}s o design foi portado para a placa VC707 com o chip FPGA Virtex-7 que
-possu\'{i}a mais op\c{c}\~{o}es e perif\'{e}ricos interessantes para este
-trabalho. O transceiver usado foi a placa FmcommS2 que possui capacidade de
+O foco deste trabalho \'{e} a implementa\c{c}\~{a}o, a avalia\c{c}\~{a}o de sua
+viabilidade, bem como a documenta\c{c}\~{a}o dos componentes da plataforma
+visando disponibiliza\c{c}\~{a}o para uso de prop\'{o}sito educativo. Este
+trabalho foi implementado usando duas placas FPGA, as placas Xilinx ML605 e
+VC707. O transceiver usado foi a placa FmcommS2 que possui capacidade de
 múltiplas transmiss\~{o}es e recep\~{o}es (MIMO) e se conecta com a placa FPGA
 atrav\'{e}s do conector FMC.
 
 Neste trabalho foram estudados a integra\c{c}\~{a}o e controle do transceiver
 pela FPGA, e ap\'{o}s isso o desenvolvimento de interfaces para transmiss\~{a}o
 e recep\c{c}\~{a}o de dados, assim como os respectivos drivers e softwares
-necess\'{a}rios para tal. O texto est\'{a} dividido em 5 partes totalizando 6
-cap\'{i}tulos, a primeira parte \'{e} uma introdu\c{c}\~{a}o do trabalho, a
-segunda parte trata de toda base te\'{o}rica utilizada no desenvolvimento, a
-terceira parte \'{e} o núcleo do projeto onde v\~{a}o ser explicados as
-funcionalidades dos dispositivos usados assim como todo o processo de
-desenvolvimento estar\'{a} documentado nela. A quarta parte documenta os
-resultados tanto de execu\c{c}\~{a}o quanto de simula\c{c}\~{a}o e os compara a
-resultados esperados. A quinta e última parte trata das conclus\~{o}es e
-poss\'{i}veis trabalhos futuros.
+necess\'{a}rios para tal. Este texto busca introduzir conceitos te\'{o}ricos
+utilizados no desenvolvimento do projeto assim como documentar esse
+desenvolvimento, mostrando os devidos resultados no final.
 
 \end{ufpaResumo}
 
@@ -138,36 +130,34 @@ The evolution of mobile services in terms of access technologies and application
 layers is driving a huge change in mobile communication systems. A recent hot
 topic in the field is the rise of the cloud computing paradigm and in
 telecommunications industry the idea known as cloud radio access networks
-(Cloud-RAN) is getting attention. This behavior comes from the potential of
-cloudfication for improvement in the efficiency of resource allocation,
-manageability and power consumption, challenges of traditional RANs.
+(Cloud-RAN) is getting attention. This comes from the potential of cloudfication
+for improving the efficiency of resource allocation, manageability and power
+consumption, challenges of traditional RANs.
 
-Thus, with the emerging of C-RAN, several questions about how to implement and
-which tools to use come naturally. This work aims to evaluate the potential of a
-programmable fronthaul radio interface, as known, current networks do not have
-the adaptive capability needed for the C-RAN. For this work a setup of a radio
-unit, composed by one FPGA (digital front-end of the radio unity) and one
-transceiver (analog front-end) connected in the FPGA board. Within this setup
-various algorithms can be tested and can be evaluated in LTE scenarios because
-the transceiver works in LTE and C-RAN.
+With the emerging of C-RAN, several questions about how to implement and which
+tools to use come naturally. This work aims to evaluate the potential of a
+programmable fronthaul radio interface, motivated by the fact that current
+networks do not have the adaptive capability needed for the C-RAN. For this work
+a setup of a radio unit, composed by one FPGA (digital front-end of the radio
+unit) and one transceiver (analog front-end) connected in the FPGA board. Within
+this setup various algorithms can be tested and can be evaluated in LTE
+scenarios because the transceiver works in LTE and C-RAN.
 
 This work shall focus on the evaluation of the radio interface, exploring FPGA
 adaptability and parallelism with the internal and external communication
 protocols, and so exploring the advantages of the transceiver used, the FMCOMMS2
-development board from Analog Devices featured with the AD9361 chip,, which is a
-device broadly used in software defined radio hardwares, as known as USRPs
-(Universal Software Radio Peripheral).
-
-An aspect of the transceiver that is very attractive to the C-RAN paradigm is
-its reconfigurability and scalability. The hardware is capable of real-time
-adjustments in the sampling frequency or operation mode from 2x2 to 4x4 MIMO
-(Multiple Inputs and Multiple Outputs), which is attractive to C-RAN
-environment.
+development board from Analog Devices featured with the AD9361 chip, which is a
+device broadly used in software defined radio hardwares, more commonly known as
+USRPs (Universal Software Radio Peripheral). An aspect of the transceiver that
+is very attractive to the C-RAN paradigm is its reconfigurability and
+scalability. The hardware is capable of real-time adjustments in the sampling
+frequency or operation mode from 2x2 to 4x4 MIMO (Multiple Inputs and Multiple
+Outputs), which is attractive to C-RAN environment.
 
 The goals of this work is evaluate the platform as a suitable device to be used
-in such dynamic environment and document every step of the integration and
-hardware/software development. The communication between FPGA and transceiver as
-long as downlink transmission shall be evaluated.
+in such dynamic environment and document every step of the integration as well
+as the hardware/software development. The communication between FPGA and
+transceiver for downlink transmission shall be evaluated.
 
 %The results are generated primarily aiming a fidelity in the transmitted and
 %receiver signals, after these results are conclusive it is possible to proceed
