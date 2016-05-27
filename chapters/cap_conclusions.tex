@@ -4,7 +4,7 @@
 \section{Conclusion}
 \label{sec:conclusion}
 
-This work presented the details of flexible FPGA-based SDR prototype. The
+This work presented the details of a flexible FPGA-based SDR prototype. The
 development of this setup was meant to be general and be used in both research
 and academic environments. The process of implementing this setup involved a
 large set of knowledges from distinct fields in telecommunications and embedded
@@ -28,12 +28,12 @@ how to develop in such environment.
 This work is also running in a microcontroller without any operating system,
 which is a very interesting environment to understand computer hardware in a
 low-level fashion. The study of the software in the processor can clarify some
-aspects of design embedded systems.
+aspects of embedded systems design.
 
-Although the FMCOMMS2 and the FPGA operates on different clocks and no real
+Although the FMCOMMS2 and the FPGA operate on different clocks and no real
 synchronization was implemented, this setup has the capability of transmitting
 and receiving signals and reconfigure itself on real-time, which is one of the
-requirements presented in Chapters \ref{chap:sdr} and \ref{chap:lte}.
+requirements presented in Chapters \ref{chap:sdr} and \ref{chap:lte}. This
 
 \section{Future Works}
 \label{sec:futurew}
@@ -46,7 +46,7 @@ setup for a scalable and dynamically configurable front-end.
 The prototype developed in this work can be improved in terms of flexibility by
 adding Ethernet connection driver in the FPGA, making it possible to receive
 data from Ethernet and hand this data to the transceiver board following the
-idea presented in the schematic \ref{fig:setupeth}. TIn order to do so,
+idea presented in the schematic of Figure \ref{fig:setupeth}. In order to do so,
 particularly for synchronous transmission of data coming via Ethernet, proper
 synchronization would be required. There would be some difficulty associated
 with this improvement, mainly because the clock in which everything inside the
@@ -55,7 +55,7 @@ phase, which can bring a lot of problems. However, there is the possibility of
 feeding FMCCOMMS2 with an external clock which would increase its performance.
 
 With Ethernet it would be possible to generate the modulated samples in an
-external software (e.g. in a PC) and send them trough air, similar to what
+external software (e.g.\ in a PC) and send them trough air, similar to what
 GNURadio accomplishes when connected to an USRP. Additionally, it would be
 possible to demodulate the received samples in the PC. Furthermore, there is the
 possibility of introducing modulation and demodulation blocks in the FPGA
@@ -68,6 +68,6 @@ environment, because Ethernet is cheap and easy to implement.
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.95\textwidth]{./figures/eth_setup}
-    \caption{ Setup enhanced with ethernet connection.
+    \caption{ Setup enhanced with Ethernet connection.
     \label{fig:setupeth}}
 \end{figure}
