@@ -1,8 +1,8 @@
 \chapter{Results}
 \label{chap:results}
 
-This works goals were divided in basically two steps, configuration and
-transmission (downlink) having these two steps working it is possible to
+This works goals were divided in basically two steps, initialization and
+transmission (downlink). Having these two steps working it is possible to
 understand and evaluate the results of such hardware platform. Figure
 \ref{fig:setup} shows how the hardware is arranged. In Figure \ref{fig:setupbd}
 it is possible to see the setup's block diagram, which gives the idea of the
@@ -18,19 +18,20 @@ the complexity involved in the design.
     \label{fig:setup}}
 \end{figure}
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.35\textwidth]{./figures/fpga_area}
-    \caption{ FPGA area used in this setup.
-    \label{fig:fpgaarea}}
-\end{figure}
-
 %foto diagrama de blocos
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.95\textwidth]{./figures/setup_bd}
     \caption{ Image of the setup block diagram.
     \label{fig:setupbd}}
+\end{figure}
+
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.35\textwidth]{./figures/fpga_area}
+    \caption{ FPGA area used in this setup.
+    \label{fig:fpgaarea}}
 \end{figure}
 
 \vfill
@@ -41,13 +42,14 @@ the complexity involved in the design.
 
 The preliminary tests focused on the initialization and communication between
 FPGA and the FMComms2 board. In the previous chapter, the steps of setting up
-communication and control interface were described, and it was particularly
+communication and control interfaces were described, and it was particularly
 stated that after the initialization and calibration is finished, it is possible
 to observe the carrier wave centralized at the frequency 2.4 GHz.
 
-To generate the outputs two analyzers were used, one oscilloscope and one
-spectrum analyzer. In Figure \ref{fig:spec} it is possible to see the output of
-the spectrum analyzer where the carrier wave is at 2.45 GHz and in Figure
+To generate the outputs two analyzers were used, one mixed signal oscilloscope
+(model MSO9104A) and one spectrum analyzer (model N9010A) both from Agilent
+technologies company. In Figure \ref{fig:spec} it is possible to see the output
+of the spectrum analyzer where the carrier wave is at 2.45 GHz and in Figure
 \ref{fig:oscillfreq} there is the oscilloscope sinusoidal wave with frequency
 measurements in the bottom of the picture.
 
@@ -59,21 +61,6 @@ measurements in the bottom of the picture.
     \label{fig:spec}}
 \end{figure}
 
-%%initialization
-%\begin{figure}[htbp]
-%    \centering
-%    \includegraphics[width=0.85\textwidth]{./figures/oscill_init}
-%    \caption{ Carrier Waveform after Initialization
-%    \label{fig:oscillinit}}
-%\end{figure}
-
-%%digital tune
-%\begin{figure}[htbp]
-%    \centering
-%    \includegraphics[width=0.85\textwidth]{./figures/oscill_dig}
-%    \caption{ Carrier Waveform after Tunning Digital Interface
-%    \label{fig:oscilldig}}
-%\end{figure}
 
 %freq
 \begin{figure}[htbp]
@@ -85,21 +72,6 @@ measurements in the bottom of the picture.
     \label{fig:oscillfreq}}
 \end{figure}
 
-%%fft config
-%\begin{figure}[htbp]
-%    \centering
-%    \includegraphics[width=0.85\textwidth]{./figures/oscill_fftcf}
-%    \caption{ FFT Configuration Parameters
-%    \label{fig:oscillfftcf}}
-%\end{figure}
-%
-%%wave + fft
-%\begin{figure}[htbp]
-%    \centering
-%    \includegraphics[width=0.85\textwidth]{./figures/oscill_fft}
-%    \caption{ FFT and Carrier Waveform
-%    \label{fig:oscillfft}}
-%\end{figure}
 
 %\vfill
 %\clearpage
@@ -107,7 +79,7 @@ measurements in the bottom of the picture.
 \section{Simulation}
 
 An important step in HDL development is the logic simulation of the circuit.
-Through this simulation it is possible to watch every port and be able to
+Through this simulation it is possible to monitor every port and be able to
 understand the block behavior, thus correcting any problem or misbehavior.
 
 \subsection{Transmit (DAC) Interface Simulation}
@@ -151,7 +123,7 @@ sig\_axis\_axc1\_qtdata}) and being outputted by the block.
  changes in outputs accompanying \textit{ready and valid} signals of the AXI
  protocol, which are used as a way of controlling the data flow from the
  \textit{DMA}. In such scheme, the \textit{DMA} asserts \textit{valid} whenever
- it can send data. However, it only send the data when fed by a ready signal,
+ it can send data. However, it only sends the data when fed by a ready signal,
  meaning that the reading block can read the \textit{DMA} data.
 
 \begin{figure}[htbp]
@@ -169,7 +141,7 @@ the whole transmit interface block. In Figure \ref{fig:simtxif} it is possible
 to watch the \textit{DMA} data in the signal in \textit{dac-dmaIterface} and the
 outputs which would feed the \textit{AD9361} two \textit{DACs} in the signals
 \textit{sig\_dac\_i0data, sig\_dac\_q0data, sig\_dac\_i1data and
-sig\_dac\_q1data}.Again, it is possible to note the data changes when the
+sig\_dac\_q1data}. Again, it is possible to note the data changes when the
 \textit{ready and valid} changes. Another interesting thing to observe is the
 two clock variables \textit{axi\_clk} and \textit{dac\_clk} which represent both
 AXI system clock $ 100 MHz$ and the DAC clock $40 MHz$, this difference
@@ -187,10 +159,9 @@ justifies the use of such interface.
 
 \subsection{Receive (ADC) Interface Simulation}
 
-As stated before in Chapter \ref{chap:implementation} in the Section
-\ref{impl:setup}, the DAC interface is simple because the data input is already
-limited by the DAC clock, so there is no need to make any structure to control
-the data flow like in the DAC interface.
+As stated before in Section \ref{impl:setup}, the DAC interface is simple
+because the data input is already limited by the DAC clock, so there is no need
+to make any structure to control the data flow like in the DAC interface.
 
 In Figure \ref{fig:simdac} it is possible to see the output and wave diagram in
 the simulation window. Since the \textit{adcInterface} is much simpler, because
@@ -302,7 +273,7 @@ left and the constellation in the right.
 \label{result:optimum}
 
 The expected transmission of LTE signals are below demonstrated by the Analog
-Devices ina na LTE transmission and reception example using the same
+Devices in a LTE transmission and reception example using the same
 transceiver in \cite{web:lteexamplewiki}. Comparing these results with the ones
 obtained in Figure \ref{fig:evm} it is possible to note that they are similar
 although both are not optimal results.
