@@ -170,21 +170,24 @@ which are able to use such hardware, such as \textit{Mathwork's Simulink}.
 \label{sec:sdr_app}
 
 As stated before in Section \ref{sdr:overview}, SDR has a wide range of applications,
-and very interesting advantages over the current systems. This work shall focus
-on the C-RAN and educational applications of \emph{Software Defined Radio}.
+and very interesting advantages over the current systems. This section shall focus
+on the C-RAN applications of \emph{Software-defined Radio}.
 
 C-RAN comes from the cloud idea of Infrastructure as a service (IaaS) or in this
 case RAN as a service, thus it needs a reconfigurable and scalable
 infrastructure to fulfill the customer needs. SDR is perfect for such
 applications because  it is in essence reconfigurable and scalable.
 
-The two images below contrast the past RAN infrastructure, still in use today,
-with the C-RAN for such there is the need of reconfigurable and scalable
-front-haul infrastructure. In the C-RAN paradigm all the processing elements of
-the systems are centralized in a server-farm like disposition and the radio front-haul
-can be dynamically used depending on the needs of the network. In the Figures
-\ref{fig:tran} and \ref{fig:cran} it is possible to understand the evolution
-from the traditional RAN to the C-RAN paradigm.
+The two images below contrast the past RAN infrastructure in Figure
+\ref{fig:tran}, where there is a baseband processing unit on every transmission
+tower, increasing the costs of maintenance and deployment. The traditional RAN
+scheme is still in use today. However, it is not economically or technologically
+interesting, that is were C-RAN paradigm in Figure \ref{fig:cran} aims to
+change, with it all the processing elements of the systems are centralized in a
+server-farm like disposition and the radio front-haul can be dynamically used
+depending on the needs of the network. Thus there is the need of reconfigurable
+and scalable front-haul infrastructure.
+
 
 %RAN network image
 \begin{figure}[htbp]
@@ -268,7 +271,8 @@ This work has a SDR like implementation done in FPGA and using the transceiver
 AD9361 which makes upconversion (transmitter) and downconversion
 (receiver), filters and make analog to digital conversion and digital to analog
 conversion. It is possible to implement transmitter and receiver with only
-one board. However the most complex part does not lie in the system itself
-because some electronic parts became a commodity, the complexity is in the
-modulation/demodulation blocks and all the synchronization process, such topics
-shall be discussed in the chapter \ref{chap:lte}.
+one board.
+%However the most complex part does not lie in the system itself
+%because some electronic parts became a commodity, the complexity is in the
+%modulation/demodulation blocks and all the synchronization process, such topics
+%shall be discussed in the chapter \ref{chap:lte}.
