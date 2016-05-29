@@ -128,15 +128,26 @@ tecnologia torna-se poss\'{i}vel escalar e alocar recursos din\^{a}micamente com
 todo o poder que a computa\c{c}\~{a}o em nuvem proporciona e redirecionar esses
 recursos para melhorar a qualidade das comunica\c{c}\~{o}es m\'{o}veis.
 
-Como o conceito C-RAN \'{e} relativamente novo, naturalmente surgem diversos
-questionamentos acerca de como implementar e de que dispositivos ou tecnologias
-usar. Este trabalho tem como objetivo avaliar um poss\'{i}vel setup de um
-fronthaul em sistemas m\'{o}veis de quarta gera\c{c}\~{a}o que possa trabalhar
-de acordo com a demanda de reconfigurabilidade e escalabilidade que o paradigma
-C-RAN necessita. Sendo este setup de um fronthaul composto por dois
-dispositivos, uma FPGA (fronthaul digital) e um transceiver (fronthaul
-anal\'{o}gico), a combina\c{c}\~{a}o de ambos forma uma plataforma com uma forte
-capacidade de reconfigura\c{c}\~{a}o em tempo-real.
+Tendo em vista essa  demanda de sistemas reconfigur\'{a}veis e escacalaveis a
+plataforma de r\'{a}dios definidos por software se encaixa nos requisitos de
+tais sistemas.Este trabalho tem como objetivo avaliar um poss\'{i}vel setup de
+um fronthaul em sistemas m\'{o}veis de quarta gera\c{c}\~{a}o que possa
+trabalhar de acordo com a demanda de reconfigurabilidade e escalabilidade dos
+sitemas atuais. Sendo este setup de um fronthaul composto por dois dispositivos,
+uma FPGA (fronthaul digital) e um transceiver (fronthaul anal\'{o}gico), a
+combina\c{c}\~{a}o de ambos forma uma plataforma com uma forte capacidade de
+reconfigura\c{c}\~{a}o em tempo-real.
+
+%mudar foco aqui
+%Como o conceito C-RAN \'{e} relativamente novo, naturalmente surgem diversos
+%questionamentos acerca de como implementar e de que dispositivos ou tecnologias
+%usar. Este trabalho tem como objetivo avaliar um poss\'{i}vel setup de um
+%fronthaul em sistemas m\'{o}veis de quarta gera\c{c}\~{a}o que possa trabalhar
+%de acordo com a demanda de reconfigurabilidade e escalabilidade que o paradigma
+%C-RAN necessita. Sendo este setup de um fronthaul composto por dois
+%dispositivos, uma FPGA (fronthaul digital) e um transceiver (fronthaul
+%anal\'{o}gico), a combina\c{c}\~{a}o de ambos forma uma plataforma com uma forte
+%capacidade de reconfigura\c{c}\~{a}o em tempo-real.
 
 O foco deste trabalho \'{e} a implementa\c{c}\~{a}o, a avalia\c{c}\~{a}o de sua
 viabilidade, bem como a documenta\c{c}\~{a}o dos componentes da plataforma
@@ -165,14 +176,14 @@ telecommunications industry the idea known as cloud radio access networks
 for improving the efficiency of resource allocation, manageability and power
 consumption, challenges of traditional RANs.
 
-With the emerging of C-RAN, several questions about how to implement and which
-tools to use come naturally. This work aims to evaluate the potential of a
-programmable fronthaul radio interface, motivated by the fact that current
-networks do not have the adaptive capability needed for the C-RAN. For this work
-a setup of a radio unit, composed by one FPGA (digital front-end of the radio
-unit) and one transceiver (analog front-end) connected in the FPGA board. Within
-this setup various algorithms can be tested and can be evaluated in LTE
-scenarios because the transceiver works in LTE and C-RAN.
+Such reconfigurable and scalable needs can be fullfilled by the use of a
+software-defined radio device. This work aims to evaluate the potential of a
+programmable front-haul radio interface, motivated by the fact that current
+networks do not have the adaptive capabilities. For this work a setup of a radio
+unit, composed by one FPGA (digital front-end of the radio unit) and one
+transceiver (analog front-end) connected in the FPGA board. Within this setup
+various algorithms can be tested and can be evaluated in LTE scenarios because
+the transceiver works in LTE frequency band.
 
 This work shall focus on the evaluation of the radio interface, exploring FPGA
 adaptability and parallelism with the internal and external communication
