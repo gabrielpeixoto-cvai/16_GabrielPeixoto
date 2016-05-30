@@ -201,9 +201,10 @@ waveforms respectively.
 
 It is possible to configure in the driver if the AD9361 outputs or not a clock
 in a special clock\_output pin, so in order to evaluate frequency and clock
-quality, Figure \ref{fig:dacclk} shows the clock output from the AD9361. Figure
-\ref{fig:lte5m} show the output spectrum of the LTE analog wave outputted from
-the FMComms2 board.
+quality, Figure \ref{fig:dacclk} shows the clock output from the AD9361.
+However, this port is a simple output port, not prepared for clock outputs, that
+is why this waveform does not resemble a clock. Figure \ref{fig:lte5m} show the
+output spectrum of the LTE analog wave outputted from the FMComms2 board.
 
 In Figure \ref{fig:evm} it is possible to observe the EVM measurements of this
 setup output waveform, in the bottom of the figure there is the spectrum in the
