@@ -3,17 +3,17 @@
 
 \section{Overview}
 
-As stated before, C-RAN is still in development and it is not already a solid
-standard, so exploring setups and their feasibility is very interesting. For
-example, regarding the ways to implement the technology in countries that do
-not have widely available modern infrastructure such as fiber optics.
+%As stated before, C-RAN is still in development and it is not already a solid
+%standard, so exploring setups and their feasibility is very interesting. For
+%example, regarding the ways to implement the technology in countries that do
+%not have widely available modern infrastructure such as fiber optics.
 
 In this work, the Xilinx Vivado Suite was used to develop the FPGA design.
-Intellectual properties were used through the IP integrator and specific VHDL
-modules were developed to implement the integration between transceiver and
-FPGA. Some IPs which implement
-basic functions or control peripherals of the FPGA board were also used to
-complement the setup.
+Intellectual properties were used through the IP integrator with the Ultrafast
+design methodology \cite{xilinx:ultrafast} and specific VHDL modules were
+developed to implement the integration between transceiver and FPGA. Some IPs
+which implement basic functions or control peripherals of the FPGA board were
+also used to complement the setup.
 
 %--------------------------------------------FPGA-----------------------------------------
 \section{FPGA}
@@ -83,11 +83,14 @@ processor by the AXI interconnect \cite{xilinx:axiconn}.
 \end{figure}
 
 
-The DMA is the core which makes possible reading and writing from the memory
-in a very fast rate \cite{xilinx:axidma}. There are various modes of
-operation, but in this project the Scatter gather mode is used. In this mode
-the reading and writing is possible in a non-continuous memory addresses by
-the use of block descriptors.
+The DMA is the core which makes possible reading and writing from the memory in
+a very fast rate \cite{xilinx:axidma}. There are various modes of operation, but
+in this project the scatter gather mode is used. In this mode the reading and
+writing is possible in a non-continuous memory addresses by the use of block
+descriptors which stores the begin address of the reading or writing  from/into
+memory, the size of the data to be read or write from/into the memory and the
+address for the next block and then, DMA goes through all initialized blocks,
+reading or writing.
 
 The MIG (memory interface generator) creates a software and hardware interface
 to the DDR3 memory inside the FPGA board \cite{xilinx:mig7}. Since the DDR3
@@ -275,7 +278,7 @@ for interfacing with the BBP (usually FPGA). It has 5 SMA connectors, 2 for Rx,
 RF configuration, extended from the AD9361, as seen in Figure \ref{fig:fmcomm}.
 
 The FMComms2 is a transceiver intended for use in RF applications such  as 3G or
-4G BTS or SDR. Its programmability and wide-band capability make it ideal for
+4G EnodeB or SDR. Its programmability and wide-band capability make it ideal for
 broad range of transceiver applications and make it very attractive for the new
 C-RAN paradigm. The board and some components can be seen in Figure
 \ref{fig:fmcomm}.
