@@ -66,13 +66,14 @@ companies that develop peripherals to be integrated with Xilinx FPGAs also have
 to develop and provide their own IP cores, like the FMCOMMS22 board which has its
 own IP.
 
-In Figure \ref{fig:setupip} the IP interconnections in this work are illustrated
-and in the next chapter its components functions will be described. The core of
-the peripheral control is a processor that was instantiated in the FPGA, the
-Microblaze. The Microblaze role in the system developed in this work is
-basically to initialize all the software drivers, configure such drivers and
-execute interrupt routines. The peripherals are connected to the microblaze
-processor by the AXI interconnect \cite{xilinx:axiconn}.
+In Figure \ref{fig:setupip} the IP interconnections in this work, in the blue
+part there are the IPs instantiated in the FPGA fabric, their role in the setup
+will be explained in the following paragraphs. The core of the peripheral
+control is a processor that was instantiated in the FPGA, the Microblaze. The
+Microblaze role in the system developed in this work is basically to initialize
+all the software drivers, configure such drivers and execute interrupt
+routines. The peripherals are connected to the microblaze processor by the AXI
+interconnect \cite{xilinx:axiconn}.
 
 %figura do setup com diagrama de blocos
 \begin{figure}[htbp]
@@ -130,17 +131,20 @@ adaptability makes it ideal for a wide range of transceiver applications
 configurable mixed-signal baseband section and frequency synthesizers. It
 operates from 70 MHz to 6.0GHz range with supported channel bandwidths from 200
 KHz to 56 MHz and has two pairs of transmit and receive antennas ports (a total
-of 4 ports). There is a functional block diagram of the AD9361 chip in Figure
-\ref{fig:ad9361func}, where it is possible to verify that AD9361 is featured with
-two local oscillators, 'RX LO' and 'TX LO', as well as two independent pairs of
-ADCs or DACs (for transmit and receive chains, respectively). It also reveals
-that AD9361 is featured with controller (CTRL) register which can be interfaced
-with SPI or CONTROL PIN (GPIO). The circuit can also be fed by an external clock
-reference from differential port XTALp XTALn.
+of 4 ports). Figure \ref{fig:ad9361func} shows a functional block diagram of the
+AD9361 chip, in this figure it is possible to observe the logic and physical
+interfaces highlighting the basic components of both, such as the transmitting
+and receiving interfaces (in red), which represent the physical connections with
+antennas or cables. The Transmitting and receiving oscillators and converters
+are also present, DAC and ADC respectively (in blue), which make the process of
+transform information to a waveform and vice versa. The logic data interface is
+also present in this figure along with the control and communication interface,
+with SPI and GPIO (in green).The circuit can also be fed by an external clock
+reference from differential port XTALp/XTALn.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.45\textwidth]{./figures/ad9361_functional_diagram}
+    \includegraphics[width=0.55\textwidth]{./figures/ad9361_funcbd}
     \caption{ AD9361 functional block diagram.
     \label{fig:ad9361func}}
 \end{figure}
@@ -204,16 +208,19 @@ real-time adjustment of the gain.
     \label{fig:txchain}}
 \end{figure}
 
-In Figure \ref{fig:ad9361blk} there is a full block diagram with both
-\textit{receiver Chain}, \textit{Transmitting Chain} and other key components of
-the AD9361, being transmitter signal path in red and receiver signal path in blue. This figure
-also illustrates all the information given before, like synthesizer path and
-control and communication interfaces (SPI and GPIO) also illustrated in Figure
-\ref{fig:ad9361func}.
+In Figure \ref{fig:ad9361blk} there is a figure which incorporate the previous
+sections blocks into one, and then it is easier to understand the whole AD9361
+block. This figure shows both transmitting chain (in red) and receiver chain (in
+blue), there is 2 of each chain. Another  noteworthy aspect is that the
+oscillators and all the clock chain is observed in this image (in the middle).
+Another interfaces which were mentioned in Figure \ref{fig:ad9361func} are
+present, such as SPI and GPIO.The data path passes through the LVDS interface
+to reach FPGA logic, this interface is the physical interface in which AD9361
+will integrate which the FPGA by the FMCOMMS2 FMC connector.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.85\textwidth]{./figures/ad9361_block_diagram}
+    \includegraphics[width=0.95\textwidth]{./figures/ad9361_block_diagram}
     \caption{ AD9361 block diagram.
     \label{fig:ad9361blk}}
 \end{figure}
@@ -222,11 +229,9 @@ control and communication interfaces (SPI and GPIO) also illustrated in Figure
 
 In both receiver and transmitter there are low pass filters and
 decimation/interpolation filters. In the receiver the low pass filter acts in
-band shaping to reduce adjacent-channel interference and the decimation filter
-downsamples from the digital baseband rate (64.11MSPS max) to the actual ADC
-(640MSPS) rate. The transmitter low-pass filter is responsible for remove
-sampling artifacts and the interpolation filter upsamples from the digital
-baseband rate (64.11MSPS max) to the actual DAC (320MSPS) rate.
+band shaping to reduce adjacent-channel interference and the digital
+interpolation/decimation filters to up/down convert from the digital baseband
+rate (64.11MSPS max) to the actual ADC (640MSPS) or DAC (320MSPS) rates \cite{web:ad9361wiki}.
 
 In both digital and analog implementations these filters impact the magnitude
 and the phase in passband. This impairment must be compensated in the system,
@@ -245,14 +250,15 @@ baseband PLL (BBPLL) used for the data converters, digital filters and I/O
 ports. All the frequency signals are generated using these PLL clock outputs.
 
 All the PLL requires is a reference clock input and for this there is the
-digitally controlled oscillator (DCXO), which is an in-chip programmable and
-variable capacitor. Such capacitor can tune the crystal frequency variance
-before entering the system. Having a precision of +/- 6 ppm it results in a more
-accurate reference clock and can be used, if needed, for synchronization
-purposes. The behavior of the DCXO function can be seen in Figure
-\ref{fig:dcxo}. This function can also be used together with the on-chip
-temperature sensor to provide temperature compensation depending environment in
-which the chip will be used \cite{ad:ad9361}.
+digitally controlled oscillator (DCXO), which crystal is controlled by an
+on-chip programmable capacitor \cite{web:ad9361wiki}. This capacitor can tune
+the crystal frequency variance out of the system, resulting in a more accurate
+reference clock from which all other frequency signals are generated. Having a
+precision of +/- 6 ppm it results in a more accurate reference clock and can be
+used, if needed, for synchronization purposes. The behavior of the DCXO function
+can be seen in Figure \ref{fig:dcxo}. This function can also be used together
+with the on-chip temperature sensor to provide temperature compensation
+depending environment in which the chip will be used \cite{ad:ad9361}.
 
 For the reference clock there are two options, one is a dedicated crystal
 oscillator (from 19 MHz to 50), which is embedded in the FMCOMMS2 development
@@ -290,13 +296,13 @@ C-RAN paradigm. The board and some components can be seen in Figure
     \label{fig:fmcomm}}
 \end{figure}
 
-
-In Figure \ref{fig:fmcommbd} there is an example of the needed components in the
-FPGA for it to be able to be integrated with the FMCOMMS2 board. The figure also
-shows that there are 4 main functional partitions - receiver path, transmit
-path, clocking and power supply. Since the FMCOMMS2 incorporates and extends the
-basic functionalities of the AD9361, thus the data path is fully integrated into
-the AD9361 \cite{web:fmcomms2wiki}.
+Figure \ref{fig:fmcommbd} shows the basic integration between FPGA and FMCOMMS2,
+for such there is an IP developed by Analog Devices to map all the signals to
+the correct physical pins in the FMC connector. This figure also shows the
+basic IP infrastructure needed to control and communicate between the FPGA and
+FMCOMMS2, such as Processor (Microblaze or ARM), SPI and GPIO, basically. Since
+the FMCOMMS2 incorporates and extends the basic functionalities of the AD9361,
+thus the data path is fully integrated into the AD9361 \cite{web:fmcomms2wiki}.
 
 \begin{figure}[htbp]
     \centering
@@ -371,10 +377,16 @@ core was developed uniquely to handle the routing between the AD9361 IP
 named \emph{ad9361\_comm}.
 
 In Figure \ref{fig:commif} it is possible to see in a simple schematic what is
-the \emph{ad9361\_comm} IP and how it routes the respective ports to the AD9361
-interface. Where in the FPGA we have the SPI and GPIO IP cores and they are
-routed by the \emph{ad9361\_comm} IP and assigned to respective pins in the FMC
-connector.
+the \emph{ad9361\_comm} IP and illustrates the routing of the respective ports
+to the AD9361 interface. Where in the FPGA we have the SPI and GPIO IP cores
+and they are routed by the \emph{ad9361\_comm} IP. The GPIO IP core in its
+basic configuration has 3 basic ports, with variable bit length,  in this case
+the length was 16. The \emph{ad9361\_comm} routes this pins with the
+\emph{ad\_iobuf} block to match the AD9361 real-time control interface, but in
+this work only the reset\_b pin is used. The SPI routing is simpler than the
+GPIO, basically it unifies some input and output pins to create a in/out like
+port and renames to match the AD9361 interface also.
+
 
 %diagrama de blocos control interface
 \begin{figure}[htbp]
@@ -386,16 +398,17 @@ connector.
 
 \subsection{Transmitting custom data}
 
-Once communication and initialization between FPGA and FMComms2 board works
+Once communication and initialization between FPGA and FMCOMMS2 board works
 properly, the next step is to input custom data into the device and efficiently
 transmit modulated information in the carrier wave. Figure \ref{fig:txpins}
-illustrates the transmitting data interface and shows that AD9361 has a data
-flow control with the \emph{valid} and \emph{enable} pins in each channel. This
-data flow control is similar to the one implemented in the AXI stream (citar
-AXI) where the master and slave block exchange signals in order to control this
-data flux. In the transmitter the AD9361 is the master, so it reads data, then
-it should signal to the DMA or FIFO block that it is ready to receive the data
-or not.
+illustrates the transmitting data interface and shows that AD9361 works with IQ
+data having one channel for I (16 bits) and one for Q (16 bits). It has also a
+data flow control with the \emph{valid} and \emph{enable} ports in each channel
+(I and Q). This data flow control is similar to the one implemented in the AXI
+stream \cite{xilinx:axi} where the master and slave block exchange signals in
+order to control this data flux. In the transmitter the AD9361 is the master, so
+it reads data, then it should signal to the DMA or FIFO block that it is ready
+to receive the data or not.
 
 %inserir figura do IP AD9361 highlight TX interface pins
 \begin{figure}[htbp]
@@ -406,21 +419,21 @@ or not.
 \end{figure}
 
 There are two ways to input data into the AD9361, the first one requires a
-static data source (signal generator) feeding a FIFO connected directly to the
-AD9361 data ports and the second solution aims to replace such "static data
-source" for a dynamic and software controlled data source, accomplished by the
-use of DMA. Figure \ref{fig:ad9361txfifo} shows a scheme that illustrates the
-first method. Note that are no proper flow control implemented. However, this
-method is slow and can lose data easily because the DAC clock is inferior to the
-FPGA signal generation clock, which implies that DAC cannot read as fast as the
-FPGA can generate. In contrast, the DMA method allows faster reading speed and
-better flow control. Figure \ref{fig:ad9361txdma} illustrates this second
-alternative. Note that in this figure there is the need of a data interface in
-order to distribute the memory reading data (DDR3 - DMA) through the AD9361 data
-interface properly using only one DMA IP core. With this block the 32 bits read
-at each cycle by the DMA are simultaneous connected to the 32 bits IQ data
-interface ( 16 I and 16 Q bits), that is, the 32 read bits go through the ADC 0
-and ADC 1 simultaneously.
+static data source (a signal generator was used in this work) feeding a FIFO
+connected directly to the AD9361 data ports and the second solution aims to
+replace such "static data source" for a dynamic and software controlled data
+source, accomplished by the use of DMA. Figure \ref{fig:ad9361txfifo} shows a
+scheme that illustrates the first method. Note that are no proper flow control
+implemented. However, this method is slow and can lose data easily because the
+DAC clock is inferior to the FPGA signal generation clock, which implies that
+DAC cannot read as fast as the FPGA can generate. In contrast, the DMA method
+allows faster reading speed and better flow control. Figure
+\ref{fig:ad9361txdma} illustrates this second alternative. Note that in this
+figure there is the need of a data interface in order to distribute the memory
+reading data (DDR3 - DMA) through the AD9361 data interface properly using only
+one DMA IP core. With this block the 32 bits read at each cycle by the DMA are
+simultaneous connected to the 32 bits IQ data interface ( 16 I and 16 Q bits),
+that is, the 32 read bits go through the ADC 0 and ADC 1 simultaneously.
 
 %inserir diagrama de blocos de entrada DDS>FIFO>AD9361
 
@@ -442,12 +455,11 @@ and ADC 1 simultaneously.
 
 \subsection{Receiving Custom data}
 
-Receiving is pratically the opposite of transmitting custom data. Figure
-\ref{fig:rxpins} illustrates the receiving data interface, with the respective
-\emph{valid} and \emph{enable} pins for flow control. However, this interface
-has no memory, meaning that it can only send a continuous flow of data, which is
-no problem because the FPGA clock is at least 2 times faster than the AD9361
-clock.
+Receiving is practically the opposite of transmitting custom data. Figure
+\ref{fig:rxpins} illustrates the receiving data interface with the I and Q
+channels and its respective \emph{valid} and \emph{enable} ports for flow
+control. This interface acts in the same way as the receiving interface,
+signaling when the bits can be read from the ADC.
 
 %inserir figura do IP AD9361 Highlight RX interface pins
 \begin{figure}[htbp]
@@ -510,17 +522,21 @@ be explained in more detail.
 \subsubsection{Transmitting Interface (Tx)}
 
 The receiving interface itself is divided in two main blocks, one block being
-the \emph{DAC-DMA interface} and the other is the DAC interface. The two blocks are
-illustrated in Figure \ref{fig:dataiftx}. The DAC-DMA interface controls the
-memory reading channel of the DMA, which is accomplished by a de-multiplexer
-and two channels of cascaded FIFOs, this scheme allows for the 32 bit wide
-data, that DMA block outputs, to be fed "simultaneous" to both transmitting
-(DAC) interfaces, DAC 0 and DAC 1, as can be seen in Figure \ref{fig:dataiftx}.
-The behavior of the de-multiplexer block is controlled by a commuter function
-that basically makes the de-multiplexer block to send the same signal in both
-channels. Another thing worth to mention about the \emph{DAC-DMA interface} is that
-all the flow control signals that DAC outputs go through all the blocks and end
-up in DMA, thus controlling all the data flow.
+the \emph{DAC-DMA interface} and the other is the DAC interface. The two blocks
+are illustrated in Figure \ref{fig:dataiftx}. The DAC-DMA interface controls the
+memory reading channel of the DMA, the objective is to transmit the data stream
+from the DMA to the two DAC IQ channels and send back the data flow control
+signals to the DMA.This process is accomplished by a de-multiplexer and two
+channels of cascaded FIFOs (Axi commuter or AxC in Figure \ref{fig:dataiftx}),
+this scheme allows for the 32 bit wide data, that DMA block outputs, to be fed
+"simultaneous" to both transmitting (DAC) interfaces, DAC 0 and DAC 1, as can be
+seen in Figure \ref{fig:dataiftx}. The behavior of the de-multiplexer block is
+controlled by a commuter function that basically makes the de-multiplexer block
+to send the same signal in both channels. Another thing worth to mention about
+the \emph{DAC-DMA interface} is that all the flow control signals that DAC
+outputs go through all the blocks and end up in DMA. This block implements the
+propagation of these data flow control signals, in the way that the signals from
+the DAC can control DMA reading rate.
 
 The \emph{DAC interface} block is another measure of flow control, since the DMA
 works in a higher frequency than the DAC block. The FIFOs in the \emph{DAC
@@ -529,16 +545,6 @@ also have the role to change the clock domain, such as their writing clock
 (DAC-DMA interface) is the master clock of the FPGA AXI clock (100 MHz) and the
 read clock (DAC) is the actual DAC sampling clock (30.72 MHz), this role is
 illustrated by the dashed line in Figure \ref{fig:dataiftx}.
-%The DAC-DMA interface controls the reading channel of the DMA block, creating a
-%“bottleneck” based on the reading clock, thus the DMA reading is limited by the
-%reading clock, which is a way of synchronizing the DMA reading by the DAC
-%clock, it does not work in perfectly but is a better solution than simply use
-%FIFOs.
-%
-%The DAC-DMA is implemented using a commuter controlling a demultiplexer block,
-%this means that the data read from the memory by the DMA is loaded one into the
-%demultiplexer and it feeds one channel at the time, both channels are enabled
-%for use. In Figure \ref{fig:dataiftx} there is a block diagram of the interface:
 
 \begin{figure}[htbp]
     \centering
