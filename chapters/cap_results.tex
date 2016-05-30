@@ -96,41 +96,41 @@ possible to see the simulation results and wave diagrams of the three steps,
 respectively.
 
 In Figure \ref{fig:simdacdma}, it is possible to observe the behavior of the
-\textit{dac-dmaIterface} block where the signal \textit{sig\_dma\_data} is fed
-to the block, and the signals \textit{ sig\_axis\_axc0\_itdata,
+\textit{dac-dmaIterface} block where the signal \textit{sig\_dma\_data} (in red)
+is fed to the block, and the signals \textit{ sig\_axis\_axc0\_itdata,
 sig\_axis\_axc0\_qtdata, sig\_axis\_axc1\_itdata and sig\_axis\_axc1\_qtdata}
-are the \textit{IQ data} being fed to both to the \textit{dacInterface} block.
-In this simulation the important point is to note that the 32 bits input signal
-(\textbf{sig\_dma\_data}) is being divided in 16 bit streams (\textbf{
-sig\_axis\_axc0\_itdata, sig\_axis\_axc0\_qtdata, sig\_axis\_axc1\_itdata and
-sig\_axis\_axc1\_qtdata}) and being outputted by the block.
+are the \textit{IQ data} (in blue) being fed to both to the
+\textit{dacInterface} block. In this simulation the important point is to note
+that the 32 bits input signal (\textbf{sig\_dma\_data}) is being divided in 16
+bit streams (\textbf{ sig\_axis\_axc0\_itdata, sig\_axis\_axc0\_qtdata,
+sig\_axis\_axc1\_itdata and sig\_axis\_axc1\_qtdata}) and being outputted by the
+block. Another noteworth thing in all images in this simulation section is the
+difference between the FPGA clock and the AD9361 clock in the green box in all
+figures of this section.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[height=.3\textwidth, width=.85\textwidth,
-    trim={{.13\textwidth} {.90\textwidth} {.05\textwidth} {.15\textwidth}},
-    clip]{./figures/dac_dmaInterface}
+    \includegraphics[width=1\textwidth]{./figures/dac_dmaInterface_m}
     \caption{ Step 1: DAC-DMA interface block simulation.
     \label{fig:simdacdma}}
 \end{figure}
 
- In Figure \ref{fig:simdac}, the \textit{dacInterface} is simulated and again it
- is possible to obseve the signals \textit{sig\_axis\_axc0\_itdata,
- sig\_axis\_axc0\_qtdata, sig\_axis\_axc1\_itdata and sig\_axis\_axc1\_qtdata}
- being fed to the block and the outputs \textit{sig\_dac\_i0data,
- sig\_dac\_q0data, sig\_dac\_i1data and sig\_dac\_q1data}. The goal in both
- \textit{dac-dmaIterface} and \textit{dacInterface} simulation is to observe
- changes in outputs accompanying \textit{ready and valid} signals of the AXI
- protocol, which are used as a way of controlling the data flow from the
- \textit{DMA}. In such scheme, the \textit{DMA} asserts \textit{valid} whenever
- it can send data. However, it only sends the data when fed by a ready signal,
- meaning that the reading block can read the \textit{DMA} data.
+In Figure \ref{fig:simdac}, the \textit{dacInterface} is simulated and again it
+is possible to observe the signals \textit{sig\_axis\_axc0\_itdata,
+sig\_axis\_axc0\_qtdata, sig\_axis\_axc1\_itdata and sig\_axis\_axc1\_qtdata}
+(in red) being fed to the block and the outputs to the DAC are
+\textit{sig\_dac\_i0data, sig\_dac\_q0data, sig\_dac\_i1data and
+sig\_dac\_q1data} (in blue). The goal in both \textit{dac-dmaIterface} and
+\textit{dacInterface} simulation is to observe changes in outputs accompanying
+\textit{ready and valid} signals of the AXI-stream protocol \cite{xilinx:axi},
+which are used as a way of controlling the data flow from the \textit{DMA}. In
+such scheme, the \textit{DMA} asserts \textit{valid} whenever it can send data.
+However, it only sends the data when fed by a ready signal, meaning that the
+reading block can read the \textit{DMA} data.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[height=.4\textwidth, width=1\textwidth,
-    trim={{.13\textwidth} {.8\textwidth} {.05\textwidth} {.15\textwidth}},
-    clip]{./figures/dacInterface}
+    \includegraphics[width=1\textwidth]{./figures/dacInterface_m}
     \caption{ Step 2: DAC interface block simulation.
     \label{fig:simdac}}
 \end{figure}
@@ -138,21 +138,21 @@ sig\_axis\_axc1\_qtdata}) and being outputted by the block.
 In the final simulation of the transmitting interface the whole transmit chain
 blocks were simulated together, which allows the evaluation of the behavior of
 the whole transmit interface block. In Figure \ref{fig:simtxif} it is possible
-to watch the \textit{DMA} data in the signal in \textit{dac-dmaIterface} and the
-outputs which would feed the \textit{AD9361} two \textit{DACs} in the signals
-\textit{sig\_dac\_i0data, sig\_dac\_q0data, sig\_dac\_i1data and
-sig\_dac\_q1data}. Again, it is possible to note the data changes when the
-\textit{ready and valid} changes. Another interesting thing to observe is the
-two clock variables \textit{axi\_clk} and \textit{dac\_clk} which represent both
-AXI system clock $ 100 MHz$ and the DAC clock $40 MHz$, this difference
-justifies the use of such interface.
+to observe the \textit{DMA} data in the signal in \textit{dac-dmaIterface} (in
+red) and the outputs which would feed the \textit{AD9361} two \textit{DACs} in
+the signals \textit{sig\_dac\_i0data, sig\_dac\_q0data, sig\_dac\_i1data and
+sig\_dac\_q1data} (in blue). Again, it is possible to note the data changes when
+the \textit{ready and valid} changes. Another interesting thing to observe is
+the two clock variables \textit{axi\_clk} and \textit{dac\_clk} (in green) which
+represent both AXI system \cite{xilinx:axiconn} clock $ 100 MHz$ and the DAC
+clock $40 MHz$, this difference justifies the use of such interface, because
+there is the need to fit the DMA reading speed and port width to the DAC
+interface data format.
 
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=1\textwidth,
-    trim={{.67\textwidth} {.7\textwidth} {.05\textwidth} {.3\textwidth}},
-    clip]{./figures/txInterface}
+    \includegraphics[width=1\textwidth]{./figures/tx_sim_m}
     \caption{ Step 3: transmitting interface block simulation.
     \label{fig:simtxif}}
 \end{figure}
@@ -177,9 +177,7 @@ channels are being alternated in the DMA input.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.95\textwidth,
-    trim={{.13\textwidth} {.95\textwidth} {.05\textwidth} {.15\textwidth}},
-    clip]{./figures/adcInterface}
+    \includegraphics[width=1\textwidth]{./figures/adcInterface_m}
     \caption{ ADC interface block simulation.
     \label{fig:simadc}}
 \end{figure}
@@ -193,13 +191,13 @@ The transmission tests aim to evaluate a downlink LTE transmission, namely a
 transmission from the eNodeB to the UE. In this transmission, an LTE waveform
 generated offline in MATLAB was loaded into the FPGA memory by putting them in a
 header file. The DMA engine was, then, configured to read from the memory region
-were the waveform was loaded and the samples were sent read them and the DAC
-shall make an analog output. Figure 5.14 presents the DAC control signals sent
-to the data interface block in order to control the data flow. It makes a
-back-pressure in the DMA engine controlling if DMA reads or not data from
-memory. The DMA Engine reading output can be seen in Figures
-\ref{fig:dataflowdig} and \ref{fig:dataflowana}, digital and analog waveforms
-respectively.
+were the waveform was loaded and the samples were sent by the transmitting
+interface block to the DAC and the it generates an analog waveform. Figure 5.14
+presents the DAC control signals sent to the data interface block in order to
+control the data flow. It makes a back-pressure in the DMA engine controlling if
+DMA reads or not data from memory. The DMA Engine reading output can be seen in
+Figures \ref{fig:dataflowdig} and \ref{fig:dataflowana}, digital and analog
+waveforms respectively.
 
 It is possible to configure in the driver if the AD9361 outputs or not a clock
 in a special clock\_output pin, so in order to evaluate frequency and clock
