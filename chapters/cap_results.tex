@@ -8,7 +8,8 @@ understand and evaluate the results of such hardware platform. Figure
 it is possible to see the setup's block diagram, which gives the idea of the
 complexity behind the design and how each component is connected, while Figure
 \ref{fig:fpgaarea} reveals how much FPGA area this setup occupies, which implies
-the complexity involved in the design.
+that there is over 60\% of unoccupied area that can be used for improvements in
+flexibility and connection.
 
 %foto setup pronto
 \begin{figure}[htbp]
@@ -272,28 +273,33 @@ left and the constellation in the right.
 \label{result:optimum}
 
 The expected transmission of LTE signals are below demonstrated by the Analog
-Devices in a LTE transmission and reception example using the same
-transceiver in \cite{web:lteexamplewiki}. Comparing these results with the ones
-obtained in Figure \ref{fig:evm} it is possible to note that they are similar
-although both are not optimal results.
+Devices in a LTE transmission and reception example using the same transceiver
+in \cite{web:lteexamplewiki}. Figure \ref{fig:ltespectrumiio} shows the spectrum
+of the LTE signal while Figure \ref{fig:lteconstellationiio}  shows the
+constellation plot for the LTE signal, it is possible to note that there are
+some noise introduced to the signal causing the constellation symbols to spread.
+
+Comparing the results in Figure \ref{fig:lteevmiio} with the ones obtained in
+Figure \ref{fig:evm} it is possible to note that they are similar although both
+are not optimal results.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.65\textwidth]{./figures/lte_spectrum_iio}
+    \includegraphics[width=0.85\textwidth]{./figures/hsa}
     \caption{ LTE spectrum.
     \label{fig:ltespectrumiio}}
 \end{figure}
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.55\textwidth]{./figures/lte_constellation_iio}
+    \includegraphics[width=0.75\textwidth]{./figures/hcd}
     \caption{ LTE constellation.
     \label{fig:lteconstellationiio}}
 \end{figure}
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.85\textwidth]{./figures/lte_evm_iio}
+    \includegraphics[width=0.85\textwidth]{./figures/evm}
     \caption{ LTE EVM.
     \label{fig:lteevmiio}}
 \end{figure}
