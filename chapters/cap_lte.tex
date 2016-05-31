@@ -5,23 +5,23 @@
 
 Long Term Evolution (LTE) is a standard for wireless communication for
 high-speed mobile devices and data terminals. LTE was first introduced in 3GPP
-Release 8. It uses orthogonal frequency division multiplexing (OFDM) as its
-radio access technology, together with advanced antenna technologies.
+Release 8 \cite{introlte}. It uses orthogonal frequency division multiplexing
+access (OFDMA) as its radio access technology.
 
-In addition to LTE, 3GPP also defined an IP-based, flat core network
-architecture. This architecture was defined as part of the System Architecture
-Evolution (SAE) effort specifying the Evolved Packet Core (EPC) network. The
-LTE-SAE architecture and concepts have been designed for efficient support of
-mass-market usage of any IP-based service. The architecture is based on an
-evolution of the existing GSM/WCDMA core network.%, with simplified operations
-%and smooth, cost-efficient deployment.
+LTE also defined an IP-based, flat core network architecture. This architecture
+was defined as part of the System Architecture Evolution (SAE) effort specifying
+the Evolved Packet Core (EPC) network. The LTE-SAE architecture and concepts
+have been designed for efficient support of mass-market usage of any IP-based
+service. The architecture is based on an evolution of the existing GSM/WCDMA
+core network.
 
-Moreover, work has also been done by 3GPP in cooperation with 3GPP2 (the CDMA
-standardization body) to optimize interworking between CDMA and LTE-SAE. This means
-that both CDMA and GSM operators can use the same standard with minor modifications
-and thus making the deployment and roaming costs smaller.
+Moreover, work has also been done by 3GPP in cooperation with 3GPP2
+\cite{introlte} (the CDMA standardization body) to optimize interworking between
+code division multiple access (CDMA) and LTE-SAE. This means that both CDMA and
+GSM operators can use the same standard with minor modifications and thus making
+the deployment and roaming costs smaller.
 
-The 3GPP radio access technology was developed towards and reduce cost per bit
+The 3GPP radio access technology was developed towards and reduce cost per bit,
 implicating a lower cost and more variated services with a better user
 experience. It was also thought in the flexibility of the existing and new
 frequency  bands, giving LTE an scalable bandwidth (20MHz, 15MHz, 10MHz, 5MHz,
@@ -36,17 +36,18 @@ cost-efficient solutions for very wide carriers with high peak rates. It is a
 well-established modulation scheme: for example, adopted in standards IEEE
 802.11a/b/g, 802.16, HIPERLAN-2, DVB and DAB.
 
-A representation of an OFDM signal can be seen in Figure \ref{fig:ofdmfreq}. In
-this figure, a signal with 5 MHz bandwidth is shown, but the principle is of
-course the same for the other Evolved UMTS Terrestrial Radio Access (E-UTRA)
-bandwidths. Data symbols are independently modulated and transmitted over a high
-number of closely spaced orthogonal subcarriers.
+A representation of an OFDM signal can be seen in Figure \ref{fig:ofdmfreq},
+where the time and frequency divisions in OFDM are represented. In this figure,
+a signal with 5 MHz bandwidth is shown, but the principle is of course the same
+for the other Evolved UMTS Terrestrial Radio Access (E-UTRA) bandwidths. Data
+symbols are independently modulated and transmitted over a high number of
+closely spaced orthogonal subcarriers.
 
 %ofdm scheme
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.65\textwidth]{./figures/ofdm_frequency}
-    \caption{ Frequency-time representation of OFDM signal.
+    \caption{ Frequency-time representation of OFDM signal from \cite{umtslte}.
     \label{fig:ofdmfreq}}
 \end{figure}
 
@@ -58,14 +59,17 @@ prefix duration}$. The cyclic prefix is used to maintain orthogonality between
 the sub-carriers even for a time-dispersive radio channel.
 
 The OFDM symbols are grouped into resource blocks. The resource blocks have a
-total size of 180 kHz in the frequency domain and 0.5ms in the time domain. Each
-user is allocated a number of so-called resource blocks in the time-frequency
-grid and inside a resource block there are 12 subcarriers. The more resource
-blocks a user gets, and the higher the modulation used in the resource element,
-the higher the bit rate. Which resource blocks the user gets at a given point in
-time, and how many, depends on advanced scheduling mechanisms in the frequency
-and time dimensions. One resource element carries QPSK, 16QAM or 64QAM. With
-64QAM, each resource element carries six bits.
+total size of 180 kHz in the frequency domain and 0.5ms in the time domain. One
+resource block is composed by 84 (12 subcarriers in frequency and 7 OFDM symbols
+in time) resource elements, which corresponds to one subcarrier (frequency) or
+one OFDM symbol (time) in each element. Each user is allocated a number of
+so-called resource blocks in the time-frequency grid and inside a resource block
+there are 12 subcarriers. The more resource blocks a user gets, and the higher
+the modulation used in the resource element, the higher the bit rate. Which
+resource blocks the user gets at a given point in time, and how many, depends on
+advanced scheduling mechanisms in the frequency and time dimensions. One
+resource element carries QPSK, 16QAM or 64QAM. With 64QAM, each resource element
+carries six bits.
 
 In the uplink, LTE uses a pre-coded version of OFDM called single carrier
 frequency division multiple access (SC-FDMA). This is to compensate for a
@@ -94,13 +98,13 @@ equalization schemes.
 
 The user data is carried on the Physical Downlink Shared Channel (PDSCH). The
 PDSCH is the only channel that can be QPSK, 16QAM or 64QAM modulated. The
-Downlink channel schematic can be seen in Figure \ref{fig:dlchann} with channels
+downlink channel schematic can be seen in Figure \ref{fig:dlchann} with channels
 delay spread. The delay spread is the time between the symbol arriving on the
-first multi-path signal and the last multi-path signal component, typically
-several $\mu s$ dependent on the environment (i.e. indoor, rural, suburban, city
-center). The guard interval has to be selected in that way, that it is greater
-than the maximum expected delay spread. In E-UTRA, the guard interval is a
-cyclic prefix which is inserted prior to each OFDM symbol.
+first multi-path signal and the last multi-path signal component, in LTE it is
+typically several $\mu s$ dependent on the environment (i.e. indoor, rural,
+suburban, city center). The guard interval has to be selected in that way, that
+it is greater than the maximum expected delay spread. In E-UTRA, the guard
+interval is a cyclic prefix which is inserted prior to each OFDM symbol.
 
 In practice, the OFDM signal can be generated using \textit{IFFT} (Inverse Fast
 Fourier Transform) operation. The \textit{IFFT} converts a number N of complex
@@ -129,7 +133,7 @@ to create a time domain signal.
 %ofdm signal chain
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.65\textwidth]{./figures/ofdm_signal_chain}
+    \includegraphics[width=0.95\textwidth]{./figures/ofdm_signal_chain}
     \caption{ OFDM signal generation \cite{umtslte}.
     \label{fig:ofdmchain}}
 \end{figure}
