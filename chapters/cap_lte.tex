@@ -111,7 +111,9 @@ Fourier Transform) operation. The \textit{IFFT} converts a number N of complex
 data symbols used in the frequency domain bins into the time domain signal. Such
 an N-point \textit{IFFT} is illustrated in Figure \ref{fig:ofdmsymbol} where
 $a(mN+n)$ refers to the nth subcarrier modulated data symbol, during the time
-period $mT_u < t \le (m+1)T_u$ \cite{umtslte}.
+period $mT_u < t \le (m+1)T_u$ \cite{umtslte}, where $m$ is the index of the
+OFDM symbol, $n$ is the subcarrier index and $T_u$ is the period of symbol
+generation.
 
 %ofdm symbols
 \begin{figure}[htbp]
@@ -121,14 +123,15 @@ period $mT_u < t \le (m+1)T_u$ \cite{umtslte}.
     \label{fig:ofdmsymbol}}
 \end{figure}
 
-The vector $sm$ is defined as the \emph{time-domain OFDM symbol}. It is the time
-superposition of the $N$ narrowband modulated sub-carriers. Therefore, from a
-parallel stream of $N$ sources of data, each one independently modulated, a
-waveform composed of N orthogonal sub-carriers is obtained. Figure
-\ref{fig:ofdmchain} illustrates the mapping from a serial stream of QAM symbols
-to N parallel streams, used as frequency domain bins for the \textit{IFFT}. The
-N-point time domain blocks obtained from the \textit{IFFT} are then serialized
-to create a time domain signal.
+The vector $sm$ in Figure \ref{fig:ofdmsymbol} is defined as the
+\emph{time-domain OFDM symbol}. It is the time superposition of the $N$
+narrowband modulated sub-carriers. Therefore, from a parallel stream of $N$
+sources of data, each one independently modulated, a waveform composed of N
+orthogonal sub-carriers is obtained. Figure \ref{fig:ofdmchain} illustrates the
+mapping from a serial stream of QAM symbols to N parallel streams, used as
+frequency domain bins for the \textit{IFFT}. The N-point time domain blocks
+obtained from the \textit{IFFT} are then serialized to create a time domain
+signal.
 
 %ofdm signal chain
 \begin{figure}[htbp]
@@ -171,13 +174,13 @@ vendor-specific implementation.
 
 \section{Uplink Scheme}%ok
 
-During the study item phase of LTE, alternatives for the optimum uplink
-transmission scheme were investigated \cite{umtslte}. While \textit{OFDMA} is
-seen optimum to fulfill the LTE requirements in downlink, \textit{OFDMA}
-properties are less favorable for the uplink. This is mainly due to unfavorable
-PAPR properties of an \textit{OFDMA} signal, resulting in worse uplink coverage
-and challenges in power amplifier design for battery operated handset, as it
-requires expensive power amplifiers.
+During the study phase of LTE, alternatives for the optimum uplink transmission
+scheme were investigated \cite{umtslte}. While \textit{OFDMA} is seen optimum to
+fulfill the LTE requirements in downlink, \textit{OFDMA} properties are less
+favorable for the uplink. This is mainly due to unfavorable PAPR properties of
+an \textit{OFDMA} signal, resulting in worse uplink coverage and challenges in
+power amplifier design for battery operated handset, as it requires expensive
+power amplifiers.
 
 Thus, the LTE uplink transmission scheme for FDD and TDD mode is based on SC-
 FDMA with cyclic prefix. Still, SC-FDMA signal processing has some similarities
@@ -194,7 +197,8 @@ available number of subcarriers. For LTE Release 8 uplink, only localized
 transmission on consecutive subcarriers is allowed. An N-point \textit{IFFT}
 where $N>M$ is then performed as in OFDM, followed by addition of the cyclic
 prefix and parallel to serial conversion. The complete uplink scheme can be
-illustrated by the diagram in Figure \ref{fig:uplinkbd}.
+illustrated by the diagram in Figure \ref{fig:uplinkbd}, where $n$ in $x(M,n)$
+is the subcarrier index.
 
 %figura uplink
 \begin{figure}[htbp]
