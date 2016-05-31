@@ -3,6 +3,8 @@
 
 \section{Overview}
 
+This work
+
 In this work, the Xilinx Vivado Suite was used to develop the FPGA design.
 Intellectual properties were used through the IP integrator with the Ultrafast
 design methodology \cite{xilinx:ultrafast} and specific VHDL modules were
@@ -23,7 +25,7 @@ which is the case of the FPGA boards used in this work \cite{max2004}.
 
 The “field programmable” portion of the FPGA’s name refers to the fact that its
 programming takes place “in the field” (as opposed to devices whose internal
-functionality is hard-wired by the manufacturer). This mean that FPGAs
+functionality is hard-wired by the manufacturer). It means that FPGAs
 connections are electrically activated and deactivated, thus the FPGA can be
 programmed in a factory for large scale production or by the developer. When a
 digital circuit, potentially designed by using FPGAs, is manufactured in a
@@ -49,11 +51,10 @@ development board and the main components used in this work.
 
 \subsection{IP Cores}
 
-Xilinx Design Tools have a methodology of developing by using intellectual
-Property (IP) blocks, called UltraFast Design Methodology
-\cite{xilinx:ultrafast}. In this workflow, it is possible to develop some
-functionality or block and sell the right to use it for other developers, fact
-which makes development a lot faster and easier.
+Xilinx Design Tools have a methodology of development which uses IP blocks,
+called UltraFast Design Methodology \cite{xilinx:ultrafast}. In this workflow,
+it is possible to develop some functionality or block and sell the right to use
+it for other developers, fact which makes development a lot faster and easier.
 
 Xilinx provide IP cores for all the development boards devices and components,
 thus this part aims to briefly describe the blocks used in this work. Other
@@ -227,7 +228,8 @@ In both receiver and transmitter there are low pass filters and
 decimation/interpolation filters. In the receiver the low pass filter acts in
 band shaping to reduce adjacent-channel interference and the digital
 interpolation/decimation filters to up/down convert from the digital baseband
-rate (64.11MSPS max) to the actual ADC (640MSPS) or DAC (320MSPS) rates \cite{web:ad9361wiki}.
+rate (64.11 MSPS max) to the actual ADC (640 MSPS) or DAC (320 MSPS) rates
+\cite{web:ad9361wiki}.
 
 In both digital and analog implementations these filters impact the magnitude
 and the phase in passband. This impairment must be compensated in the system,
@@ -251,13 +253,15 @@ on-chip programmable capacitor \cite{web:ad9361wiki}. This capacitor can tune
 the crystal frequency variance out of the system, resulting in a more accurate
 reference clock from which all other frequency signals are generated. Having a
 precision of +/- 6 ppm it results in a more accurate reference clock and can be
-used, if needed, for synchronization purposes. The behavior of the DCXO function
-can be seen in Figure \ref{fig:dcxo}. This function can also be used together
-with the on-chip temperature sensor to provide temperature compensation
-depending environment in which the chip will be used \cite{ad:ad9361}.
+used, if needed, for synchronization purposes. The behavior of the DCXO
+function can be seen in Figure \ref{fig:dcxo}, which shows one curve for each
+valor of coarse adjust, this image crafted by empirically collecting of values
+\cite{ad:ad9361}. This function can also be used together with the on-chip
+temperature sensor to provide temperature compensation depending environment in
+which the chip will be used \cite{ad:ad9361}.
 
 For the reference clock there are two options, one is a dedicated crystal
-oscillator (from 19 MHz to 50), which is embedded in the FMCOMMS2 development
+oscillator (from 19 to 50 MHz), which is embedded in the FMCOMMS2 development
 board that will be described in the next section. Other option is the use of an
 external clock reference. In this option the BTS can operate in the clock (from
 10 MHz to 80 MHz) before sending it to the AD9361, which is better depending in
@@ -314,17 +318,17 @@ thus the data path is fully integrated into the AD9361 \cite{web:fmcomms2wiki}.
 \subsection{Overview}
 
 To illustrate the idea of this setup and to facilitate its explanation the
-transmitter and receiver chains were separated in 2 figures, Figure
-\ref{fig:txsetup} and Figure \ref{fig:rxsetup}. These figures show a high level
-block diagram of the signal flow until it becomes a waveform (transmitter) or a
-binary stream (receiver). The functionalities of the  DAC-DMA interface and DAC
-Interface blocks in Figure \ref{fig:txsetup} and the ADC interface block in
-Figure \ref{fig:rxsetup} shall be explained in Subsection \ref{subs:dataif}.
+transmitter and receiver chains were separated in Figure \ref{fig:txsetup} and
+Figure \ref{fig:rxsetup}. These figures show a high level block diagram of the
+signal flow until it becomes a waveform (transmitter) or a binary stream
+(receiver). The functionalities of the  DAC-DMA interface and DAC Interface
+blocks in Figure \ref{fig:txsetup} and the ADC interface block in Figure
+\ref{fig:rxsetup} are explained in Subsection \ref{subs:dataif}.
 
 %tx block diagram
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.65\textwidth]{./figures/tx_setup}
+    \includegraphics[width=0.85\textwidth]{./figures/tx_setup}
     \caption{ Transmitter setup block diagram.
     \label{fig:txsetup}}
 \end{figure}
@@ -332,7 +336,7 @@ Figure \ref{fig:rxsetup} shall be explained in Subsection \ref{subs:dataif}.
 %rx block diagram
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.65\textwidth]{./figures/rx_setup}
+    \includegraphics[width=0.85\textwidth]{./figures/rx_setup}
     \caption{ Receiver setup block diagram.
     \label{fig:rxsetup}}
 \end{figure}
@@ -352,10 +356,11 @@ integration requires the designer to sufficiently understand the HDL sources of
 the AD9361 IP core included in the FPGA and the corresponding drivers to be
 included in the processor program.
 
-By default the AD9361 driver has a waveform generator which feeds the DAC with a
-carrier wave at 2.4GHz, so if the initialization works, it is possible to watch
-in the oscilloscope or spectrum analyzer a sinusoidal (carrier) wave at 2.4 GHz
-after all initialization procedures have been concluded.
+By default the AD9361 driver has a waveform generator which feeds the DAC with
+the necessary samples to generate a carrier wave at 2.4GHz, so if the
+initialization works, it is possible to monitor in the oscilloscope or spectrum
+analyzer a sinusoidal (carrier) wave at 2.4 GHz after all initialization
+procedures have been concluded.
 
 \subsection{Control Interface}
 \label{subs:controlif}
@@ -399,12 +404,12 @@ properly, the next step is to input custom data into the device and efficiently
 transmit modulated information in the carrier wave. Figure \ref{fig:txpins}
 illustrates the transmitting data interface and shows that AD9361 works with IQ
 data having one channel for I (16 bits) and one for Q (16 bits). It has also a
-data flow control with the \emph{valid} and \emph{enable} ports in each channel
-(I and Q). This data flow control is similar to the one implemented in the AXI
-stream \cite{xilinx:axi} where the master and slave block exchange signals in
-order to control this data flux. In the transmitter the AD9361 is the master, so
-it reads data, then it should signal to the DMA or FIFO block that it is ready
-to receive the data or not.
+data flow control with the \emph{dac\_valid} and \emph{dac\_enable} ports in
+each channel (I and Q). This data flow control is similar to the one implemented
+in the AXI stream \cite{xilinx:axi} where the master and slave block exchange
+signals in order to control this data flux. In the transmitter the AD9361 is the
+master, so it reads data, then it should signal to the DMA or FIFO block that it
+is ready to receive the data or not.
 
 %inserir figura do IP AD9361 highlight TX interface pins
 \begin{figure}[htbp]
@@ -428,8 +433,9 @@ allows faster reading speed and better flow control. Figure
 figure there is the need of a data interface in order to distribute the memory
 reading data (DDR3 - DMA) through the AD9361 data interface properly using only
 one DMA IP core. With this block the 32 bits read at each cycle by the DMA are
-simultaneous connected to the 32 bits IQ data interface ( 16 I and 16 Q bits),
-that is, the 32 read bits go through the ADC 0 and ADC 1 simultaneously.
+simultaneous connected to the 32 bits IQ data interface ( 16 bits for I channel
+and 16 bits for Q channel), that is, the 32 read bits go through the ADC 0 and
+ADC 1 simultaneously.
 
 %inserir diagrama de blocos de entrada DDS>FIFO>AD9361
 
@@ -689,27 +695,10 @@ instructions. These is also a section in the project \emph{.tcl} script to copy
 the needed files from the directory tree and generate the program with all the
 driver initiations.
 
-This setup cannot generate it own waveforms, it has a waveform loaded in a
+This setup cannot generate its own waveforms, it has a waveform loaded in a
 \emph{.h} file that is loaded by the DMA in cyclic transmission. This waveform
 need to be generated in a software like \emph{MATLAB} and the loaded as a
 source. The Analog Devices company has already generated some LTE signal samples
 which are on their \emph{GIT} repository \cite{web:gitanalogdevlte} and the
 instructions are on how to use these tools to generate signals are in
 \cite{web:analogmatlabwiki}.
-%\subsection{Academic Environment}
-%
-%This setup was meant to be used in such academic environment, the data and control
-%interface are ready to be used, for this the student can generate the data in
-%matlab and load it as a vector in a .h file, this file shall be read by the DMA
-%driver.
-%There is also the possibility to develop a modulation/demodulation block
-%and input this block feeding the data interface, thus all the modulated data can
-%be transmitted and received, the only limitation of such development would be the
-%FPGA board own DSP capability.
-%
-%\subsection{Research environment}
-%
-%In the research and development environment, this work can be used as a testbed
-%for any algorithm in LTE frequency range like compression, synchronization and
-%transmission tests. This setup saves time in the development where the developer
-%does not need to worry about any hardware issues and focus on the algorithm.
