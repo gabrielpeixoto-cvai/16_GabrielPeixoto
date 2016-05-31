@@ -65,18 +65,15 @@ The \emph{source encoder}  and \emph{source coder} converts the input symbol
 sequence into a binary sequence (0 and 1) by assigning codewords to the symbols
 in the input sequence. Basically the source encoder input is a analog waveform
 and it samples, quantize and compress this analog waveform to a binary message
-\cite{ocw:digicomm}.
+\cite{ocw:digicomm} \cite{akbook}.
 
 At the receiver, the \emph{source decoder} converts the binary output of the
 channel decoder into a analog waveform, doing the opposite operations of the
-\emph{source encoder}. The decoder for a system using fixed length code words is
-quite simple, but the decoder for a system using variable length code words can
-be very complex \cite{ocw:digicomm}.
+\emph{source encoder}.
 
-%Aim of the source coding is to remove the redundancy in the transmitting
-%information, so that bandwidth required for transmission is minimized. This
-%approach is based on the probability of the symbol codeword is assigned. The
-%higher the probability, the shorter the codeword.
+Source coding techniques are also used in compression softwares like Winrar,
+Winzip, etc \cite{akbook}. Its importance can also be noticed by the use of
+source encoding techniques in image compression \cite{akbook}.
 
 \subsection{Channel Encoder / Decoder}
 
@@ -87,14 +84,15 @@ correct some of the errors in the information bearing bits. There are two
 methods of channel coding, the \textit{Block Coding} and \textit{Convolution
 Coding}.
 
-In the block coding method the encoder takes a block of ‘k’ information bits
-from the source encoder and adds ‘r’ error control bits, where ‘r’ can be chosen
+In block coding method the encoder takes a block of ‘k’ information bits from
+the source encoder and adds ‘r’ error control bits, where ‘r’ can be chosen
 based on ‘k’ and error control capabilities desired, this process is
-accomplished by a matrix multiplication and that is the origin of the "block" in
-block coding. In the convolution coding process the message goes through a
-sequence of tapped-delay line operations which works in the same way as
-convolving the message with the impulse response of the code, with modulo-2
-operations.
+accomplished by a matrix multiplication and that is the origin of the "block"
+in block coding. In the convolutional coding process the message goes through a
+sequence of tapped-delay line operations (one signal interacts with a delayed
+version of the other signal) which works in the same way as convolving the
+message with the impulse response of the code, with modulo-2 operations
+\cite{ocw:digicomm}.
 
 The Channel decoder recovers the information bits from the coded binary stream,
 error detection and possible correction is also performed by the channel
@@ -124,6 +122,13 @@ channel or combination of any of these.
 
 \section{Additional Modules}
 
+This section aims to introduce some additional blocks for the digital
+communication systems in Figure \ref{fig:digicomplus}, in this block-diagram
+multiplexer and demultiplexer are added because modern systems use multiplexing
+access techniques which shall be explained in the in Chapter \ref{cap:lte}.
+Another important topic for communications in general is synchronization, which
+will be explained in this section.
+
 %augmented block diagram
 \begin{figure}[htbp]
     \centering
@@ -137,16 +142,15 @@ are used in most of digital communication system:.
 
 \begin{itemize}
 
-  %\item \textbf{Encryptor:} Encryptor prevents unauthorized users from
-    %understanding the messages and from injecting false messages into the system.
-
   \item \textbf{Multiplexer:} Multiplexer is used for combining signals from
-different sources so that they share a portion of the communication system.
+  different sources so that they share a portion of the communication system.
+  Multiplexing can be done in time or in frequency and a frequency, such as OFDM
+  that is a frequency division multiplexing technique used in LTE whcih shall be
+  explained in Chapter \ref{cap:lte}.
 
-  \item \textbf{Demultiplexer:} DeMultiplexer is used for separating the different
-signals so that they reach their respective destinations.
-
-  %\item \textbf{Decryptor:} It does the reverse operation of that of the Encryptor.
+  \item \textbf{Demultiplexer:} Demultiplexer is used for separating the
+  different signals so that they reach their respective destinations, it is the
+  exact opposite of multiplexing.
 
 \end{itemize}
 
@@ -164,10 +168,10 @@ instants to sample a received waveform. Timing recovery is a requirement of all
 digital communication systems \cite{akbook}.
 
 Carrier recovery is a processes used in both coherent and non-coherent
-demodulation where the phase and the frequency of the transmitter carrier wave
-are recovered by the receiver and thus after having such information it is
-possible to extract the information in the transmitted signal. Considering that
-the phase and frequency of the transmitted wave probably will be affected by
-noise, it is not a straight-forward method, it includes filtering and usually
-feedback systems (PLLs) to correct the errors in phase or frequency caused by
-the noise.
+demodulation where phase and frequency of the transmitter carrier wave are
+recovered by the receiver and thus after having such information it is possible
+to extract the information in the transmitted signal. Considering that phase and
+frequency of the transmitted wave probably will be affected by noise, it is not
+a straight-forward method, it includes filtering and usually feedback systems
+such as Phase-locked Loops (PLLs) to correct the errors in phase or frequency
+caused by the noise.
