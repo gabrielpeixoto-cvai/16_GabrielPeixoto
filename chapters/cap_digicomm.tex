@@ -4,11 +4,10 @@
 The purpose of a digital communication system is to transport an information
 bearing signal from a source to a user destination via a communication channel.
 The transmitter, receiver and channel are the three basic elements of a digital
-communication system as shown in Figure \ref{fig:digicomsimple}. The message
-produced by a source is a digital message, binary and not electrical. An input
+communication system as shown in Figure \ref{fig:digicomsimple}. An input
 transducer is used for converting the message to a time-varying electrical
-quantity called waveform. Similarly, at the destination point, another transducer
-converts the electrical waveform to the appropriate message.
+quantity called waveform. Similarly, at the destination point, another
+transducer converts the electrical waveform to the appropriate message.
 
 
 %esquema básico do sistema de comunicacao
@@ -21,14 +20,21 @@ converts the electrical waveform to the appropriate message.
 
 The transmitter is located at one point in space, the receiver is located at
 some other point separate from the transmitter, and the channel is the medium
-that provides the electrical connection between them. The former (transmitter),
-in particular, is designed aiming to produce waveforms suitable for transmission
-over the channel, a waveform. In the receiver the signal is normally corrupted
-version of the transmitted signal, which is due to channel imperfections, noise
-and interference. The receiver is designed to reconstruct a recognizable form of
-the original message signal and to deliver it to a destination.
+that provides the or electromagnetic or optical, in theory, it can be anything
+(e.g. smoke, etc) between them. The former (transmitter), in particular, is
+designed aiming to produce waveforms for transmission over the channel, a
+waveform. In the receiver the signal is normally a corrupted version of the
+transmitted signal, due to channel imperfections, noise and interference. The
+receiver is designed to reconstruct a recognizable form of the original message
+and to deliver it to the destination.
 
 \section{Elements of Digital Communications Systems}
+
+Figure \ref{fig:digcombd} shows in more detail the block diagram of Figure
+\ref{fig:digicomsimple}. Since this work aims to evaluate a Radio front-end
+prototype, the basic steps of the baseband processing (prior to transmission in
+the medium)can be seen in Figure \ref{fig:digcombd} and its blocks explained in
+this section.
 
 %block diagram of a digital communication system
 \begin{figure}[htbp]
@@ -67,10 +73,10 @@ channel decoder into a analog waveform, doing the opposite operations of the
 quite simple, but the decoder for a system using variable length code words can
 be very complex \cite{ocw:digicomm}.
 
-Aim of the source coding is to remove the redundancy in the transmitting
-information, so that bandwidth required for transmission is minimized. This
-approach is based on the probability of the symbol codeword is assigned. The
-higher the probability, the shorter the codeword.
+%Aim of the source coding is to remove the redundancy in the transmitting
+%information, so that bandwidth required for transmission is minimized. This
+%approach is based on the probability of the symbol codeword is assigned. The
+%higher the probability, the shorter the codeword.
 
 \subsection{Channel Encoder / Decoder}
 
@@ -127,7 +133,7 @@ channel or combination of any of these.
 \end{figure}
 
 Some additional blocks as shown in the block diagram  at Figure \ref{fig:digicomplus}
-are used in most of digital communication system:
+are used in most of digital communication system:.
 
 \begin{itemize}
 
