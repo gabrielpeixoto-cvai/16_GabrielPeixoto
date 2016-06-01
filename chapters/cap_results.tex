@@ -74,7 +74,7 @@ measurements in the bottom of the picture.
 \end{figure}
 
 
-%\vfill
+\vspace{50pt}
 %\clearpage
 
 \section{Simulation}
@@ -238,6 +238,9 @@ left and the constellation in the right.
     \label{fig:dataflowana}}
 \end{figure}
 
+\vfill
+\clearpage
+
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.85\textwidth,
@@ -245,27 +248,24 @@ left and the constellation in the right.
     clip]{./figures/oscill_ad9361_dac_clk}
     \caption{ DAC clock output.
     \label{fig:dacclk}}
-\end{figure}
+%\end{figure}
 
-\begin{figure}[htbp]
+%\begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.8\textwidth,
+    \includegraphics[width=0.85\textwidth,
     trim={0 0 {.27\textwidth} {.1\textwidth}},
     clip]{./figures/lte_5m}
     \caption{ LTE signal output from FMCOMMS2 spectrum.
     \label{fig:lte5m}}
 \end{figure}
 
-%\section{Reception Tests (ADC)}
-%\label{result:adc}
-%
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.95\textwidth]{./figures/evm}
+    \includegraphics[width=0.95\textwidth]{./figures/evm_5m}
     \caption{ Downlink LTE EVM.
     \label{fig:evm}}
 \end{figure}
-%
+
 \vfill
 \clearpage
 
@@ -283,19 +283,27 @@ Comparing the results in Figure \ref{fig:lteevmiio} with the ones obtained in
 Figure \ref{fig:evm} it is possible to note that they are similar although both
 are not optimal results.
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.85\textwidth]{./figures/hsa}
-    \caption{ LTE spectrum from \cite{web:lteexamplewiki}.
-    \label{fig:ltespectrumiio}}
-\end{figure}
+
 
 \begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.75\textwidth]{./figures/hcd}
-    \caption{ LTE constellation from \cite{web:lteexamplewiki}.
-    \label{fig:lteconstellationiio}}
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=0.95\textwidth]{./figures/hsa}
+  \caption{ LTE spectrum from \cite{web:lteexamplewiki}.
+  \label{fig:ltespectrumiio}}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=0.75\textwidth]{./figures/hcd}
+  \caption{ LTE constellation from \cite{web:lteexamplewiki}.
+  \label{fig:lteconstellationiio}}
+\end{subfigure}
+\caption{LTE spectrum and constellation.}
+\label{fig:test}
 \end{figure}
+
+\newpage
 
 \begin{figure}[htbp]
     \centering
@@ -303,6 +311,3 @@ are not optimal results.
     \caption{ LTE EVM from \cite{web:lteexamplewiki}.
     \label{fig:lteevmiio}}
 \end{figure}
-
-\vfill
-\clearpage
